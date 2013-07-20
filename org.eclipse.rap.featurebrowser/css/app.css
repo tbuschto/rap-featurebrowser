@@ -1,0 +1,101 @@
+.header {
+  background-color: #31619c;
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( #3969a3 ),
+    to( #21518c )
+  );
+  font: italic 15px 'Open Sans', sans-serif;
+  text-shadow: 0 1px 5px #000;
+  color: #eee;
+}
+
+.subheader {
+  background-color: rgb(52, 51, 47);
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( rgb(62 , 61, 57) ),
+    to( rgb(52, 51, 47) )
+  );
+}
+
+Sash, Sash:hover {
+  background-color: rgb(52, 51, 47);
+}
+
+Sash-Handle:horizontal, Sash-Handle:vertical {
+  background-image: none;
+}
+
+Button[PUSH].vbar {
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( rgb(52, 51, 47) ),
+    to( rgb(52, 51, 47) )
+  );
+  border: none;
+  border-radius: 0px;
+  padding: 3px;
+  animation: none;
+  text-shadow: none;
+}
+
+Button[PUSH]:hover.vbar {
+  text-shadow: 0 1px 3px #fff;
+}
+
+Button-FocusIndicator[PUSH].vbar {
+  background-color: transparent;
+  border: none;
+}
+
+.vbar {
+  color: #eee;
+  text-shadow: none;
+  background-color: rgb(62, 61, 57);
+  border: none;
+  border-radius: 0px;
+  padding: 3px;
+  animation: none;
+  color: #eee;
+  text-shadow: none;
+}
+
+ScrollBar {
+  background-color: rgb(62, 61, 57);
+  background-image: none;
+  border: none;
+  border-radius: 0;
+  width: 4px;
+}
+
+ScrollBar-Thumb {
+  background-color: #f0f0f0;
+  border: 1px solid #bdbdbd;
+  border-radius: 2px;
+  min-height: 20px;
+}
+
+ScrollBar-UpButton,
+ScrollBar-DownButton {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: default;
+}
+
+ScrollBar-UpButton[HORIZONTAL],
+ScrollBar-DownButton[HORIZONTAL],
+ScrollBar-UpButton[VERTICAL],
+ScrollBar-DownButton[VERTICAL] {
+  background-image: none;
+}
+
+Tree-Cell {
+  spacing: 2px;
+  padding: 3px 2px 3px 2px;
+}
+
+Tree {
+  font: 12px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+}
