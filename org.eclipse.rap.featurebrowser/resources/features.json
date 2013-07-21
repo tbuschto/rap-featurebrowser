@@ -1,0 +1,20 @@
+[
+  {
+    "category" : "Widgets",
+    "children" : [
+      {
+        "category" : "Label",
+        "children" : [
+          {
+            "feature" : "with Text",
+            "snippet" : "snippets.LabelWithText"
+          },
+          {
+            "feature" : "with Image",
+            "snippet" : "snippets.LabelWithImage"
+          }
+        ]
+      }
+    ]
+  }
+]

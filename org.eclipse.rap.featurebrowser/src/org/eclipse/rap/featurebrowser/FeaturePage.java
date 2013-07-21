@@ -1,4 +1,4 @@
-package org.eclipse.rap.featurebrowser.features;
+package org.eclipse.rap.featurebrowser;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -6,10 +6,8 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.eclipse.rap.featurebrowser.FeatureTree;
-import org.eclipse.rap.featurebrowser.LayoutUtil;
-import org.eclipse.rap.featurebrowser.snippetregistry.SnippetRegistry;
-import org.eclipse.rap.featurebrowser.snippets.LabelSnippet;
+import org.eclipse.rap.json.JsonObject;
+import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.SashForm;
@@ -18,37 +16,54 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 
-public class LabelFeature extends AbstractFeature {
+public class FeaturePage {
 
-  public LabelFeature( Composite parent ) {
-    SashForm sashf = new SashForm( parent, SWT.HORIZONTAL );
+  private SashForm sashf;
+
+  FeaturePage( Composite parent, JsonObject feature ) {
+    sashf = new SashForm( parent, SWT.HORIZONTAL );
     sashf.setLayoutData( LayoutUtil.createFillData() );
     sashf.setSashWidth( 1 );
     Composite snippetParent = new Composite( sashf, SWT.NONE );
     Browser browser = new Browser( sashf, SWT.NONE );
     snippetParent.setLayout( new GridLayout( 1, false ) );
-    LabelSnippet snippet = new LabelSnippet( "LabelSnippet" );
     try {
-      SnippetRegistry.addSnippet( snippet );
-      try {
-        Class<?> clazz = SnippetRegistry.getClass( "LabelSnippet" );
-        createContents( clazz, snippetParent );
-      } catch( Exception e ) {
-        showError( "Coud not run snippet:", snippetParent, e );
+      Class<? extends AbstractEntryPoint> clazz
+        = getSnippetClass( feature.get( "snippet" ).asString() );
+      if( !SnippetRegistry.has( clazz ) ) {
+        SnippetRegistry.register( clazz );
       }
-    } catch( Exception e ) {
-      showError( "Coud not compile snippet:", snippetParent, e );
+      browser.setUrl( SnippetRegistry.getSnippetHtmlUrl( clazz ) );
+      createContents( clazz, snippetParent );
+    } catch( InstantiationException e ) {
+      showError( sashf, e );
+    } catch( IllegalAccessException e ) {
+      showError( sashf, e );
+    } catch( InvocationTargetException e ) {
+      showError( sashf, e );
+    } catch( NoSuchMethodException e ) {
+      showError( sashf, e );
+    } catch( ClassCastException e ) {
+      showError( sashf, e );
+    } catch( ClassNotFoundException e ) {
+      showError( sashf, e );
     }
-    browser.setUrl( SnippetRegistry.getSnippetHtmlUrl( "LabelSnippet" ) );
   }
 
-  public void showError( String reason, Composite snippetParent, Exception fail ) {
+  // TODO : add classloader param
+  @SuppressWarnings("unchecked")
+  private Class<? extends AbstractEntryPoint> getSnippetClass( String classname )
+      throws ClassNotFoundException, ClassCastException
+  {
+    ClassLoader loader = getClass().getClassLoader();
+    return ( ( Class<? extends AbstractEntryPoint> )loader.loadClass( classname ) );
+  }
+
+  private void showError( Composite snippetParent, Exception fail ) {
     Text msg = new Text( snippetParent, SWT.MULTI );
     msg.setEditable( false );
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     PrintStream ps = new PrintStream( baos );
-    ps.append( reason );
-    ps.append( "\n" );
     ps.append( fail.getMessage() + "\n" );
     fail.printStackTrace( ps );
     fail.printStackTrace();
@@ -61,7 +76,11 @@ public class LabelFeature extends AbstractFeature {
     msg.setLayoutData( LayoutUtil.createFillData() );
   }
 
-  public void createContents( Class<?> clazz, Composite parent )
+  public void dispose() {
+    sashf.dispose();
+  }
+
+  private void createContents( Class<?> clazz, Composite parent )
       throws InstantiationException, IllegalAccessException, InvocationTargetException,
       NoSuchMethodException
     {

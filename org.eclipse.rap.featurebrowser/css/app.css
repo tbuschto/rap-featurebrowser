@@ -29,8 +29,8 @@ Sash-Handle:horizontal, Sash-Handle:vertical {
 
 Button[PUSH].vbar {
   background-image: gradient(
-    linear, left top, left bottom,
-    from( rgb(52, 51, 47) ),
+    linear, left top, right top,
+    from( rgb(62 , 61, 57) ),
     to( rgb(52, 51, 47) )
   );
   border: none;

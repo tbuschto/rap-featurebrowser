@@ -1,27 +1,35 @@
 package org.eclipse.rap.featurebrowser;
 
-import org.eclipse.rap.featurebrowser.features.AbstractFeature;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 
 
 public class FeatureTree {
 
   private Tree tree;
-  private AbstractFeature currentFeature;
-  private FeatureCreator currentFeatureCreator;
+  private FeaturePage featurePage;
 
-  public FeatureTree( final Composite parent ) {
+  public FeatureTree( final Composite parent, JsonArray features  ) {
     Composite outer = LayoutUtil.createHorizontalComposite( parent, 2 );
     outer.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, true ) );
-    tree = new Tree( outer, SWT.FULL_SELECTION );
+    createTree( outer, parent, features );
     final Button bar = new Button( outer, SWT.PUSH | SWT.CENTER );
     tree.setLayoutData( LayoutUtil.createHorizontalLayoutData( 150 ) );
     tree.setData( RWT.CUSTOM_VARIANT, "vbar" );
@@ -39,21 +47,93 @@ public class FeatureTree {
         parent.layout();
       }
     } );
-    tree.addListener( SWT.Selection, new Listener() {
+  }
+
+  public void createTree( Composite outer, final Composite parent, JsonArray features ) {
+    tree = new Tree( outer, SWT.FULL_SELECTION );
+    TreeViewer treeViewer = new TreeViewer( tree );
+    treeViewer.setContentProvider( new ITreeContentProvider() {
       @Override
-      public void handleEvent( Event event ) {
-        Object data = event.item.getData();
-        if( data instanceof FeatureCreator && currentFeatureCreator != data ) {
-          currentFeatureCreator = ( FeatureCreator )data;
-          currentFeature = currentFeatureCreator.createFeature( parent );
-          parent.layout();
-        }
+      public void inputChanged( Viewer viewer, Object oldInput, Object newInput ) {}
+      @Override
+      public void dispose() { }
+      @Override
+      public boolean hasChildren( Object element ) {
+        JsonObject json = ( JsonObject )element;
+        return json.get( "children" ) != null;
+      }
+      @Override
+      public Object getParent( Object element ) {
+        return null;
+      }
+      @Override
+      public Object[] getElements( Object inputElement ) {
+        return toArray( inputElement );
+      }
+      @Override
+      public Object[] getChildren( Object parentElement ) {
+        return toArray( ( ( JsonObject )parentElement ).get( "children" ) );
       }
     } );
+    treeViewer.setLabelProvider( new ILabelProvider() {
+      @Override
+      public void removeListener( ILabelProviderListener listener ) {
+      }
+      @Override
+      public boolean isLabelProperty( Object element, String property ) {
+        return false;
+      }
+      @Override
+      public void dispose() {
+      }
+      @Override
+      public void addListener( ILabelProviderListener listener ) {
+      }
+      @Override
+      public String getText( Object element ) {
+        JsonObject json = ( ( JsonObject )element );
+        String result = "?";
+        if( json.get( "category" ) != null ) {
+          result = json.get( "category" ).asString();
+        } else if( json.get( "feature" ) != null ) {
+          result = json.get( "feature" ).asString();
+        }
+        return result;
+      }
+      @Override
+      public Image getImage( Object element ) {
+        return null;
+      }
+    } );
+    treeViewer.addSelectionChangedListener( new ISelectionChangedListener() {
+      @Override
+      public void selectionChanged( SelectionChangedEvent event ) {
+        IStructuredSelection sel = ( IStructuredSelection )event.getSelection();
+        JsonObject json = ( JsonObject )sel.getFirstElement();
+        if( featurePage != null ) {
+          featurePage.dispose();
+        }
+        if( json.get( "feature" ) != null ) {
+          featurePage = new FeaturePage( parent, json );
+        }
+        parent.layout();
+      }
+    } );
+    treeViewer.setInput( features );
+    treeViewer.expandAll();
   }
 
   public Tree getTree() {
     return tree;
+  }
+
+  public Object[] toArray( Object inputElement ) {
+    JsonArray json = ( JsonArray )inputElement;
+    Object[] elements = new Object[ json.size() ];
+    for( int i = 0; i < json.size(); i++ ) {
+      elements[ i ] = json.get( i );
+    }
+    return elements;
   }
 
 }

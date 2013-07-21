@@ -1,7 +1,10 @@
 package org.eclipse.rap.featurebrowser;
 
-import org.eclipse.rap.featurebrowser.features.AbstractFeature;
-import org.eclipse.rap.featurebrowser.features.LabelFeature;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 import org.eclipse.swt.SWT;
@@ -24,14 +27,24 @@ public class EntryPoint extends AbstractEntryPoint {
       subheader.setLayoutData( LayoutUtil.createVerticalLayoutData( LayoutUtil.BARWIDTH ) );
       Composite main = LayoutUtil.createHorizontalComposite( parent, 2 );
       main.setLayoutData( LayoutUtil.createFillData() );
-      FeatureTree featureTree = new FeatureTree( main );
-      Category widgets = new Category( featureTree, "Widgets" );
-      widgets.addFeature( "Label", new FeatureCreator() {
-        @Override
-        public AbstractFeature createFeature( Composite parent ) {
-          return new LabelFeature( parent );
-        }
-      } );
+      InputStream resource = getClass().getClassLoader().getResourceAsStream( "features.json" );
+      InputStreamReader reader = new InputStreamReader( resource );
+      JsonArray jsonObject = null;
+      try {
+        jsonObject = JsonArray.readFrom( reader );
+      } catch( IOException e ) {
+        e.printStackTrace();
+      }
+      try {
+        reader.close();
+      } catch( IOException e ) {
+        e.printStackTrace();
+      }
+      if( jsonObject != null ) {
+        new FeatureTree( main, jsonObject );
+      } else {
+        throw new RuntimeException( "Could not read features" );
+      }
     }
 
 }
