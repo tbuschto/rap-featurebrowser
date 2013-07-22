@@ -12,6 +12,18 @@
           {
             "feature" : "with Image",
             "snippet" : "snippets.LabelWithImage"
+          },
+          {
+            "feature" : "with Mnemonic",
+            "snippet" : "snippets.LabelWithMnemonic"
+          },
+          {
+            "feature" : "alignment",
+            "snippet" : "snippets.LabelAlignment"
+          },
+          {
+            "feature" : "as separator",
+            "snippet" : "snippets.LabelAsSeparator"
           }
         ]
       }
