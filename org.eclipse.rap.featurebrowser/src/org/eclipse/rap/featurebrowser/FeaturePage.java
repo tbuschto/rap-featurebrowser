@@ -40,7 +40,7 @@ public class FeaturePage {
     } catch( IllegalAccessException e ) {
       showError( sashf, e );
     } catch( InvocationTargetException e ) {
-      showError( sashf, e );
+      showError( sashf, e.getCause() != null ? e.getCause() : e );
     } catch( NoSuchMethodException e ) {
       showError( sashf, e );
     } catch( ClassCastException e ) {
@@ -59,7 +59,7 @@ public class FeaturePage {
     return ( ( Class<? extends AbstractEntryPoint> )loader.loadClass( classname ) );
   }
 
-  private void showError( Composite snippetParent, Exception fail ) {
+  private void showError( Composite snippetParent, Throwable fail ) {
     Text msg = new Text( snippetParent, SWT.MULTI );
     msg.setEditable( false );
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
