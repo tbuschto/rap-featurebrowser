@@ -18,14 +18,14 @@ import org.eclipse.swt.widgets.Text;
 
 public class FeaturePage {
 
-  private SashForm sashf;
+  private SashForm page;
 
   FeaturePage( Composite parent, JsonObject feature ) {
-    sashf = new SashForm( parent, SWT.HORIZONTAL );
-    sashf.setLayoutData( LayoutUtil.createFillData() );
-    sashf.setSashWidth( 1 );
-    Composite snippetParent = new Composite( sashf, SWT.NONE );
-    Browser browser = new Browser( sashf, SWT.NONE );
+    page = new SashForm( parent, SWT.HORIZONTAL );
+    page.setLayoutData( LayoutUtil.createFillData() );
+    page.setSashWidth( 1 );
+    Composite snippetParent = new Composite( page, SWT.NONE );
+    Browser browser = new Browser( page, SWT.NONE );
     snippetParent.setLayout( new GridLayout( 1, false ) );
     try {
       Class<? extends AbstractEntryPoint> clazz
@@ -36,17 +36,17 @@ public class FeaturePage {
       browser.setUrl( SnippetRegistry.getSnippetHtmlUrl( clazz ) );
       createContents( clazz, snippetParent );
     } catch( InstantiationException e ) {
-      showError( sashf, e );
+      showError( page, e );
     } catch( IllegalAccessException e ) {
-      showError( sashf, e );
+      showError( page, e );
     } catch( InvocationTargetException e ) {
-      showError( sashf, e.getCause() != null ? e.getCause() : e );
+      showError( page, e.getCause() != null ? e.getCause() : e );
     } catch( NoSuchMethodException e ) {
-      showError( sashf, e );
+      showError( page, e );
     } catch( ClassCastException e ) {
-      showError( sashf, e );
+      showError( page, e );
     } catch( ClassNotFoundException e ) {
-      showError( sashf, e );
+      showError( page, e );
     }
   }
 
@@ -77,7 +77,7 @@ public class FeaturePage {
   }
 
   public void dispose() {
-    sashf.dispose();
+    page.dispose();
   }
 
   private void createContents( Class<?> clazz, Composite parent )

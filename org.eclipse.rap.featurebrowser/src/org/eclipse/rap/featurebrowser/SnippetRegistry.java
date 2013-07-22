@@ -40,7 +40,15 @@ public class SnippetRegistry {
   public static void registerHtmlFileResource( String name, String source ) throws IOException {
     StringBuilder html = new StringBuilder();
     html.append( "<!DOCTYPE>" );
-    html.append( "<html><head></head><body><pre style='padding:6px'>" );
+    html.append( "<html><head>" );
+    html.append( "<link href=\"/" );
+    html.append( RWT.getResourceManager().getLocation( "prettify.css" ) );
+    html.append( "\" type=\"text/css\" rel=\"stylesheet\" />" );
+    html.append( "<script src=\"/" );
+    html.append( RWT.getResourceManager().getLocation( "prettify.js" ) );
+    html.append( "\" type=\"text/javascript\"></script></head>" );
+    html.append( "<body onload=\"prettyPrint()\" style='padding-left:6px' >" );
+    html.append( "<pre class=\"prettyprint lang-java\">" );
     html.append( source.replaceAll( "\\<", "&lt;" ).replaceAll( "\\>", "&gt;" ) );
     html.append( "</pre></body></html>" );
     InputStream stream = new ByteArrayInputStream( html.toString().getBytes() );

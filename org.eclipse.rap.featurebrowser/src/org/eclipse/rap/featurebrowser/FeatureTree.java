@@ -32,7 +32,8 @@ public class FeatureTree {
     createTree( outer, parent, features );
     final Button bar = new Button( outer, SWT.PUSH | SWT.CENTER );
     tree.setLayoutData( LayoutUtil.createHorizontalLayoutData( 150 ) );
-    tree.setData( RWT.CUSTOM_VARIANT, "vbar" );
+    tree.setData( RWT.CUSTOM_VARIANT, "featuretree" );
+    outer.setData( RWT.CUSTOM_VARIANT, "featuretree" );
     bar.setText( "<" );
     bar.setLayoutData( LayoutUtil.createHorizontalLayoutData( LayoutUtil.BARWIDTH ) );
     bar.setData( RWT.CUSTOM_VARIANT, "vbar" );
