@@ -26,6 +26,7 @@ public class FeaturePage {
     page.setSashWidth( 1 );
     Composite snippetParent = new Composite( page, SWT.NONE );
     Browser browser = new Browser( page, SWT.NONE );
+    page.setWeights( new int[]{ 40, 60 } );
     snippetParent.setLayout( new GridLayout( 1, false ) );
     try {
       Class<? extends AbstractEntryPoint> clazz

@@ -22,8 +22,34 @@
             "snippet" : "snippets.LabelAlignment"
           },
           {
+            "feature" : "wrapping",
+            "snippet" : "snippets.LabelWrap"
+          },
+          {
             "feature" : "as separator",
             "snippet" : "snippets.LabelAsSeparator"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category" : "Layout Manager",
+    "children" : [
+      {
+        "category" : "GridLayout",
+        "children" : [
+          {
+            "feature" : "basic layout",
+            "snippet" : "snippets.GridLayoutBasic"
+          },
+          {
+            "feature" : "alignment",
+            "snippet" : "snippets.GridLayoutAlignment"
+          },
+          {
+            "feature" : "column width",
+            "snippet" : "snippets.GridLayoutColumnWidth"
           }
         ]
       }
