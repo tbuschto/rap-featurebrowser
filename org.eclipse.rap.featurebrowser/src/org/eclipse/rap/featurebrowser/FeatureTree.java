@@ -38,7 +38,6 @@ public class FeatureTree {
     bar.setLayoutData( LayoutUtil.createHorizontalLayoutData( LayoutUtil.BARWIDTH ) );
     bar.setData( RWT.CUSTOM_VARIANT, "vbar" );
     bar.addListener( SWT.Selection, new Listener() {
-      @Override
       public void handleEvent( Event event ) {
         boolean visible = !tree.getVisible();
         bar.setText( visible ? "<" : ">" );
@@ -54,43 +53,32 @@ public class FeatureTree {
     tree = new Tree( outer, SWT.FULL_SELECTION );
     TreeViewer treeViewer = new TreeViewer( tree );
     treeViewer.setContentProvider( new ITreeContentProvider() {
-      @Override
       public void inputChanged( Viewer viewer, Object oldInput, Object newInput ) {}
-      @Override
       public void dispose() { }
-      @Override
       public boolean hasChildren( Object element ) {
         JsonObject json = ( JsonObject )element;
         return json.get( "children" ) != null;
       }
-      @Override
       public Object getParent( Object element ) {
         return null;
       }
-      @Override
       public Object[] getElements( Object inputElement ) {
         return toArray( inputElement );
       }
-      @Override
       public Object[] getChildren( Object parentElement ) {
         return toArray( ( ( JsonObject )parentElement ).get( "children" ) );
       }
     } );
     treeViewer.setLabelProvider( new ILabelProvider() {
-      @Override
       public void removeListener( ILabelProviderListener listener ) {
       }
-      @Override
       public boolean isLabelProperty( Object element, String property ) {
         return false;
       }
-      @Override
       public void dispose() {
       }
-      @Override
       public void addListener( ILabelProviderListener listener ) {
       }
-      @Override
       public String getText( Object element ) {
         JsonObject json = ( ( JsonObject )element );
         String result = "?";
@@ -101,13 +89,11 @@ public class FeatureTree {
         }
         return result;
       }
-      @Override
       public Image getImage( Object element ) {
         return null;
       }
     } );
     treeViewer.addSelectionChangedListener( new ISelectionChangedListener() {
-      @Override
       public void selectionChanged( SelectionChangedEvent event ) {
         IStructuredSelection sel = ( IStructuredSelection )event.getSelection();
         JsonObject json = ( JsonObject )sel.getFirstElement();

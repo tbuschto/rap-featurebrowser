@@ -52,7 +52,6 @@ public class FeaturePage {
   }
 
   // TODO : add classloader param
-  @SuppressWarnings("unchecked")
   private Class<? extends AbstractEntryPoint> getSnippetClass( String classname )
       throws ClassNotFoundException, ClassCastException
   {
@@ -60,7 +59,7 @@ public class FeaturePage {
     return ( ( Class<? extends AbstractEntryPoint> )loader.loadClass( classname ) );
   }
 
-  private void showError( Composite snippetParent, Throwable fail ) {
+  private static void showError( Composite snippetParent, Throwable fail ) {
     Text msg = new Text( snippetParent, SWT.MULTI );
     msg.setEditable( false );
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -71,7 +70,6 @@ public class FeaturePage {
     try {
       msg.setText( baos.toString( "UTF-8" ) );
     } catch( UnsupportedEncodingException e ) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     msg.setLayoutData( LayoutUtil.createFillData() );
@@ -81,7 +79,7 @@ public class FeaturePage {
     page.dispose();
   }
 
-  private void createContents( Class<?> clazz, Composite parent )
+  private static void createContents( Class<?> clazz, Composite parent )
       throws InstantiationException, IllegalAccessException, InvocationTargetException,
       NoSuchMethodException
     {

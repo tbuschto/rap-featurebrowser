@@ -17,7 +17,6 @@ public class FeatureResourceLoader implements ResourceLoader {
     return instance;
   }
 
-  @Override
   public InputStream getResourceAsStream( String resourceName ) throws IOException {
     return getClass().getClassLoader().getResourceAsStream( "resources/" + resourceName );
   }
