@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Label;
 
 
 public class GridLayoutAlignment extends AbstractEntryPoint {
+
   @Override
   protected void createContents( Composite parent ) {
     parent.setLayout( new GridLayout( 3, true ) );
@@ -28,4 +29,5 @@ public class GridLayoutAlignment extends AbstractEntryPoint {
     label.setLayoutData( new GridData( hAlign, vAlign, true, true ) );
     label.setText( text );
   }
+
 }

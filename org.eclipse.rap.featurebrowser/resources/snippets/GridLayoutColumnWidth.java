@@ -2,8 +2,14 @@ package snippets;
 
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 
 public class GridLayoutColumnWidth extends AbstractEntryPoint {
 
@@ -33,7 +39,6 @@ public class GridLayoutColumnWidth extends AbstractEntryPoint {
     button.setSelection( equalWidth );
     button.setText( "Equal columns" );
     button.addListener( SWT.Selection, new Listener() {
-      @Override
       public void handleEvent( Event event ) {
         equalWidth = button.getSelection();
         Control[] children = parent.getChildren();

@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Label;
 
 
 public class LabelAsSeparator extends AbstractEntryPoint {
+
   @Override
   protected void createContents( Composite parent ) {
     parent.setLayout( new GridLayout( 2, false ) );
@@ -19,4 +20,5 @@ public class LabelAsSeparator extends AbstractEntryPoint {
     Label vSeparator = new Label( parent, SWT.SEPARATOR | SWT.VERTICAL );
     vSeparator.setLayoutData( new GridData( SWT.LEFT, SWT.FILL, false, true ) );
   }
+
 }

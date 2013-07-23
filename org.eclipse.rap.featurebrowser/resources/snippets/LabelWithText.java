@@ -7,9 +7,11 @@ import org.eclipse.swt.widgets.Label;
 
 
 public class LabelWithText extends AbstractEntryPoint {
+
   @Override
   protected void createContents( Composite parent ) {
     Label label = new Label( parent, SWT.NONE );
     label.setText( "Hello RAP!" );
   }
+
 }

@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Text;
 
 
 public class LabelWithMnemonic extends AbstractEntryPoint {
+
   @Override
   protected void createContents( Composite parent ) {
     parent.getDisplay().setData( RWT.MNEMONIC_ACTIVATOR, "CTRL+ALT" );
@@ -16,4 +17,5 @@ public class LabelWithMnemonic extends AbstractEntryPoint {
     label.setText( "Press CTRL+ALT+&R to focus:" );
     new Text( parent, SWT.BORDER );
   }
+
 }

@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 
 
 public class GridLayoutBasic extends AbstractEntryPoint {
+
   @Override
   protected void createContents( Composite parent ) {
     parent.setLayout( new GridLayout( 3, true ) );
@@ -16,4 +17,5 @@ public class GridLayoutBasic extends AbstractEntryPoint {
       composite.setLayoutData( new GridData( SWT.FILL, SWT.FILL, true, true ) );
     }
   }
+
 }
