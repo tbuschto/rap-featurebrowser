@@ -12,7 +12,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 
 
 public class EntryPoint extends AbstractEntryPoint {
@@ -54,6 +56,11 @@ public class EntryPoint extends AbstractEntryPoint {
       headerLabel.setData( RWT.CUSTOM_VARIANT, "headerLabel" );
       headerLabel.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, true, true ) );
       Button help = new Button( header, SWT.PUSH );
+      help.addListener( SWT.Selection, new Listener() {
+        public void handleEvent( Event event ) {
+          new Help( getShell() );
+        }
+      } );
       help.setText( "Getting started..." );
       help.setLayoutData( new GridData( SWT.RIGHT, SWT.BOTTOM, false, true ) );
       help.setData( RWT.CUSTOM_VARIANT, "helpButton" );

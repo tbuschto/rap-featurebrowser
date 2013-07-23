@@ -17,6 +17,14 @@ import org.eclipse.swt.widgets.Composite;
       return layout;
     }
 
+    public static GridLayout createVerticalLayout( int margin ) {
+      GridLayout layout = new GridLayout( 1, false );
+      layout.marginHeight = margin;
+      layout.marginWidth = margin;
+      layout.verticalSpacing = 0;
+      return layout;
+    }
+
     public static GridLayout createHorizontalLayout( int columns ) {
       GridLayout layout = new GridLayout( columns, false );
       layout.marginHeight = 0;
