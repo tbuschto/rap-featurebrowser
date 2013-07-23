@@ -21,7 +21,7 @@
 <stringAttribute key="org.eclipse.rap.launch.browserMode" value="INTERNAL"/>
 <stringAttribute key="org.eclipse.rap.launch.contextpath" value="/"/>
 <stringAttribute key="org.eclipse.rap.launch.dataLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.rap.tools.launch/org.eclipse.rap.featurebrowser"/>
-<booleanAttribute key="org.eclipse.rap.launch.developmentMode" value="false"/>
+<booleanAttribute key="org.eclipse.rap.launch.developmentMode" value="true"/>
 <booleanAttribute key="org.eclipse.rap.launch.openBrowser" value="false"/>
 <intAttribute key="org.eclipse.rap.launch.port" value="9999"/>
 <stringAttribute key="org.eclipse.rap.launch.servletPath" value="/featurebrowser"/>

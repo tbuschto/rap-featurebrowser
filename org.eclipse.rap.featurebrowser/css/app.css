@@ -5,9 +5,24 @@
     from( #3969a3 ),
     to( #21518c )
   );
+}
+
+.headerLabel {
   font: italic 15px 'Open Sans', sans-serif;
   text-shadow: 0 1px 5px #000;
   color: #eee;
+}
+
+Button.helpButton {
+  font: italic 14px 'Open Sans', sans-serif;
+  border: none;
+  text-shadow: 0 1px 5px #000;
+  text-decoration: underline;
+  color: #eee;
+}
+
+Button.helpButton:hover {
+  text-shadow: 0 1px 5px #fff;
 }
 
 .subheader {
@@ -45,7 +60,7 @@ Button[PUSH]:hover.vbar {
   text-shadow: 0 1px 3px #fff;
 }
 
-Button-FocusIndicator[PUSH].vbar {
+Button-FocusIndicator[PUSH].vbar, Button-FocusIndicator[PUSH].helpButton {
   background-color: transparent;
   border: none;
 }
