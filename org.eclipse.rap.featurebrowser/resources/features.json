@@ -44,6 +44,10 @@
             "snippet" : "snippets.GridLayoutBasic"
           },
           {
+            "feature" : "col/row span",
+            "snippet" : "snippets.GridLayoutSpan"
+          },
+          {
             "feature" : "alignment",
             "snippet" : "snippets.GridLayoutAlignment"
           },
