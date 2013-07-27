@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 
 
-public class EntryPoint extends AbstractEntryPoint {
+public class FeatureBrowser extends AbstractEntryPoint {
 
     @Override
     protected void createContents( Composite parent ) {

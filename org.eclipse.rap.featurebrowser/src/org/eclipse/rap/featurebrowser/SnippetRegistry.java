@@ -77,7 +77,7 @@ public class SnippetRegistry {
   }
 
   private static String readTextContentChecked( ClassLoader loader, String resource ) throws IOException {
-    InputStream stream = loader.getResourceAsStream( "resources/" + resource );
+    InputStream stream = loader.getResourceAsStream( resource );
     if( stream == null ) {
       throw new IllegalArgumentException( "Resource not found: " + resource );
     }
