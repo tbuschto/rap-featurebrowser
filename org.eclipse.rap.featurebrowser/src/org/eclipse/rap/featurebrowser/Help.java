@@ -68,7 +68,7 @@ public class Help {
     Browser browser = new Browser( area, SWT.NONE );
     browser.setLayoutData( LayoutUtil.createFillData() );
     browser.setUrl( RWT.getResourceManager().getLocation( "help.html" ) );
-    InputStream stream = getClass().getResourceAsStream( "/resources/x-mark-4-xl.png" );
+    InputStream stream = getClass().getClassLoader().getResourceAsStream( "x-mark-4-xl.png" );
     close.setImage( new Image( close.getDisplay(), stream ) );
     try {
       stream.close();
@@ -98,7 +98,7 @@ public class Help {
     ResourceManager resourceManager = RWT.getResourceManager();
     if( !resourceManager.isRegistered( "help.html" ) ) {
       InputStream stream
-        = Help.class.getClassLoader().getResourceAsStream( "/resources/help.html" );
+        = Help.class.getClassLoader().getResourceAsStream( "help.html" );
       resourceManager.register( "help.html", stream );
       try {
         stream.close();

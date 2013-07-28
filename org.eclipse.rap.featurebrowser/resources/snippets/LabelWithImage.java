@@ -19,7 +19,7 @@ public class LabelWithImage extends AbstractEntryPoint {
   }
 
   private Image getImage( Label label ) {
-    InputStream stream = getClass().getResourceAsStream( "/resources/system.png" );
+    InputStream stream = getClass().getClassLoader().getResourceAsStream( "system.png" );
     Image image = new Image( label.getDisplay(), stream );
     try {
       stream.close();

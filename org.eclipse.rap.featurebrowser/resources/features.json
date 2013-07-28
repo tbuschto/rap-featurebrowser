@@ -18,6 +18,11 @@
             "snippet" : "snippets.LabelWithMnemonic"
           },
           {
+            "feature" : "with Markup",
+            "snippet" : "snippets.LabelWithMarkup",
+            "exclusive" : true
+          },
+          {
             "feature" : "alignment",
             "snippet" : "snippets.LabelAlignment"
           },

@@ -1,5 +1,6 @@
 package org.eclipse.rap.featurebrowser;
 
+import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -12,10 +13,13 @@ import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
@@ -69,30 +73,7 @@ public class FeatureTree {
         return toArray( ( ( JsonObject )parentElement ).get( "children" ) );
       }
     } );
-    treeViewer.setLabelProvider( new ILabelProvider() {
-      public void removeListener( ILabelProviderListener listener ) {
-      }
-      public boolean isLabelProperty( Object element, String property ) {
-        return false;
-      }
-      public void dispose() {
-      }
-      public void addListener( ILabelProviderListener listener ) {
-      }
-      public String getText( Object element ) {
-        JsonObject json = ( ( JsonObject )element );
-        String result = "?";
-        if( json.get( "category" ) != null ) {
-          result = json.get( "category" ).asString();
-        } else if( json.get( "feature" ) != null ) {
-          result = json.get( "feature" ).asString();
-        }
-        return result;
-      }
-      public Image getImage( Object element ) {
-        return null;
-      }
-    } );
+    treeViewer.setLabelProvider( new LabelProviderImplementation() );
     treeViewer.addSelectionChangedListener( new ISelectionChangedListener() {
       public void selectionChanged( SelectionChangedEvent event ) {
         IStructuredSelection sel = ( IStructuredSelection )event.getSelection();
@@ -121,6 +102,53 @@ public class FeatureTree {
       elements[ i ] = json.get( i );
     }
     return elements;
+  }
+
+  private final class LabelProviderImplementation implements ILabelProvider, IFontProvider {
+
+    public void removeListener( ILabelProviderListener listener ) {
+    }
+
+    public boolean isLabelProperty( Object element, String property ) {
+      return false;
+    }
+
+    public void dispose() {
+    }
+
+    public void addListener( ILabelProviderListener listener ) {
+    }
+
+    public String getText( Object element ) {
+      JsonObject json = ( ( JsonObject )element );
+      String result = "?";
+      if( json.get( "category" ) != null ) {
+        result = json.get( "category" ).asString();
+      } else if( json.get( "feature" ) != null ) {
+        result = json.get( "feature" ).asString();
+      }
+      return result;
+    }
+
+    public Image getImage( Object element ) {
+      return null;
+    }
+
+    public Font getFont( Object element ) {
+      JsonObject json = ( ( JsonObject )element );
+      if( json.get( "exclusive" ) != null || json.get( "category" ) != null ) {
+        Display display = tree.getDisplay();
+        FontData fontData = tree.getFont().getFontData()[ 0 ];
+        if( json.get( "exclusive" ) != null ) {
+          fontData.setStyle( SWT.ITALIC );
+        }
+        if( json.get( "category" ) != null ) {
+          fontData.setStyle( SWT.BOLD );
+        }
+        return new Font( display, fontData );
+      }
+      return null;
+    }
   }
 
 }
