@@ -6,8 +6,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.eclipse.rap.json.JsonObject;
-import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.SashForm;
@@ -20,7 +18,7 @@ public class FeaturePage {
 
   private SashForm page;
 
-  FeaturePage( Composite parent, JsonObject feature ) {
+  FeaturePage( Composite parent, Feature feature ) {
     page = new SashForm( parent, SWT.HORIZONTAL );
     page.setLayoutData( LayoutUtil.createFillData() );
     page.setSashWidth( 1 );
@@ -28,14 +26,9 @@ public class FeaturePage {
     Browser browser = new Browser( page, SWT.NONE );
     page.setWeights( new int[]{ 40, 60 } );
     snippetParent.setLayout( new GridLayout( 1, false ) );
+    browser.setUrl( feature.getSnippetHtmlUrl() );
     try {
-      Class<? extends AbstractEntryPoint> clazz
-        = getSnippetClass( feature.get( "snippet" ).asString() );
-      if( !SnippetRegistry.has( clazz ) ) {
-        SnippetRegistry.register( clazz );
-      }
-      browser.setUrl( SnippetRegistry.getSnippetHtmlUrl( clazz ) );
-      createContents( clazz, snippetParent );
+      createContents( feature.getSnippet(), snippetParent );
     } catch( InstantiationException e ) {
       showError( page, e );
     } catch( IllegalAccessException e ) {
@@ -46,17 +39,7 @@ public class FeaturePage {
       showError( page, e );
     } catch( ClassCastException e ) {
       showError( page, e );
-    } catch( ClassNotFoundException e ) {
-      showError( page, e );
     }
-  }
-
-  // TODO : add classloader param
-  private Class<? extends AbstractEntryPoint> getSnippetClass( String classname )
-      throws ClassNotFoundException, ClassCastException
-  {
-    ClassLoader loader = getClass().getClassLoader();
-    return ( ( Class<? extends AbstractEntryPoint> )loader.loadClass( classname ) );
   }
 
   private static void showError( Composite snippetParent, Throwable fail ) {

@@ -30,18 +30,10 @@ public class FeatureBrowser extends AbstractEntryPoint {
       JsonArray jsonObject = null;
       try {
         jsonObject = JsonArray.readFrom( reader );
-      } catch( IOException e ) {
-        e.printStackTrace();
-      }
-      try {
         reader.close();
+        new FeatureTree( main, new Category( jsonObject ) );
       } catch( IOException e ) {
         e.printStackTrace();
-      }
-      if( jsonObject != null ) {
-        new FeatureTree( main, jsonObject );
-      } else {
-        throw new RuntimeException( "Could not read features" );
       }
     }
 

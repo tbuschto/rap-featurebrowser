@@ -9,8 +9,6 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.rap.json.JsonArray;
-import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -30,10 +28,10 @@ public class FeatureTree {
   private Tree tree;
   private FeaturePage featurePage;
 
-  public FeatureTree( final Composite parent, JsonArray features  ) {
+  public FeatureTree( final Composite parent, Category category  ) {
     Composite outer = LayoutUtil.createHorizontalComposite( parent, 2 );
     outer.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, true ) );
-    createTree( outer, parent, features );
+    createTree( outer, parent, category );
     final Button bar = new Button( outer, SWT.PUSH | SWT.CENTER );
     tree.setLayoutData( LayoutUtil.createHorizontalLayoutData( 150 ) );
     tree.setData( RWT.CUSTOM_VARIANT, "featuretree" );
@@ -53,38 +51,36 @@ public class FeatureTree {
     } );
   }
 
-  public void createTree( Composite outer, final Composite parent, JsonArray features ) {
+  public void createTree( Composite outer, final Composite parent, Category features ) {
     tree = new Tree( outer, SWT.FULL_SELECTION );
     TreeViewer treeViewer = new TreeViewer( tree );
     treeViewer.setContentProvider( new ITreeContentProvider() {
       public void inputChanged( Viewer viewer, Object oldInput, Object newInput ) {}
       public void dispose() { }
       public boolean hasChildren( Object element ) {
-        JsonObject json = ( JsonObject )element;
-        return json.get( "children" ) != null;
+        return element instanceof Category;
       }
       public Object getParent( Object element ) {
         return null;
       }
       public Object[] getElements( Object inputElement ) {
-        return toArray( inputElement );
+        return ( ( Category )inputElement ).getChildren();
       }
       public Object[] getChildren( Object parentElement ) {
-        return toArray( ( ( JsonObject )parentElement ).get( "children" ) );
+        return ( ( Category )parentElement ).getChildren();
       }
     } );
     treeViewer.setLabelProvider( new LabelProviderImplementation() );
     treeViewer.addSelectionChangedListener( new ISelectionChangedListener() {
       public void selectionChanged( SelectionChangedEvent event ) {
         IStructuredSelection sel = ( IStructuredSelection )event.getSelection();
-        JsonObject json = ( JsonObject )sel.getFirstElement();
         if( featurePage != null ) {
           featurePage.dispose();
         }
-        if( json.get( "feature" ) != null ) {
-          featurePage = new FeaturePage( parent, json );
+        if( sel.getFirstElement() instanceof Feature ) {
+          featurePage = new FeaturePage( parent, ( Feature )sel.getFirstElement() );
+          parent.layout();
         }
-        parent.layout();
       }
     } );
     treeViewer.setInput( features );
@@ -93,15 +89,6 @@ public class FeatureTree {
 
   public Tree getTree() {
     return tree;
-  }
-
-  public Object[] toArray( Object inputElement ) {
-    JsonArray json = ( JsonArray )inputElement;
-    Object[] elements = new Object[ json.size() ];
-    for( int i = 0; i < json.size(); i++ ) {
-      elements[ i ] = json.get( i );
-    }
-    return elements;
   }
 
   private final class LabelProviderImplementation implements ILabelProvider, IFontProvider {
@@ -120,14 +107,7 @@ public class FeatureTree {
     }
 
     public String getText( Object element ) {
-      JsonObject json = ( ( JsonObject )element );
-      String result = "?";
-      if( json.get( "category" ) != null ) {
-        result = json.get( "category" ).asString();
-      } else if( json.get( "feature" ) != null ) {
-        result = json.get( "feature" ).asString();
-      }
-      return result;
+      return element.toString();
     }
 
     public Image getImage( Object element ) {
@@ -135,14 +115,15 @@ public class FeatureTree {
     }
 
     public Font getFont( Object element ) {
-      JsonObject json = ( ( JsonObject )element );
-      if( json.get( "exclusive" ) != null || json.get( "category" ) != null ) {
+      boolean category = element instanceof Category;
+      boolean exclusive = !category && ( ( Feature )element ).isExclusive();
+      if( category || exclusive ) {
         Display display = tree.getDisplay();
         FontData fontData = tree.getFont().getFontData()[ 0 ];
-        if( json.get( "exclusive" ) != null ) {
+        if( exclusive ) {
           fontData.setStyle( SWT.ITALIC );
         }
-        if( json.get( "category" ) != null ) {
+        if( category ) {
           fontData.setStyle( SWT.BOLD );
         }
         return new Font( display, fontData );
