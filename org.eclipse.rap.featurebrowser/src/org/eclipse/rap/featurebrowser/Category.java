@@ -18,9 +18,11 @@ public class Category {
 
   private Object[] children;
   private String name = null;
+  private Object parent;
 
-  public Category( JsonObject obj ) {
+  public Category( JsonObject obj, Object parent ) {
     this( obj.get( "children" ).asArray() );
+    this.parent = parent;
     name = obj.get( "category" ).asString();
   }
 
@@ -29,9 +31,9 @@ public class Category {
     for( int i = 0; i < json.size(); i++ ) {
       JsonObject obj = json.get( i ).asObject();
       if( obj.get( "category" ) != null ) {
-        children[ i ] = new Category( obj );
+        children[ i ] = new Category( obj, this );
       } else {
-        children[ i ] = new Feature( obj );
+        children[ i ] = new Feature( obj, this );
       }
     }
   }
@@ -43,6 +45,10 @@ public class Category {
 
   public Object[] getChildren() {
     return children;
+  }
+
+  public Object getParent() {
+    return parent;
   }
 
 }

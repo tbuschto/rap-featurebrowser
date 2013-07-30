@@ -7,6 +7,8 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreePath;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.rap.rwt.RWT;
@@ -27,6 +29,7 @@ public class FeatureTree {
 
   private Tree tree;
   private FeaturePage featurePage;
+  private TreeViewer treeViewer;
 
   public FeatureTree( final Composite parent, Category category  ) {
     Composite outer = LayoutUtil.createHorizontalComposite( parent, 2 );
@@ -53,7 +56,7 @@ public class FeatureTree {
 
   public void createTree( Composite outer, final Composite parent, Category features ) {
     tree = new Tree( outer, SWT.FULL_SELECTION );
-    TreeViewer treeViewer = new TreeViewer( tree );
+    treeViewer = new TreeViewer( tree );
     treeViewer.setContentProvider( new ITreeContentProvider() {
       public void inputChanged( Viewer viewer, Object oldInput, Object newInput ) {}
       public void dispose() { }
@@ -74,12 +77,14 @@ public class FeatureTree {
     treeViewer.addSelectionChangedListener( new ISelectionChangedListener() {
       public void selectionChanged( SelectionChangedEvent event ) {
         IStructuredSelection sel = ( IStructuredSelection )event.getSelection();
-        if( featurePage != null ) {
-          featurePage.dispose();
-        }
         if( sel.getFirstElement() instanceof Feature ) {
-          featurePage = new FeaturePage( parent, ( Feature )sel.getFirstElement() );
+          if( featurePage != null ) {
+            featurePage.dispose();
+          }
+          Feature feature = ( Feature )sel.getFirstElement();
+          featurePage = new FeaturePage( parent, feature );
           parent.layout();
+          Navigation.getInstance().push( feature );
         }
       }
     } );
@@ -130,6 +135,11 @@ public class FeatureTree {
       }
       return null;
     }
+  }
+
+  public void select( Feature feature ) {
+    TreePath path = new TreePath( feature.getPath() );
+    treeViewer.setSelection( new TreeSelection( path ) );
   }
 
 }

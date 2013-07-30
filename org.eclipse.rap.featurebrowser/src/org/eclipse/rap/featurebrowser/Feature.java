@@ -16,6 +16,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
@@ -28,12 +29,15 @@ public class Feature {
   private String name;
   private boolean exclusive;
   private Class<? extends AbstractEntryPoint> snippet;
+  private Object parent;
 
-  public Feature( JsonObject obj ) {
+  public Feature( JsonObject obj, Object parent ) {
+    this.parent = parent;
     name = obj.get( "feature" ).asString();
     exclusive = obj.get( "exclusive" ) != null && obj.get( "exclusive" ).asBoolean();
     try {
       snippet = getSnippetClass( obj.get( "snippet" ).asString() );
+      Navigation.getInstance().register( this );
       ClassLoader loader = snippet.getClassLoader();
       String path = snippet.getName().replaceAll( "\\.", "/" ) + ".java";
       String source = readTextContentChecked( loader, path );
@@ -49,6 +53,10 @@ public class Feature {
   @Override
   public String toString() {
     return name;
+  }
+
+  public Object getParent() {
+    return parent;
   }
 
   public boolean isExclusive() {
@@ -127,6 +135,24 @@ public class Feature {
 
   private String getHtmlName() {
     return snippet.getSimpleName() + ".java.html";
+  }
+
+  public Object[] getPath() {
+    ArrayList<Object> list = new ArrayList<Object>( 3 );
+    Object element = this;
+    while( element != null ) {
+      list.add( element );
+      if( element instanceof Feature ) {
+        element = ( ( Feature )element ).getParent();
+      } else if( element instanceof Category ) {
+        element = ( ( Category )element ).getParent();
+      }
+    }
+    Object[] result = new Object[ list.size() ];
+    for( int i = 0; i < list.size(); i++ ) {
+      result[ list.size() - 1 - i ] = list.get( i );
+    }
+    return result;
   }
 
 }
