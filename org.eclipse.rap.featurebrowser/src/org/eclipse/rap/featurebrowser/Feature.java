@@ -10,7 +10,6 @@
  ******************************************************************************/
 package org.eclipse.rap.featurebrowser;
 
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,6 +17,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
@@ -25,34 +25,43 @@ import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 
 public class Feature {
 
+  private Feature[] children;
   private static final String UTF_8 = "UTF-8";
   private String name;
   private boolean exclusive;
   private Class<? extends AbstractEntryPoint> snippet;
-  private Object parent;
+  private Feature parent;
 
-  public Feature( JsonObject obj, Object parent ) {
+  public Feature( JsonObject obj, Feature parent ) {
+    this( obj.get( "children" ) != null ? obj.get( "children" ).asArray() : null );
     this.parent = parent;
-    name = obj.get( "feature" ).asString();
+    name = obj.get( "name" ).asString();
     exclusive = obj.get( "exclusive" ) != null && obj.get( "exclusive" ).asBoolean();
-    try {
-      snippet = getSnippetClass( obj.get( "snippet" ).asString() );
-      Navigation.getInstance().register( this );
-      ClassLoader loader = snippet.getClassLoader();
-      String path = snippet.getName().replaceAll( "\\.", "/" ) + ".java";
-      String source = readTextContentChecked( loader, path );
-      registerJavaFileResource( getFileName(), source );
-      registerHtmlFileResource( getHtmlName(), source );
-    } catch( IOException e ) {
-      throw new RuntimeException( e );
-    } catch( ClassNotFoundException e ) {
-      throw new RuntimeException( e );
+    if( obj.get( "snippet" ) != null ) {
+      registerSnippet( obj.get( "snippet" ).asString() );
     }
   }
 
-  @Override
-  public String toString() {
+  public Feature( JsonArray json ) {
+    if( json != null ) {
+      children = new Feature[ json.size() ];
+      for( int i = 0; i < json.size(); i++ ) {
+        JsonObject obj = json.get( i ).asObject();
+        if( obj.get( "category" ) != null ) {
+          children[ i ] = new Feature( obj, this );
+        } else {
+          children[ i ] = new Feature( obj, this );
+        }
+      }
+    }
+  }
+
+  public String getName() {
     return name;
+  }
+
+  public Object[] getChildren() {
+    return children;
   }
 
   public Object getParent() {
@@ -73,6 +82,40 @@ public class Feature {
 
   public Class<? extends AbstractEntryPoint> getSnippet() {
     return snippet;
+  }
+
+  public Object[] getPath() {
+    ArrayList<Object> list = new ArrayList<Object>( 3 );
+    Object element = this;
+    while( element != null ) {
+      list.add( element );
+      if( element instanceof Feature ) {
+        element = ( ( Feature )element ).getParent();
+      } else if( element instanceof Feature ) {
+        element = ( ( Feature )element ).getParent();
+      }
+    }
+    Object[] result = new Object[ list.size() ];
+    for( int i = 0; i < list.size(); i++ ) {
+      result[ list.size() - 1 - i ] = list.get( i );
+    }
+    return result;
+  }
+
+  private void registerSnippet( String snippetName ) {
+    try {
+      snippet = getSnippetClass( snippetName );
+      Navigation.getInstance().register( this );
+      ClassLoader loader = snippet.getClassLoader();
+      String path = snippet.getName().replaceAll( "\\.", "/" ) + ".java";
+      String source = readTextContentChecked( loader, path );
+      registerJavaFileResource( getFileName(), source );
+      registerHtmlFileResource( getHtmlName(), source );
+    } catch( IOException e ) {
+      throw new RuntimeException( e );
+    } catch( ClassNotFoundException e ) {
+      throw new RuntimeException( e );
+    }
   }
 
   private static void registerJavaFileResource( String name, String source ) throws IOException {
@@ -137,22 +180,12 @@ public class Feature {
     return snippet.getSimpleName() + ".java.html";
   }
 
-  public Object[] getPath() {
-    ArrayList<Object> list = new ArrayList<Object>( 3 );
-    Object element = this;
-    while( element != null ) {
-      list.add( element );
-      if( element instanceof Feature ) {
-        element = ( ( Feature )element ).getParent();
-      } else if( element instanceof Category ) {
-        element = ( ( Category )element ).getParent();
-      }
+  @Override
+  public String toString() {
+    if( getSnippet() != null ) {
+      return getSnippet().getSimpleName();
     }
-    Object[] result = new Object[ list.size() ];
-    for( int i = 0; i < list.size(); i++ ) {
-      result[ list.size() - 1 - i ] = list.get( i );
-    }
-    return result;
+    return getName();
   }
 
 }

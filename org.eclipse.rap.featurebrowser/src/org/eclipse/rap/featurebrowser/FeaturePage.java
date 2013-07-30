@@ -22,11 +22,21 @@ public class FeaturePage {
     page = new SashForm( parent, SWT.HORIZONTAL );
     page.setLayoutData( LayoutUtil.createFillData() );
     page.setSashWidth( 1 );
-    Composite snippetParent = new Composite( page, SWT.NONE );
+    if( feature.getSnippet() != null ) {
+      createSnippetInstance( feature );
+      createSnippetSource( feature );
+      page.setWeights( new int[]{ 40, 60 } );
+    }
+  }
+
+  public void createSnippetSource( Feature feature ) {
     Browser browser = new Browser( page, SWT.NONE );
-    page.setWeights( new int[]{ 40, 60 } );
-    snippetParent.setLayout( new GridLayout( 1, false ) );
     browser.setUrl( feature.getSnippetHtmlUrl() );
+  }
+
+  public void createSnippetInstance( Feature feature ) {
+    Composite snippetParent = new Composite( page, SWT.NONE );
+    snippetParent.setLayout( new GridLayout( 1, false ) );
     try {
       createContents( feature.getSnippet(), snippetParent );
     } catch( InstantiationException e ) {

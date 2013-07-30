@@ -1,37 +1,37 @@
 [
   {
-    "category" : "Widgets",
+    "name" : "Widgets",
     "children" : [
       {
-        "category" : "Label",
+        "name" : "Label",
         "children" : [
           {
-            "feature" : "with Text",
+            "name" : "with Text",
             "snippet" : "snippets.LabelWithText"
           },
           {
-            "feature" : "with Image",
+            "name" : "with Image",
             "snippet" : "snippets.LabelWithImage"
           },
           {
-            "feature" : "with Mnemonic",
+            "name" : "with Mnemonic",
             "snippet" : "snippets.LabelWithMnemonic"
           },
           {
-            "feature" : "with Markup",
+            "name" : "with Markup",
             "snippet" : "snippets.LabelWithMarkup",
             "exclusive" : true
           },
           {
-            "feature" : "alignment",
+            "name" : "alignment",
             "snippet" : "snippets.LabelAlignment"
           },
           {
-            "feature" : "wrapping",
+            "name" : "wrapping",
             "snippet" : "snippets.LabelWrap"
           },
           {
-            "feature" : "as separator",
+            "name" : "as separator",
             "snippet" : "snippets.LabelAsSeparator"
           }
         ]
@@ -39,25 +39,25 @@
     ]
   },
   {
-    "category" : "Layout Manager",
+    "name" : "Layout Manager",
     "children" : [
       {
-        "category" : "GridLayout",
+        "name" : "GridLayout",
         "children" : [
           {
-            "feature" : "basic layout",
+            "name" : "basic layout",
             "snippet" : "snippets.GridLayoutBasic"
           },
           {
-            "feature" : "col/row span",
+            "name" : "col/row span",
             "snippet" : "snippets.GridLayoutSpan"
           },
           {
-            "feature" : "alignment",
+            "name" : "alignment",
             "snippet" : "snippets.GridLayoutAlignment"
           },
           {
-            "feature" : "column width",
+            "name" : "column width",
             "snippet" : "snippets.GridLayoutColumnWidth"
           }
         ]

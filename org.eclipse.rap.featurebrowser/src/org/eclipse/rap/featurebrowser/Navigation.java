@@ -29,7 +29,7 @@ public class Navigation {
   private Map<String, Feature> map = new HashMap<String, Feature>();
 
   public void register( Feature feature ) {
-    map.put( feature.getSnippet().getSimpleName(), feature );
+    map.put( feature.toString(), feature );
   }
 
   public void init( final FeatureTree featureTree ) {
@@ -44,7 +44,7 @@ public class Navigation {
 
   public void push( Feature feature ) {
     BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
-    navigation.pushState( feature.getSnippet().getSimpleName(), null );
+    navigation.pushState( feature.toString(), null );
   }
 
 }
