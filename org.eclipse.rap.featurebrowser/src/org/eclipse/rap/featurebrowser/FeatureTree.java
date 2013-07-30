@@ -1,5 +1,8 @@
 package org.eclipse.rap.featurebrowser;
 
+import static org.eclipse.rap.featurebrowser.GridDataUtil.applyGridData;
+import static org.eclipse.rap.featurebrowser.GridLayoutUtil.applyGridLayout;
+
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -32,15 +35,16 @@ public class FeatureTree {
   private TreeViewer treeViewer;
 
   public FeatureTree( final Composite parent, Feature category  ) {
-    Composite outer = LayoutUtil.createHorizontalComposite( parent, 2 );
+    Composite outer = new Composite( parent, SWT.NONE );
+    applyGridLayout( outer ).cols( 2 );
     outer.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, true ) );
     createTree( outer, parent, category );
     final Button bar = new Button( outer, SWT.PUSH | SWT.CENTER );
-    tree.setLayoutData( LayoutUtil.createHorizontalLayoutData( 150 ) );
+    applyGridData( tree ).verticalFill().width( 150 );
     tree.setData( RWT.CUSTOM_VARIANT, "featuretree" );
     outer.setData( RWT.CUSTOM_VARIANT, "featuretree" );
     bar.setText( "<" );
-    bar.setLayoutData( LayoutUtil.createHorizontalLayoutData( LayoutUtil.BARWIDTH ) );
+    applyGridData( bar ).verticalFill().width( 20 );
     bar.setData( RWT.CUSTOM_VARIANT, "vbar" );
     bar.addListener( SWT.Selection, new Listener() {
       public void handleEvent( Event event ) {

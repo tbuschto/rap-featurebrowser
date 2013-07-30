@@ -10,6 +10,9 @@
  ******************************************************************************/
 package org.eclipse.rap.featurebrowser;
 
+import static org.eclipse.rap.featurebrowser.GridDataUtil.applyGridData;
+import static org.eclipse.rap.featurebrowser.GridLayoutUtil.applyGridLayout;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -22,15 +25,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-
 
 public class Help {
 
@@ -54,19 +54,14 @@ public class Help {
     formData.bottom = new FormAttachment( 100, -35 );
     area.setLayoutData( formData );
     area.setData( RWT.CUSTOM_VARIANT, "helpBox" );
-    GridLayout layout = new GridLayout( 1, true );
-    layout.marginWidth = 15;
-    layout.marginTop = 8;
-    layout.marginBottom = -5; // WTF?
-    layout.verticalSpacing = 10;
-    area.setLayout( layout );
+    applyGridLayout( area ).equalColumns().margins( 8, 15, 10, 15 );
     Label heading = new Label( area, SWT.NONE );
     heading.setText( "Getting Started..." );
-    heading.setLayoutData( new GridData( SWT.CENTER, SWT.CENTER, true, false ) );
+    applyGridData( heading ).center().hGrab();
     heading.setFont( new Font( heading.getDisplay(), "Segoe UI, Arimo, Calibri, Verdana, Sans-serif", 36, SWT.ITALIC ) );
     heading.setData( RWT.CUSTOM_VARIANT, "helpHeading" );
     Browser browser = new Browser( area, SWT.NONE );
-    browser.setLayoutData( LayoutUtil.createFillData() );
+    applyGridData( browser ).fill();
     browser.setUrl( RWT.getResourceManager().getLocation( "help.html" ) );
     InputStream stream = getClass().getClassLoader().getResourceAsStream( "x-mark-4-xl.png" );
     close.setImage( new Image( close.getDisplay(), stream ) );

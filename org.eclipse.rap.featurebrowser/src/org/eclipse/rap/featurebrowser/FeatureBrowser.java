@@ -1,5 +1,8 @@
 package org.eclipse.rap.featurebrowser;
 
+import static org.eclipse.rap.featurebrowser.GridDataUtil.applyGridData;
+import static org.eclipse.rap.featurebrowser.GridLayoutUtil.applyGridLayout;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,23 +11,21 @@ import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 
-
 public class FeatureBrowser extends AbstractEntryPoint {
 
     @Override
     protected void createContents( Composite parent ) {
-      parent.setLayout( LayoutUtil.createVerticalLayout() );
+      applyGridLayout( parent );
       createHeader( parent );
-      Composite main = LayoutUtil.createHorizontalComposite( parent, 2 );
-      main.setLayoutData( LayoutUtil.createFillData() );
+      Composite main = new Composite( parent, SWT.NONE );
+      applyGridLayout( main ).cols( 2 );
+      applyGridData( main ).fill();
       InputStream resource = getClass().getClassLoader().getResourceAsStream( "features.json" );
       InputStreamReader reader = new InputStreamReader( resource );
       JsonArray jsonObject = null;
@@ -42,13 +43,13 @@ public class FeatureBrowser extends AbstractEntryPoint {
     public void createHeader( Composite parent ) {
       Composite header = new Composite( parent, SWT.NONE );
       header.setData( RWT.CUSTOM_VARIANT, "header" );
-      header.setLayoutData( LayoutUtil.createVerticalLayoutData( 45 ) );
-      header.setLayout( new GridLayout( 2, false ) );
+      applyGridData( header ).fill().vGrab( false ).height( 45 );
+      applyGridLayout( header ).cols( 2 ).marginLeft( 10 );
       header.setBackgroundMode( SWT.INHERIT_FORCE );
       Label headerLabel = new Label( header, SWT.NONE );
       headerLabel.setText( ">>  REMOTE APPLICATION PLATFORM FEATURE BROWSER" );
       headerLabel.setData( RWT.CUSTOM_VARIANT, "headerLabel" );
-      headerLabel.setLayoutData( new GridData( SWT.LEFT, SWT.CENTER, true, true ) );
+      applyGridData( headerLabel ).fill().hAlign( SWT.LEFT ).vAlign( SWT.CENTER );
       Button help = new Button( header, SWT.PUSH );
       help.addListener( SWT.Selection, new Listener() {
         public void handleEvent( Event event ) {
@@ -56,11 +57,11 @@ public class FeatureBrowser extends AbstractEntryPoint {
         }
       } );
       help.setText( "Getting started..." );
-      help.setLayoutData( new GridData( SWT.RIGHT, SWT.BOTTOM, false, true ) );
+      applyGridData( help ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
       help.setData( RWT.CUSTOM_VARIANT, "helpButton" );
       Composite subheader = new Composite( parent, SWT.NONE );
       subheader.setData( RWT.CUSTOM_VARIANT, "subheader" );
-      subheader.setLayoutData( LayoutUtil.createVerticalLayoutData( LayoutUtil.BARWIDTH ) );
+      applyGridData( subheader ).horizontalFill().height( 20 );
     }
 
 }

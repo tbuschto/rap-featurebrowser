@@ -1,5 +1,8 @@
 package org.eclipse.rap.featurebrowser;
 
+import static org.eclipse.rap.featurebrowser.GridDataUtil.applyGridData;
+import static org.eclipse.rap.featurebrowser.GridLayoutUtil.applyGridLayout;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -9,7 +12,6 @@ import java.lang.reflect.Method;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
@@ -20,7 +22,7 @@ public class FeaturePage {
 
   FeaturePage( Composite parent, Feature feature ) {
     page = new SashForm( parent, SWT.HORIZONTAL );
-    page.setLayoutData( LayoutUtil.createFillData() );
+    applyGridData( page ).fill();
     page.setSashWidth( 1 );
     if( feature.getSnippet() != null ) {
       createSnippetInstance( feature );
@@ -36,7 +38,7 @@ public class FeaturePage {
 
   public void createSnippetInstance( Feature feature ) {
     Composite snippetParent = new Composite( page, SWT.NONE );
-    snippetParent.setLayout( new GridLayout( 1, false ) );
+    applyGridLayout( snippetParent );
     try {
       createContents( feature.getSnippet(), snippetParent );
     } catch( InstantiationException e ) {
@@ -65,7 +67,7 @@ public class FeaturePage {
     } catch( UnsupportedEncodingException e ) {
       e.printStackTrace();
     }
-    msg.setLayoutData( LayoutUtil.createFillData() );
+    applyGridData( msg ).fill();
   }
 
   public void dispose() {
