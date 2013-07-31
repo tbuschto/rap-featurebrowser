@@ -35,6 +35,24 @@
             "snippet" : "snippets.LabelAsSeparator"
           }
         ]
+      },
+      {
+        "name" : "CLabel",
+        "children" : [
+          {
+            "name" : "text & image",
+            "snippet" : "snippets.CLabelWithTextAndImage"
+          }
+        ]
+      },
+      {
+        "name" : "Button",
+        "children" : [
+          {
+            "name" : "push button",
+            "snippet" : "snippets.ButtonPush"
+          }
+        ]
       }
     ]
   },

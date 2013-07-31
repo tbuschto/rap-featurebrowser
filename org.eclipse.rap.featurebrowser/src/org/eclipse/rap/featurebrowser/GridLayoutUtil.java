@@ -88,4 +88,12 @@ public class GridLayoutUtil {
     return this;
   }
 
+  public GridLayoutUtil margin( int margin ) {
+    gridLayout.marginTop = margin;
+    gridLayout.marginRight = margin;
+    gridLayout.marginBottom = margin;
+    gridLayout.marginLeft = margin;
+    return this;
+  }
+
 }

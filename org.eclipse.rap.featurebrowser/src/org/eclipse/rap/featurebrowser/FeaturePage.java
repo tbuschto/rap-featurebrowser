@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
@@ -38,7 +39,8 @@ public class FeaturePage {
 
   public void createSnippetInstance( Feature feature ) {
     Composite snippetParent = new Composite( page, SWT.NONE );
-    applyGridLayout( snippetParent );
+    snippetParent.setLayout( new GridLayout( 1, false ) );
+    applyGridLayout( snippetParent ).margin( 10 ).verticalSpacing( 5 );
     try {
       createContents( feature.getSnippet(), snippetParent );
     } catch( InstantiationException e ) {
