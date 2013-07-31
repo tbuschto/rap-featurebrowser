@@ -29,6 +29,8 @@ public class FeaturePage {
       createSnippetInstance( feature );
       createSnippetSource( feature );
       page.setWeights( new int[]{ 40, 60 } );
+    } else {
+      Gallery gallery = new Gallery( page, feature, null );
     }
   }
 

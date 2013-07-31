@@ -10,6 +10,11 @@
  ******************************************************************************/
 package org.eclipse.rap.featurebrowser;
 
+import static org.eclipse.rap.featurebrowser.HtmlDocument.link;
+import static org.eclipse.rap.featurebrowser.HtmlDocument.locationOf;
+import static org.eclipse.rap.featurebrowser.HtmlDocument.pre;
+import static org.eclipse.rap.featurebrowser.HtmlDocument.script;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -21,6 +26,7 @@ import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
+import org.eclipse.rap.rwt.service.ResourceManager;
 
 
 public class Feature {
@@ -31,6 +37,7 @@ public class Feature {
   private boolean exclusive;
   private Class<? extends AbstractEntryPoint> snippet;
   private Feature parent;
+  private String preview;
 
   public Feature( JsonObject obj, Feature parent ) {
     this( obj.get( "children" ) != null ? obj.get( "children" ).asArray() : null );
@@ -39,6 +46,9 @@ public class Feature {
     exclusive = obj.get( "exclusive" ) != null && obj.get( "exclusive" ).asBoolean();
     if( obj.get( "snippet" ) != null ) {
       registerSnippet( obj.get( "snippet" ).asString() );
+    }
+    if( obj.get( "preview" ) != null ) {
+      registerPreview( obj.get( "preview" ).asString() );
     }
   }
 
@@ -58,6 +68,10 @@ public class Feature {
 
   public String getName() {
     return name;
+  }
+
+  public String getPreview() {
+    return preview;
   }
 
   public Object[] getChildren() {
@@ -84,6 +98,15 @@ public class Feature {
     return snippet;
   }
 
+  public void forEach( FeatureVisitor featureVisitor ) {
+    if( children != null ) {
+      for( Feature child : children ) {
+        featureVisitor.visit( child );
+        child.forEach( featureVisitor );
+      }
+    }
+  }
+
   public Object[] getPath() {
     ArrayList<Object> list = new ArrayList<Object>( 3 );
     Object element = this;
@@ -100,6 +123,16 @@ public class Feature {
       result[ list.size() - 1 - i ] = list.get( i );
     }
     return result;
+  }
+
+  private void registerPreview( String path ) {
+    ResourceManager manager = RWT.getResourceManager();
+    try {
+      manager.register( path, FeatureResourceLoader.getInstance().getResourceAsStream( path ) );
+    } catch( IOException e ) {
+      throw new RuntimeException( e );
+    }
+    preview = path;
   }
 
   private void registerSnippet( String snippetName ) {
@@ -125,23 +158,41 @@ public class Feature {
   }
 
   private static void registerHtmlFileResource( String name, String source ) throws IOException {
-    StringBuilder html = new StringBuilder();
-    html.append( "<!DOCTYPE>" );
-    html.append( "<html><head>" );
-    html.append( "<link href=\"/" );
-    html.append( RWT.getResourceManager().getLocation( "prettify.css" ) );
-    html.append( "\" type=\"text/css\" rel=\"stylesheet\" />" );
-    html.append( "<script src=\"/" );
-    html.append( RWT.getResourceManager().getLocation( "prettify.js" ) );
-    html.append( "\" type=\"text/javascript\"></script></head>" );
-    html.append( "<body onload=\"prettyPrint()\" style='padding-left:6px' >" );
-    html.append( "<pre class=\"prettyprint lang-java\">" );
-    html.append( source.replaceAll( "\\<", "&lt;" ).replaceAll( "\\>", "&gt;" ) );
-    html.append( "</pre></body></html>" );
-    InputStream stream = new ByteArrayInputStream( html.toString().getBytes() );
+    HtmlDocument doc = new HtmlDocument();
+    doc.head.content(
+      link().type( "text/css" ).href( locationOf( "prettify.css" ) ).rel( "stylesheet" ),
+      script().type( "text/javascript" ).src( locationOf( "prettify.js" ) )
+    );
+    doc.body.attr( "onload", "prettyPrint()" );
+    doc.body.style( "padding-left:6px" );
+    doc.body.content(
+      pre().cssClass( "prettyprint lang-java" ).content(
+        source.replaceAll( "\\<", "&lt;" ).replaceAll( "\\>", "&gt;" )
+      )
+    );
+    InputStream stream = new ByteArrayInputStream( doc.toString().getBytes() );
     RWT.getResourceManager().register( name, stream );
     stream.close();
   }
+
+  //  private static void registerHtmlFileResource( String name, String source ) throws IOException {
+//    StringBuilder html = new StringBuilder();
+//    html.append( "<!DOCTYPE html>" );
+//    html.append( "<html><head>" );
+//    html.append( "<link href=\"/" );
+//    html.append( RWT.getResourceManager().getLocation( "prettify.css" ) );
+//    html.append( "\" type=\"text/css\" rel=\"stylesheet\" />" );
+//    html.append( "<script src=\"/" );
+//    html.append( RWT.getResourceManager().getLocation( "prettify.js" ) );
+//    html.append( "\" type=\"text/javascript\"></script></head>" );
+//    html.append( "<body onload=\"prettyPrint()\" style='padding-left:6px' >" );
+//    html.append( "<pre class=\"prettyprint lang-java\">" );
+//    html.append( source.replaceAll( "\\<", "&lt;" ).replaceAll( "\\>", "&gt;" ) );
+//    html.append( "</pre></body></html>" );
+//    InputStream stream = new ByteArrayInputStream( html.toString().getBytes() );
+//    RWT.getResourceManager().register( name, stream );
+//    stream.close();
+//  }
 
   private Class<? extends AbstractEntryPoint> getSnippetClass( String classname ) throws ClassNotFoundException {
     ClassLoader loader = getClass().getClassLoader();

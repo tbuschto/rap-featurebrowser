@@ -4,6 +4,7 @@
     "children" : [
       {
         "name" : "Label",
+        "preview" : "preview/Label.png",
         "children" : [
           {
             "name" : "with Text",
@@ -38,6 +39,7 @@
       },
       {
         "name" : "CLabel",
+        "preview" : "preview/CLabel.png",
         "children" : [
           {
             "name" : "text & image",
@@ -47,6 +49,7 @@
       },
       {
         "name" : "Button",
+        "preview" : "preview/Button.png",
         "children" : [
           {
             "name" : "push button",
@@ -61,6 +64,7 @@
     "children" : [
       {
         "name" : "GridLayout",
+        "preview" : "preview/Grid.png",
         "children" : [
           {
             "name" : "basic layout",
