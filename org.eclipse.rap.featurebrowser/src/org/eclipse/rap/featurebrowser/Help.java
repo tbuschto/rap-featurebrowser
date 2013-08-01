@@ -67,9 +67,8 @@ public class Help {
     close.setImage( new Image( close.getDisplay(), stream ) );
     try {
       stream.close();
-    } catch( IOException e1 ) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
+    } catch( IOException ex ) {
+      throw new RuntimeException( ex );
     }
     close.setData( RWT.CUSTOM_VARIANT, "helpClose" );
     close.addListener( SWT.Selection, new Listener() {

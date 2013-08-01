@@ -21,12 +21,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 
-public class Gallery {
+public class FeatureGallery {
 
 
   private Browser browser;
 
-  public Gallery( Composite parent, Feature root, FeatureTree tree ) {
+  public FeatureGallery( Composite parent, Feature root, FeatureTree tree ) {
     browser = new Browser( parent, SWT.NONE );
     browser.setText( generateHTML( root ) ); // TODO store in ResourceManager
   }

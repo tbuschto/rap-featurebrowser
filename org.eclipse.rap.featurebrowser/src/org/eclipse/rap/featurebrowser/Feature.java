@@ -31,6 +31,19 @@ import org.eclipse.rap.rwt.service.ResourceManager;
 
 public class Feature {
 
+  public enum View {
+    NONE( "none" ),
+    SNIPPET( "snippet" ),
+    GALLERY( "gallery" ),
+    TABLE( "table" );
+
+    public final String value;
+
+    private View( String value ) {
+      this.value = value;
+    }
+  }
+
   private Feature[] children;
   private static final String UTF_8 = "UTF-8";
   private String name;
@@ -38,10 +51,13 @@ public class Feature {
   private Class<? extends AbstractEntryPoint> snippet;
   private Feature parent;
   private String preview;
+  private View view = View.NONE;
+  private String url;
 
   public Feature( JsonObject obj, Feature parent ) {
     this( obj.get( "children" ) != null ? obj.get( "children" ).asArray() : null );
     this.parent = parent;
+    url = obj.get( "url" ) != null ? obj.get( "url" ).asString() : null;
     name = obj.get( "name" ).asString();
     exclusive = obj.get( "exclusive" ) != null && obj.get( "exclusive" ).asBoolean();
     if( obj.get( "snippet" ) != null ) {
@@ -50,6 +66,8 @@ public class Feature {
     if( obj.get( "preview" ) != null ) {
       registerPreview( obj.get( "preview" ).asString() );
     }
+    setView( obj );
+    Navigation.getInstance().register( this );
   }
 
   public Feature( JsonArray json ) {
@@ -84,6 +102,10 @@ public class Feature {
 
   public boolean isExclusive() {
     return exclusive;
+  }
+
+  public String getUrl() {
+    return url;
   }
 
   public String getSnippetJavaUrl() {
@@ -125,6 +147,25 @@ public class Feature {
     return result;
   }
 
+  public View getView() {
+    return view;
+  }
+
+  private void setView( JsonObject obj ) {
+    if( obj.get( "view" ) != null ) {
+      String viewStr = obj.get( "view" ).asString();
+      if( View.SNIPPET.value.equals( viewStr ) ) {
+        view = View.SNIPPET;
+      } else if( View.GALLERY.value.equals( viewStr ) ) {
+        view = View.GALLERY;
+      } else if( View.TABLE.value.equals( viewStr ) ) {
+        view = View.TABLE;
+      }
+    } else if( snippet != null ) {
+      view = View.SNIPPET;
+    }
+  }
+
   private void registerPreview( String path ) {
     ResourceManager manager = RWT.getResourceManager();
     try {
@@ -138,7 +179,6 @@ public class Feature {
   private void registerSnippet( String snippetName ) {
     try {
       snippet = getSnippetClass( snippetName );
-      Navigation.getInstance().register( this );
       ClassLoader loader = snippet.getClassLoader();
       String path = snippet.getName().replaceAll( "\\.", "/" ) + ".java";
       String source = readTextContentChecked( loader, path );
@@ -174,25 +214,6 @@ public class Feature {
     RWT.getResourceManager().register( name, stream );
     stream.close();
   }
-
-  //  private static void registerHtmlFileResource( String name, String source ) throws IOException {
-//    StringBuilder html = new StringBuilder();
-//    html.append( "<!DOCTYPE html>" );
-//    html.append( "<html><head>" );
-//    html.append( "<link href=\"/" );
-//    html.append( RWT.getResourceManager().getLocation( "prettify.css" ) );
-//    html.append( "\" type=\"text/css\" rel=\"stylesheet\" />" );
-//    html.append( "<script src=\"/" );
-//    html.append( RWT.getResourceManager().getLocation( "prettify.js" ) );
-//    html.append( "\" type=\"text/javascript\"></script></head>" );
-//    html.append( "<body onload=\"prettyPrint()\" style='padding-left:6px' >" );
-//    html.append( "<pre class=\"prettyprint lang-java\">" );
-//    html.append( source.replaceAll( "\\<", "&lt;" ).replaceAll( "\\>", "&gt;" ) );
-//    html.append( "</pre></body></html>" );
-//    InputStream stream = new ByteArrayInputStream( html.toString().getBytes() );
-//    RWT.getResourceManager().register( name, stream );
-//    stream.close();
-//  }
 
   private Class<? extends AbstractEntryPoint> getSnippetClass( String classname ) throws ClassNotFoundException {
     ClassLoader loader = getClass().getClassLoader();
@@ -238,5 +259,6 @@ public class Feature {
     }
     return getName();
   }
+
 
 }

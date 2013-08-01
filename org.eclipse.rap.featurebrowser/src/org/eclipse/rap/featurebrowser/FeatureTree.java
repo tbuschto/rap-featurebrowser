@@ -35,14 +35,14 @@ public class FeatureTree {
   private TreeViewer treeViewer;
 
   public FeatureTree( final Composite parent, Feature category  ) {
-    Composite outer = new Composite( parent, SWT.NONE );
-    applyGridLayout( outer ).cols( 2 );
-    outer.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, true ) );
-    createTree( outer, parent, category );
-    final Button bar = new Button( outer, SWT.PUSH | SWT.CENTER );
+    Composite area = new Composite( parent, SWT.NONE );
+    applyGridLayout( area ).cols( 2 );
+    area.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, true ) );
+    createTree( area, parent, category );
+    final Button bar = new Button( area, SWT.PUSH | SWT.CENTER );
     applyGridData( tree ).verticalFill().width( 150 );
     tree.setData( RWT.CUSTOM_VARIANT, "featuretree" );
-    outer.setData( RWT.CUSTOM_VARIANT, "featuretree" );
+    area.setData( RWT.CUSTOM_VARIANT, "featuretree" );
     bar.setText( "<" );
     applyGridData( bar ).verticalFill().width( 20 );
     bar.setData( RWT.CUSTOM_VARIANT, "vbar" );
@@ -85,7 +85,7 @@ public class FeatureTree {
           featurePage.dispose();
         }
         Feature feature = ( Feature )sel.getFirstElement();
-        featurePage = new FeaturePage( parent, feature );
+        featurePage = new FeaturePage( parent, feature, FeatureTree.this );
         parent.layout();
         Navigation.getInstance().push( feature );
       }
