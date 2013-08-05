@@ -7,34 +7,86 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.eclipse.rap.featurebrowser.ui.FeatureTree;
+import org.eclipse.rap.featurebrowser.ui.Help;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Sash;
 
 public class FeatureBrowser extends AbstractEntryPoint {
+
+    private FeatureTree featureTree;
+    private Feature features;
+    private Button vbar;
+    private Sash sash;
 
     @Override
     protected void createContents( Composite parent ) {
       applyGridLayout( parent );
       createHeader( parent );
       Composite main = new Composite( parent, SWT.NONE );
-      applyGridLayout( main ).cols( 2 );
+      main.setData( RWT.CUSTOM_VARIANT, "featuretree" );
       applyGridData( main ).fill();
+      applyGridLayout( main ).cols( 4 );
+      loadFeatures();
+      createFeatureTree( main );
+      createVBar( main );
+      createSash( main );
+    }
+
+    private void createSash( Composite main ) {
+      sash = new Sash( main, SWT.VERTICAL );
+      applyGridData( sash ).verticalFill().width( 1 );
+      sash.addListener( SWT.Selection, new Listener() {
+        public void handleEvent( Event event ) {
+          if( event.detail != SWT.DRAG ) {
+            int treeWidth = event.x - vbar.getSize().x;
+            applyGridData( featureTree.getControl() ).verticalFill().width( treeWidth );
+            sash.getParent().layout();
+          }
+        }
+      } );
+    }
+
+    private void createVBar( Composite main ) {
+      vbar = new Button( main, SWT.PUSH | SWT.CENTER );
+      vbar.setText( "<" );
+      applyGridData( vbar ).verticalFill().width( 20 );
+      vbar.setData( RWT.CUSTOM_VARIANT, "vbar" );
+      vbar.addListener( SWT.Selection, new Listener() {
+        public void handleEvent( Event event ) {
+          boolean visible = !featureTree.getControl().getVisible();
+          vbar.setText( visible ? "<" : ">" );
+          GridData data = ( GridData )featureTree.getControl().getLayoutData();
+          data.exclude = !visible;
+          sash.setEnabled( visible );
+          featureTree.getControl().setVisible( visible );
+          featureTree.getControl().getParent().layout();
+        }
+      } );
+    }
+
+    private void createFeatureTree( Composite main ) {
+      featureTree = new FeatureTree( main, features );
+      Navigation.getInstance().init( featureTree );
+      applyGridData( featureTree.getControl() ).verticalFill().width( 160 );
+    }
+
+    private void loadFeatures() {
       InputStream resource = getClass().getClassLoader().getResourceAsStream( "features.json" );
       InputStreamReader reader = new InputStreamReader( resource );
-      JsonArray jsonObject = null;
       try {
-        jsonObject = JsonArray.readFrom( reader );
+        JsonArray jsonObject = JsonArray.readFrom( reader );
         reader.close();
-        Feature features = new Feature( jsonObject );
-        FeatureTree featureTree = new FeatureTree( main, features );
-        Navigation.getInstance().init( featureTree );
+        features = new Feature( jsonObject );
       } catch( IOException e ) {
         throw new RuntimeException( e );
       }

@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.featurebrowser;
+package org.eclipse.rap.featurebrowser.ui;
 
 import static org.eclipse.rap.featurebrowser.GridDataUtil.applyGridData;
 import static org.eclipse.rap.featurebrowser.GridLayoutUtil.applyGridLayout;

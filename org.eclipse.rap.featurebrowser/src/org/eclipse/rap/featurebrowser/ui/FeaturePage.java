@@ -1,8 +1,9 @@
-package org.eclipse.rap.featurebrowser;
+package org.eclipse.rap.featurebrowser.ui;
 
 import static org.eclipse.rap.featurebrowser.GridDataUtil.applyGridData;
 import static org.eclipse.rap.featurebrowser.GridLayoutUtil.applyGridLayout;
 
+import org.eclipse.rap.featurebrowser.Feature;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.SashForm;

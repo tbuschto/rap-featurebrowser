@@ -13,6 +13,7 @@ package org.eclipse.rap.featurebrowser;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.rap.featurebrowser.ui.FeatureTree;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.SingletonUtil;
 import org.eclipse.rap.rwt.client.service.BrowserNavigation;

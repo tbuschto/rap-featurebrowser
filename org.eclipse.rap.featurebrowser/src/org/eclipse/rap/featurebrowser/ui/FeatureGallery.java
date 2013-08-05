@@ -8,13 +8,16 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.featurebrowser;
+package org.eclipse.rap.featurebrowser.ui;
 
 import static org.eclipse.rap.featurebrowser.HtmlDocument.img;
 import static org.eclipse.rap.featurebrowser.HtmlDocument.locationOf;
 import static org.eclipse.rap.featurebrowser.HtmlDocument.p;
 
+import org.eclipse.rap.featurebrowser.Feature;
+import org.eclipse.rap.featurebrowser.HtmlDocument;
 import org.eclipse.rap.featurebrowser.HtmlDocument.Element;
+import org.eclipse.rap.featurebrowser.visitor.FeatureVisitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;

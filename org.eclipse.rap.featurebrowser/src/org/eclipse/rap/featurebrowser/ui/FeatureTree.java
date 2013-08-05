@@ -1,7 +1,4 @@
-package org.eclipse.rap.featurebrowser;
-
-import static org.eclipse.rap.featurebrowser.GridDataUtil.applyGridData;
-import static org.eclipse.rap.featurebrowser.GridLayoutUtil.applyGridLayout;
+package org.eclipse.rap.featurebrowser.ui;
 
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -14,18 +11,19 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.rap.featurebrowser.Feature;
+import org.eclipse.rap.featurebrowser.Navigation;
+import org.eclipse.rap.featurebrowser.visitor.TreeVisitor;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 
 
 public class FeatureTree {
@@ -35,31 +33,8 @@ public class FeatureTree {
   private TreeViewer treeViewer;
 
   public FeatureTree( final Composite parent, Feature category  ) {
-    Composite area = new Composite( parent, SWT.NONE );
-    applyGridLayout( area ).cols( 2 );
-    area.setLayoutData( new GridData( SWT.FILL, SWT.FILL, false, true ) );
-    createTree( area, parent, category );
-    final Button bar = new Button( area, SWT.PUSH | SWT.CENTER );
-    applyGridData( tree ).verticalFill().width( 150 );
+    tree = new Tree( parent, SWT.SINGLE );
     tree.setData( RWT.CUSTOM_VARIANT, "featuretree" );
-    area.setData( RWT.CUSTOM_VARIANT, "featuretree" );
-    bar.setText( "<" );
-    applyGridData( bar ).verticalFill().width( 20 );
-    bar.setData( RWT.CUSTOM_VARIANT, "vbar" );
-    bar.addListener( SWT.Selection, new Listener() {
-      public void handleEvent( Event event ) {
-        boolean visible = !tree.getVisible();
-        bar.setText( visible ? "<" : ">" );
-        GridData data = ( GridData )tree.getLayoutData();
-        data.exclude = !visible;
-        tree.setVisible( visible );
-        parent.layout();
-      }
-    } );
-  }
-
-  public void createTree( Composite outer, final Composite parent, Feature features ) {
-    tree = new Tree( outer, SWT.FULL_SELECTION );
     treeViewer = new TreeViewer( tree );
     treeViewer.setContentProvider( new ITreeContentProvider() {
       public void inputChanged( Viewer viewer, Object oldInput, Object newInput ) {}
@@ -90,8 +65,14 @@ public class FeatureTree {
         Navigation.getInstance().push( feature );
       }
     } );
-    treeViewer.setInput( features );
+    treeViewer.setInput( category );
     treeViewer.expandAll();
+    TreeVisitor.forEach( treeViewer.getTree(), new TreeVisitor() {
+      @Override
+      public void visit( TreeItem item ) {
+        item.setData( RWT.CUSTOM_VARIANT, "featuretree" );
+      }
+    } );
   }
 
   private final class LabelProviderImplementation implements ILabelProvider, IFontProvider {
@@ -128,7 +109,7 @@ public class FeatureTree {
           fontData.setStyle( SWT.ITALIC );
         }
         if( category ) {
-          fontData.setStyle( SWT.BOLD );
+          //fontData.setStyle( SWT.BOLD );
         }
         return new Font( display, fontData );
       }
@@ -139,6 +120,10 @@ public class FeatureTree {
   public void select( Feature feature ) {
     TreePath path = new TreePath( feature.getPath() );
     treeViewer.setSelection( new TreeSelection( path ) );
+  }
+
+  public Control getControl() {
+    return tree;
   }
 
 }

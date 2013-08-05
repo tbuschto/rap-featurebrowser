@@ -81,12 +81,6 @@ Button-FocusIndicator[PUSH].helpClose {
   border: none;
 }
 
-Tree.featuretree {
-  color: #eee;
-  background-color: transparent;
-  padding: 3px;
-}
-
 Composite.featuretree {
   background-color: rgb(62, 61, 57);
   background-image: gradient(
@@ -132,8 +126,43 @@ Tree-Cell {
   padding: 3px 2px 3px 2px;
 }
 
-Tree {
+Tree.featuretree {
   font: 12px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  color: #eee;
+  background-color: transparent;
+  padding: 3px;
+}
+
+TreeItem.featuretree,
+TreeItem.featuretree:hover:selected,
+TreeItem.featuretree:hover:selected:unfocused {
+  background-color: transparent;
+  text-decoration: none;
+  text-shadow: none;
+}
+
+
+TreeItem.featuretree:hover,
+TreeItem.featuretree:hover:unfocused {
+  background-color: transparent;
+  text-decoration: none;
+  text-shadow: 0 1px 5px #fff;
+}
+
+Tree-RowOverlay.featuretree:hover,
+Tree-RowOverlay.featuretree:hover:unfocused {
+  background-color: transparent;
+  color: inherit;
+  background-image: none;
+}
+
+Tree-RowOverlay.featuretree:selected,
+Tree-RowOverlay.featuretree:selected:hover,
+Tree-RowOverlay.featuretree:selected:unfocused,
+Tree-RowOverlay.featuretree:selected:hover:unfocused {
+  color: inherit;
+  background-image: none;
+  background-color: #31619c;
 }
 
 Shell.helpShell {

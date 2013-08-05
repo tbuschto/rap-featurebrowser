@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.featurebrowser;
+package org.eclipse.rap.featurebrowser.ui;
 
 import static org.eclipse.rap.featurebrowser.GridDataUtil.applyGridData;
 import static org.eclipse.rap.featurebrowser.GridLayoutUtil.applyGridLayout;
@@ -19,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.eclipse.rap.featurebrowser.Feature;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
