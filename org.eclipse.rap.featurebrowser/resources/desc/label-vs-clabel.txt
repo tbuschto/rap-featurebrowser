@@ -1,0 +1,2 @@
+<code>Label</code> can display either a text or an image, but not both together.
+<code><a href="#CLabel" style="color:inherit">CLabel</a></code> is able to display both together.

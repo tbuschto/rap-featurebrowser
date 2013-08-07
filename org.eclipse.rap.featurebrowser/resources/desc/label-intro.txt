@@ -1,0 +1,8 @@
+<code>Label</code> is a simple, passive widget which can display a
+<a href="#LabelWithText" style="color:inherit">text</a>, an
+<a href="#LabelWithImage" style="color:inherit">image</a> or a
+<a href="#LabelAsSeparator" style="color:inherit">separator</a> line.
+It supports
+<a href="#LabelWithMnemonic" style="color:inherit">mnemonics</a> and
+<a href="#LabelWithMarkup" style="color:inherit">markup</a> (HTML).
+See also <code><a href="#CLabel" style="color:inherit">CLabel</a></code>.

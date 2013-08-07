@@ -21,7 +21,7 @@ public class FeaturePage {
     page.setSashWidth( 1 );
     switch( feature.getView() ) {
       case SNIPPET:
-        new SnippetInstance( page, feature );
+        new SnippetInstanceArea( page, feature );
         createSnippetSource( feature );
         page.setWeights( new int[]{ 40, 60 } );
       break;
@@ -32,7 +32,7 @@ public class FeaturePage {
           page.setWeights( new int[]{ 40, 60 } );
         }
       break;
-      case TABLE:
+      case PREVIEW:
         new FeaturePreview( page, feature, featureTree );
         if( feature.getUrl() != null ) {
           createBrowser( feature );

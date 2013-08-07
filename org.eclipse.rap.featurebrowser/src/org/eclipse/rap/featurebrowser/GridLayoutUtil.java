@@ -96,4 +96,10 @@ public class GridLayoutUtil {
     return this;
   }
 
+  public GridLayoutUtil spacing( int spacing ) {
+    gridLayout.verticalSpacing = spacing;
+    gridLayout.horizontalSpacing = spacing;
+    return this;
+  }
+
 }

@@ -44,6 +44,11 @@ public class FeaturePreview {
         throw new RuntimeException( ex );
       }
     }
+    if( feature.getDescription() != null ) {
+      InfoBox desc = new InfoBox( area );
+      desc.addText( feature.getDescription() );
+      applyGridData( desc.getControl() ).horizontalFill();
+    }
 //    Label separator = new Label( area, SWT.SEPARATOR | SWT.HORIZONTAL );
 //    applyGridData( separator ).horizontalFill();
 //    final Table table = new Table( area, SWT.NONE );

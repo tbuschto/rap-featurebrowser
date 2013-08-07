@@ -63,7 +63,7 @@ public class Help {
     Browser browser = new Browser( area, SWT.NONE );
     applyGridData( browser ).fill();
     browser.setUrl( RWT.getResourceManager().getLocation( "help.html" ) );
-    InputStream stream = getClass().getClassLoader().getResourceAsStream( "x-mark-4-xl.png" );
+    InputStream stream = getClass().getClassLoader().getResourceAsStream( "icons/x-mark-4-xl.png" );
     close.setImage( new Image( close.getDisplay(), stream ) );
     try {
       stream.close();

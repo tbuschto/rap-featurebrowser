@@ -36,13 +36,14 @@ public class Feature {
     NONE( "none" ),
     SNIPPET( "snippet" ),
     GALLERY( "gallery" ),
-    TABLE( "table" );
+    PREVIEW( "preview" );
 
     public final String value;
 
     private View( String value ) {
       this.value = value;
     }
+
   }
 
   private Feature[] children;
@@ -54,6 +55,7 @@ public class Feature {
   private String preview;
   private View view = View.NONE;
   private String url;
+  private String description;
 
   public Feature( JsonObject obj, Feature parent ) {
     this( obj.get( "children" ) != null ? obj.get( "children" ).asArray() : null );
@@ -64,10 +66,13 @@ public class Feature {
     if( obj.get( "snippet" ) != null ) {
       registerSnippet( obj.get( "snippet" ).asString() );
     }
+    if( obj.get( "description" ) != null ) {
+      readDescription( obj.get( "description" ).asString() );
+    }
     if( obj.get( "preview" ) != null ) {
       registerPreview( obj.get( "preview" ).asString() );
     }
-    setView( obj );
+    readView( obj );
     Navigation.getInstance().register( this );
   }
 
@@ -87,6 +92,10 @@ public class Feature {
 
   public String getName() {
     return name;
+  }
+
+  public String getDescription() {
+    return description;
   }
 
   public String getPreview() {
@@ -152,15 +161,15 @@ public class Feature {
     return view;
   }
 
-  private void setView( JsonObject obj ) {
+  private void readView( JsonObject obj ) {
     if( obj.get( "view" ) != null ) {
       String viewStr = obj.get( "view" ).asString();
       if( View.SNIPPET.value.equals( viewStr ) ) {
         view = View.SNIPPET;
       } else if( View.GALLERY.value.equals( viewStr ) ) {
         view = View.GALLERY;
-      } else if( View.TABLE.value.equals( viewStr ) ) {
-        view = View.TABLE;
+      } else if( View.PREVIEW.value.equals( viewStr ) ) {
+        view = View.PREVIEW;
       }
     } else if( snippet != null ) {
       view = View.SNIPPET;
@@ -188,6 +197,15 @@ public class Feature {
     } catch( IOException e ) {
       throw new RuntimeException( e );
     } catch( ClassNotFoundException e ) {
+      throw new RuntimeException( e );
+    }
+  }
+
+  private void readDescription( String path ) {
+    try {
+      String raw = readTextContentChecked( Feature.class.getClassLoader(), path );
+      description = raw.trim();
+    } catch( IOException e ) {
       throw new RuntimeException( e );
     }
   }

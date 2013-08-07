@@ -177,3 +177,16 @@ Composite.helpBox {
   padding: 0px;
 }
 
+Composite.infobox {
+  background-color: #34332F;
+  border-radius: 50px 50px 0 0;
+}
+
+Label.infobox {
+  color: #e5e5e5;
+}
+
+Label.infobox-heading {
+  font: 16px Helvetica, Verdana, sans-serif;
+  color: #357cd4;
+}

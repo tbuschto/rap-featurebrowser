@@ -21,16 +21,17 @@ import java.lang.reflect.Method;
 
 import org.eclipse.rap.featurebrowser.Feature;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-public class SnippetInstance {
+public class SnippetInstanceArea {
 
-  public SnippetInstance( Composite parent, Feature feature ) {
-    Composite snippetParent = new Composite( parent, SWT.NONE );
-    snippetParent.setLayout( new GridLayout( 1, false ) );
+  public SnippetInstanceArea( Composite parent, Feature feature ) {
+    Composite main = new Composite( parent, SWT.NONE );
+    Composite snippetParent = new Composite( main, SWT.NONE );
+    applyGridLayout( main );
     applyGridLayout( snippetParent ).margin( 10 ).verticalSpacing( 5 );
+    applyGridData( snippetParent ).verticalFill();
     try {
       createContents( feature.getSnippet(), snippetParent );
     } catch( InstantiationException e ) {
@@ -43,6 +44,11 @@ public class SnippetInstance {
       showError( parent, e );
     } catch( ClassCastException e ) {
       showError( parent, e );
+    }
+    if( feature.getDescription() != null ) {
+      InfoBox desc = new InfoBox( main );
+      desc.addText( feature.getDescription() );
+      applyGridData( desc.getControl() ).horizontalFill();
     }
   }
 

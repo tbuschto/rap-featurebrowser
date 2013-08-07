@@ -5,13 +5,15 @@
     "children" : [
       {
         "name" : "Label",
-        "view" : "table",
+        "view" : "preview",
         "url" : "http://download.eclipse.org/rt/rap/doc/2.1/guide/reference/api/org/eclipse/swt/widgets/Label.html",
         "preview" : "preview/Label.png",
+        "description" : "desc/label-intro.txt",
         "children" : [
           {
             "name" : "with Text",
-            "snippet" : "snippets.LabelWithText"
+            "snippet" : "snippets.LabelWithText",
+            "description" : "desc/label-vs-clabel.txt"
           },
           {
             "name" : "with Image",
