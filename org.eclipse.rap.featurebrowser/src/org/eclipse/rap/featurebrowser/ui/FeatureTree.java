@@ -1,5 +1,7 @@
 package org.eclipse.rap.featurebrowser.ui;
 
+import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
+
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -13,7 +15,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.rap.featurebrowser.Feature;
 import org.eclipse.rap.featurebrowser.Navigation;
-import org.eclipse.rap.featurebrowser.visitor.TreeVisitor;
+import org.eclipse.rap.featurebrowser.util.TreeVisitor;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -34,7 +36,8 @@ public class FeatureTree {
 
   public FeatureTree( final Composite parent, Feature category  ) {
     tree = new Tree( parent, SWT.SINGLE );
-    tree.setData( RWT.CUSTOM_VARIANT, "featuretree" );
+    tree.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+    style( tree ).as( "featuretree" );
     treeViewer = new TreeViewer( tree );
     treeViewer.setContentProvider( new ITreeContentProvider() {
       public void inputChanged( Viewer viewer, Object oldInput, Object newInput ) {}
@@ -91,7 +94,9 @@ public class FeatureTree {
     }
 
     public String getText( Object element ) {
-      return ( ( Feature )element ).getName();
+      String text = ( ( Feature )element ).getName();
+      text = text.replace( "&", "&amp;" );
+      return "<span style='cursor:hand'>" + text + "</span>";
     }
 
     public Image getImage( Object element ) {

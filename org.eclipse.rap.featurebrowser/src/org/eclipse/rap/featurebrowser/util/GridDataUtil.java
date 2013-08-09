@@ -1,4 +1,4 @@
-package org.eclipse.rap.featurebrowser;
+package org.eclipse.rap.featurebrowser.util;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

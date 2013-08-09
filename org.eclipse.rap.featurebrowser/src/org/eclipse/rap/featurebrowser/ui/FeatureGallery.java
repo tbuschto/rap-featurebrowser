@@ -10,14 +10,12 @@
  ******************************************************************************/
 package org.eclipse.rap.featurebrowser.ui;
 
-import static org.eclipse.rap.featurebrowser.HtmlDocument.img;
-import static org.eclipse.rap.featurebrowser.HtmlDocument.locationOf;
-import static org.eclipse.rap.featurebrowser.HtmlDocument.p;
+import static org.eclipse.rap.featurebrowser.util.HtmlDocument.*;
 
 import org.eclipse.rap.featurebrowser.Feature;
-import org.eclipse.rap.featurebrowser.HtmlDocument;
-import org.eclipse.rap.featurebrowser.HtmlDocument.Element;
-import org.eclipse.rap.featurebrowser.visitor.FeatureVisitor;
+import org.eclipse.rap.featurebrowser.util.FeatureVisitor;
+import org.eclipse.rap.featurebrowser.util.HtmlDocument;
+import org.eclipse.rap.featurebrowser.util.HtmlDocument.Element;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
@@ -31,7 +29,7 @@ public class FeatureGallery {
 
   public FeatureGallery( Composite parent, Feature root, FeatureTree tree ) {
     browser = new Browser( parent, SWT.NONE );
-    browser.setText( generateHTML( root ) ); // TODO store in ResourceManager
+    browser.setText( generateHTML( root ) ); // TODO store in ResourceManager, use createBrowser
   }
 
   public Control getControl() {

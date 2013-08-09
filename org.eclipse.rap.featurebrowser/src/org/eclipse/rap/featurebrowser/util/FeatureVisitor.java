@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.featurebrowser.visitor;
+package org.eclipse.rap.featurebrowser.util;
 
 import org.eclipse.rap.featurebrowser.Feature;
 

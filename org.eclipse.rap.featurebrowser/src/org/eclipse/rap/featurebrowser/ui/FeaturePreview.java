@@ -10,18 +10,15 @@
  ******************************************************************************/
 package org.eclipse.rap.featurebrowser.ui;
 
-import static org.eclipse.rap.featurebrowser.GridDataUtil.applyGridData;
-import static org.eclipse.rap.featurebrowser.GridLayoutUtil.applyGridLayout;
-
-import java.io.IOException;
-import java.io.InputStream;
+import static org.eclipse.rap.featurebrowser.util.GridDataUtil.*;
+import static org.eclipse.rap.featurebrowser.util.GridLayoutUtil.*;
+import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
+import static org.eclipse.rap.featurebrowser.util.WidgetFactory.*;
 
 import org.eclipse.rap.featurebrowser.Feature;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Control;
 
 
 public class FeaturePreview {
@@ -29,20 +26,13 @@ public class FeaturePreview {
   public FeaturePreview( Composite parent, Feature feature, final FeatureTree featureTree ) {
     Composite area = new Composite( parent, SWT.NONE );
     applyGridLayout( area ).marginTop( 20 );
-    Label label = new Label( area, SWT.CENTER );
+    Control label = createLabel( area, feature.getName() );
+    style( label ).font( "Arial", 30, SWT.NONE );
     applyGridData( label ).horizontalFill();
-    label.setText( feature.getName() );
-    label.setFont( new Font( parent.getDisplay(), "Arial", 30, SWT.BORDER ) );
-    if( feature.getPreview() != null ) {
-      Label preview = new Label( area, SWT.BORDER );
-      InputStream stream = getClass().getClassLoader().getResourceAsStream( feature.getPreview() );
-      preview.setImage( new Image( label.getDisplay(), stream ) );
+    String path = feature.getPreview();
+    if( path != null ) {
+      Control preview = createImage( area, path, getClass() );
       applyGridData( preview ).fill().center();
-      try {
-        stream.close();
-      } catch( IOException ex ) {
-        throw new RuntimeException( ex );
-      }
     }
     if( feature.getDescription() != null ) {
       InfoBox desc = new InfoBox( area );
@@ -70,4 +60,5 @@ public class FeaturePreview {
 //      }
 //    } );
   }
+
 }

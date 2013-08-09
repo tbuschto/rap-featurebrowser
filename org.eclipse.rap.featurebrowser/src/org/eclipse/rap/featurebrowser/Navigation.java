@@ -16,6 +16,7 @@ import java.util.Map;
 import org.eclipse.rap.featurebrowser.ui.FeatureTree;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.SingletonUtil;
+import org.eclipse.rap.rwt.client.WebClient;
 import org.eclipse.rap.rwt.client.service.BrowserNavigation;
 import org.eclipse.rap.rwt.client.service.BrowserNavigationEvent;
 import org.eclipse.rap.rwt.client.service.BrowserNavigationListener;
@@ -34,13 +35,15 @@ public class Navigation {
   }
 
   public void init( final FeatureTree featureTree ) {
-    BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
-    navigation.addBrowserNavigationListener( new BrowserNavigationListener() {
-      public void navigated( BrowserNavigationEvent event ) {
-        Feature feature = map.get( event.getState() );
-        featureTree.select( feature );
-      }
-    } );
+    if( RWT.getClient() instanceof WebClient ) {
+      BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
+      navigation.addBrowserNavigationListener( new BrowserNavigationListener() {
+        public void navigated( BrowserNavigationEvent event ) {
+          Feature feature = map.get( event.getState() );
+          featureTree.select( feature );
+        }
+      } );
+    }
   }
 
   public void push( Feature feature ) {

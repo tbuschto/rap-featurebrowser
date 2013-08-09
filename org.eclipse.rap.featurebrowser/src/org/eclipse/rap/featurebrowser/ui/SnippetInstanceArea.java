@@ -10,8 +10,8 @@
  ******************************************************************************/
 package org.eclipse.rap.featurebrowser.ui;
 
-import static org.eclipse.rap.featurebrowser.GridDataUtil.applyGridData;
-import static org.eclipse.rap.featurebrowser.GridLayoutUtil.applyGridLayout;
+import static org.eclipse.rap.featurebrowser.util.GridDataUtil.*;
+import static org.eclipse.rap.featurebrowser.util.GridLayoutUtil.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

@@ -1,14 +1,14 @@
 package org.eclipse.rap.featurebrowser;
 
-import static org.eclipse.rap.featurebrowser.GridDataUtil.applyGridData;
-import static org.eclipse.rap.featurebrowser.GridLayoutUtil.applyGridLayout;
+import static org.eclipse.rap.featurebrowser.util.GridDataUtil.*;
+import static org.eclipse.rap.featurebrowser.util.GridLayoutUtil.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.eclipse.rap.featurebrowser.ui.FeatureTree;
-import org.eclipse.rap.featurebrowser.ui.Help;
+import org.eclipse.rap.featurebrowser.ui.HelpOverlay;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
@@ -105,7 +105,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
       Button help = new Button( header, SWT.PUSH );
       help.addListener( SWT.Selection, new Listener() {
         public void handleEvent( Event event ) {
-          new Help( getShell() );
+          new HelpOverlay( getShell() );
         }
       } );
       help.setText( "Getting started..." );

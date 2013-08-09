@@ -10,18 +10,14 @@
  ******************************************************************************/
 package org.eclipse.rap.featurebrowser.ui;
 
-import static org.eclipse.rap.featurebrowser.GridDataUtil.applyGridData;
-import static org.eclipse.rap.featurebrowser.GridLayoutUtil.applyGridLayout;
+import static org.eclipse.rap.featurebrowser.util.GridDataUtil.*;
+import static org.eclipse.rap.featurebrowser.util.GridLayoutUtil.*;
+import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
+import static org.eclipse.rap.featurebrowser.util.WidgetFactory.*;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 
 
 public class InfoBox {
@@ -38,30 +34,20 @@ public class InfoBox {
   private Composite createInfoboxContentComposite() {
     Composite contentComp = new Composite( spacer, SWT.NONE );
     contentComp.setBackgroundMode( SWT.INHERIT_FORCE );
-    contentComp.setData( RWT.CUSTOM_VARIANT, "infobox" );
+    style( contentComp ).as( "infobox" );
     applyGridLayout( contentComp ).margin( 35 ).spacing( 20 ).cols( 2 );
     applyGridData( contentComp ).fill();
-    Label icon = new Label( contentComp, SWT.NONE );
-    InputStream stream = getClass().getClassLoader()
-        .getResourceAsStream( "icons/1375930009_information-balloon_basic_blue_edit1.png" );
-    //    .getResourceAsStream( "icons/1375930019_Info_edit1.png" );
-    icon.setImage( new Image( icon.getDisplay(), stream ) );
-    try {
-      stream.close();
-    } catch( IOException ex ) {
-      throw new RuntimeException( ex );
-    }
+    Control icon = createImage( contentComp,
+                                "icons/1375930009_information-balloon_basic_blue_edit1.png",
+                                getClass() );
     applyGridData( icon ).vAlign( SWT.TOP ).hAlign( SWT.LEFT );
-
     return contentComp;
   }
 
   public void addText( String text ) {
-    Label label = new Label( contentComp, SWT.WRAP );
-    label.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
-    label.setText( text );
+    Control label = createMarkupLabel( contentComp, text );
     applyGridData( label ).fill();
-    label.setData( RWT.CUSTOM_VARIANT, "infobox" );
+    style( label ).as( "infobox" );
   }
 
   public Control getControl() {

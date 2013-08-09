@@ -10,10 +10,7 @@
  ******************************************************************************/
 package org.eclipse.rap.featurebrowser;
 
-import static org.eclipse.rap.featurebrowser.HtmlDocument.link;
-import static org.eclipse.rap.featurebrowser.HtmlDocument.locationOf;
-import static org.eclipse.rap.featurebrowser.HtmlDocument.pre;
-import static org.eclipse.rap.featurebrowser.HtmlDocument.script;
+import static org.eclipse.rap.featurebrowser.util.HtmlDocument.*;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -22,7 +19,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import org.eclipse.rap.featurebrowser.visitor.FeatureVisitor;
+import org.eclipse.rap.featurebrowser.util.FeatureVisitor;
+import org.eclipse.rap.featurebrowser.util.HtmlDocument;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
