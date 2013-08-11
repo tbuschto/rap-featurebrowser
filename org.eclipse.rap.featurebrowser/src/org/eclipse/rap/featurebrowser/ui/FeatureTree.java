@@ -36,7 +36,6 @@ public class FeatureTree {
 
   public FeatureTree( final Composite parent, Feature category  ) {
     tree = new Tree( parent, SWT.SINGLE );
-    tree.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
     style( tree ).as( "featuretree" );
     treeViewer = new TreeViewer( tree );
     treeViewer.setContentProvider( new ITreeContentProvider() {
@@ -94,9 +93,7 @@ public class FeatureTree {
     }
 
     public String getText( Object element ) {
-      String text = ( ( Feature )element ).getName();
-      text = text.replace( "&", "&amp;" );
-      return "<span style='cursor:hand'>" + text + "</span>";
+      return ( ( Feature )element ).getName();
     }
 
     public Image getImage( Object element ) {
@@ -106,15 +103,12 @@ public class FeatureTree {
     public Font getFont( Object element ) {
       Feature feature = ( Feature )element;
       boolean category = feature.getChildren() != null;
-      boolean exclusive = feature.isExclusive();
+      boolean exclusive = feature.getTarget() != null;
       if( category || exclusive ) {
         Display display = tree.getDisplay();
         FontData fontData = tree.getFont().getFontData()[ 0 ];
         if( exclusive ) {
           fontData.setStyle( SWT.ITALIC );
-        }
-        if( category ) {
-          //fontData.setStyle( SWT.BOLD );
         }
         return new Font( display, fontData );
       }

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.client.WebClient;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Image;
@@ -40,9 +41,22 @@ public class WidgetFactory {
 
   public static Control createMarkupLabel( Composite parent, String text ) {
     Label label = new Label( parent, SWT.WRAP );
-    label.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
-    label.setText( text );
+    if( RWT.getClient() instanceof WebClient ) {
+      label.setData( RWT.MARKUP_ENABLED, Boolean.TRUE );
+      label.setText( text );
+    } else {
+      label.setText( stripHtml( text ) );
+    }
     return label;
+  }
+
+  private static String stripHtml( String text ) {
+    String[] split = text.replaceAll( "\n", " " ).split( "[<>]" );
+    StringBuilder result = new StringBuilder();
+    for( int i = 0; i < split.length; i += 2 ) {
+      result.append( split[ i ] );
+    }
+    return result.toString();
   }
 
   public static Control createImage( Composite parent, String path, Class<?> classLoaderClass ) {

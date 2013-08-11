@@ -2,6 +2,7 @@ package org.eclipse.rap.featurebrowser;
 
 import static org.eclipse.rap.featurebrowser.util.GridDataUtil.*;
 import static org.eclipse.rap.featurebrowser.util.GridLayoutUtil.*;
+import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -94,13 +95,13 @@ public class FeatureBrowser extends AbstractEntryPoint {
 
     public void createHeader( Composite parent ) {
       Composite header = new Composite( parent, SWT.NONE );
-      header.setData( RWT.CUSTOM_VARIANT, "header" );
+      style( header ).as( "header" );
       applyGridData( header ).fill().vGrab( false ).height( 45 );
       applyGridLayout( header ).cols( 2 ).marginLeft( 10 );
       header.setBackgroundMode( SWT.INHERIT_FORCE );
       Label headerLabel = new Label( header, SWT.NONE );
       headerLabel.setText( ">>  REMOTE APPLICATION PLATFORM FEATURE BROWSER" );
-      headerLabel.setData( RWT.CUSTOM_VARIANT, "headerLabel" );
+      style( headerLabel ).as( "headerLabel" );
       applyGridData( headerLabel ).fill().hAlign( SWT.LEFT ).vAlign( SWT.CENTER );
       Button help = new Button( header, SWT.PUSH );
       help.addListener( SWT.Selection, new Listener() {
@@ -110,9 +111,9 @@ public class FeatureBrowser extends AbstractEntryPoint {
       } );
       help.setText( "Getting started..." );
       applyGridData( help ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
-      help.setData( RWT.CUSTOM_VARIANT, "helpButton" );
+      style( help ).as( "helpButton" );
       Composite subheader = new Composite( parent, SWT.NONE );
-      subheader.setData( RWT.CUSTOM_VARIANT, "subheader" );
+      style( subheader ).as( "subheader" );
       applyGridData( subheader ).horizontalFill().height( 20 );
     }
 

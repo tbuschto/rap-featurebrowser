@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.rap.featurebrowser.util.FeatureVisitor;
 import org.eclipse.rap.featurebrowser.util.HtmlDocument;
@@ -47,20 +48,20 @@ public class Feature {
   private Feature[] children;
   private static final String UTF_8 = "UTF-8";
   private String name;
-  private boolean exclusive;
   private Class<? extends AbstractEntryPoint> snippet;
   private Feature parent;
   private String preview;
   private View view = View.NONE;
   private String url;
   private String description;
+  private String target;
 
   public Feature( JsonObject obj, Feature parent ) {
     this( obj.get( "children" ) != null ? obj.get( "children" ).asArray() : null );
     this.parent = parent;
     url = obj.get( "url" ) != null ? obj.get( "url" ).asString() : null;
     name = obj.get( "name" ).asString();
-    exclusive = obj.get( "exclusive" ) != null && obj.get( "exclusive" ).asBoolean();
+    target = obj.get( "target" ) != null ? obj.get( "target" ).asString() : null;
     if( obj.get( "snippet" ) != null ) {
       registerSnippet( obj.get( "snippet" ).asString() );
     }
@@ -76,16 +77,20 @@ public class Feature {
 
   public Feature( JsonArray json ) {
     if( json != null ) {
-      children = new Feature[ json.size() ];
+      List<Feature> childrenList = new ArrayList<Feature>( json.size() );
       for( int i = 0; i < json.size(); i++ ) {
         JsonObject obj = json.get( i ).asObject();
-        if( obj.get( "category" ) != null ) {
-          children[ i ] = new Feature( obj, this );
-        } else {
-          children[ i ] = new Feature( obj, this );
+        Feature child = new Feature( obj, this );
+        if( child.getTarget() == null || child.getTarget().equals( getClientName() ) ) {
+          childrenList.add( child );
         }
       }
+      children = childrenList.toArray( new Feature[ childrenList.size() ] );
     }
+  }
+
+  private static String getClientName() {
+    return RWT.getClient() != null ? RWT.getClient().getClass().getSimpleName() : "SWT";
   }
 
   public String getName() {
@@ -108,8 +113,8 @@ public class Feature {
     return parent;
   }
 
-  public boolean isExclusive() {
-    return exclusive;
+  public String getTarget() {
+    return target;
   }
 
   public String getUrl() {

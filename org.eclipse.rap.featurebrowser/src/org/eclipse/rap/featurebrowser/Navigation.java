@@ -47,8 +47,10 @@ public class Navigation {
   }
 
   public void push( Feature feature ) {
-    BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
-    navigation.pushState( feature.toString(), null );
+    if( RWT.getClient() instanceof WebClient ) {
+      BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
+      navigation.pushState( feature.toString(), null );
+    }
   }
 
 }
