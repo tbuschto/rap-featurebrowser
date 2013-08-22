@@ -2,6 +2,7 @@ package org.eclipse.rap.featurebrowser.ui;
 
 import static org.eclipse.rap.featurebrowser.util.GridDataUtil.*;
 import static org.eclipse.rap.featurebrowser.util.GridLayoutUtil.*;
+import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
 import static org.eclipse.rap.featurebrowser.util.WidgetFactory.*;
 
 import org.eclipse.rap.featurebrowser.Feature;
@@ -18,12 +19,13 @@ public class FeaturePage {
 
   FeaturePage( Composite parent, Feature feature, FeatureTree featureTree ) {
     page = new SashForm( parent, SWT.HORIZONTAL );
+    style( page ).background( "transparent" );
     applyGridData( page ).fill();
-    page.setSashWidth( 1 );
+    page.setSashWidth( 8 );
     switch( feature.getView() ) {
       case SNIPPET:
         new SnippetInstanceArea( page, feature );
-        createBrowser( page, feature.getSnippetHtmlUrl() );
+        new SnippetResourcesArea( page, feature );
         page.setWeights( new int[]{ 40, 60 } );
       break;
       case GALLERY:

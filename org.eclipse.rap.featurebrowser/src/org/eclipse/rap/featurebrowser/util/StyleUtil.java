@@ -46,7 +46,11 @@ public class StyleUtil {
   }
 
   public void background( String string ) {
-    control.setBackground( new Color( control.getDisplay(), stringToRGB( string ) ) );
+    if( "transparent".equals( string ) ) {
+      as( "transparent" );
+    } else {
+      control.setBackground( new Color( control.getDisplay(), stringToRGB( string ) ) );
+    }
   }
 
   public void background( int red, int green, int blue ) {

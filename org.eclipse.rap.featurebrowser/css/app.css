@@ -17,6 +17,10 @@
   text-shadow: 0 1px 3px #aaa;
 }
 
+.transparent {
+  background-color: transparent;
+}
+
 Button.helpButton {
   font: 14px 'Open Sans', sans-serif;
   border: none;
@@ -39,7 +43,7 @@ Button.helpButton:hover {
 }
 
 Sash, Sash:hover {
-  background-color: rgb(52, 51, 47);
+  background-color: transparent;
 }
 
 Sash-Handle:horizontal, Sash-Handle:vertical {
@@ -85,18 +89,18 @@ Composite.featuretree {
   background-color: rgb(62, 61, 57);
   background-image: gradient(
     linear, left top, left bottom,
-    from( rgb( 62, 61, 57 ) ),
-    color-stop( 85%, rgb( 82, 81, 77 ) ),
-    to( rgb( 72, 71, 67 ) )
+    from( rgb( 92, 91, 87 ) ),
+    color-stop( 85%, rgb( 112, 111, 107 ) ),
+    to( rgb( 102, 101, 97 ) )
   );
 }
 
 ScrollBar {
-  background-color: rgb(62, 61, 57);
+  background-color: white;
   background-image: none;
   border: none;
   border-radius: 0;
-  width: 4px;
+  width: 5px;
 }
 
 ScrollBar-Thumb {
@@ -112,6 +116,7 @@ ScrollBar-DownButton {
   border: none;
   border-radius: 0;
   cursor: default;
+  background-image: none;
 }
 
 ScrollBar-UpButton[HORIZONTAL],
@@ -190,3 +195,23 @@ Label.infobox-heading {
   font: 16px Helvetica, Verdana, sans-serif;
   color: #357cd4;
 }
+
+CTabFolder {
+  border-color: #bdbdbd;
+  border-radius: 3px;
+}
+
+CTabItem {
+  font: 12px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
+  color: #4a4a4a;
+  background-color: transparent;
+  background-image: none;
+  padding: 6px;
+  spacing: 5px;
+  text-shadow: none;
+}
+
+CTabItem:selected {
+  background-color: #ffffff;
+}
+

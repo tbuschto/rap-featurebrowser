@@ -13,7 +13,9 @@ package org.eclipse.rap.featurebrowser.util;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.eclipse.rap.featurebrowser.ui.EnhancedTabFolder;
 import org.eclipse.rap.rwt.RWT;
+import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.client.WebClient;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -50,13 +52,12 @@ public class WidgetFactory {
     return label;
   }
 
-  private static String stripHtml( String text ) {
-    String[] split = text.replaceAll( "\n", " " ).split( "[<>]" );
-    StringBuilder result = new StringBuilder();
-    for( int i = 0; i < split.length; i += 2 ) {
-      result.append( split[ i ] );
+  public static EnhancedTabFolder createEnhancedTabFolder( Composite parent ) {
+    Client client = RWT.getClient();
+    if( client == null || client instanceof WebClient ) {
+      return new EnhancedTabFolder.CTabFolderWrapper( parent );
     }
-    return result.toString();
+    return new EnhancedTabFolder.TabFolderWrapper( parent );
   }
 
   public static Control createImage( Composite parent, String path, Class<?> classLoaderClass ) {
@@ -89,4 +90,12 @@ public class WidgetFactory {
     return shell;
   }
 
+  private static String stripHtml( String text ) {
+    String[] split = text.replaceAll( "\n", " " ).split( "[<>]" );
+    StringBuilder result = new StringBuilder();
+    for( int i = 0; i < split.length; i += 2 ) {
+      result.append( split[ i ] );
+    }
+    return result.toString();
+  }
 }

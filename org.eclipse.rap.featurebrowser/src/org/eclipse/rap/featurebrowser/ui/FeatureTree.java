@@ -1,7 +1,5 @@
 package org.eclipse.rap.featurebrowser.ui;
 
-import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
-
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -36,7 +34,6 @@ public class FeatureTree {
 
   public FeatureTree( final Composite parent, Feature category  ) {
     tree = new Tree( parent, SWT.SINGLE );
-    style( tree ).as( "featuretree" );
     treeViewer = new TreeViewer( tree );
     treeViewer.setContentProvider( new ITreeContentProvider() {
       public void inputChanged( Viewer viewer, Object oldInput, Object newInput ) {}

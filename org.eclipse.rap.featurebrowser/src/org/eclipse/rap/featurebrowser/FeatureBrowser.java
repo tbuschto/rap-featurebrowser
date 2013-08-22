@@ -36,7 +36,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
       Composite main = new Composite( parent, SWT.NONE );
       main.setData( RWT.CUSTOM_VARIANT, "featuretree" );
       applyGridData( main ).fill();
-      applyGridLayout( main ).cols( 4 );
+      applyGridLayout( main ).cols( 4 ).margin( 5 );
       loadFeatures();
       createFeatureTree( main );
       createVBar( main );
