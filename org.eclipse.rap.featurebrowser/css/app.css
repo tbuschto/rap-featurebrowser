@@ -21,6 +21,23 @@
   background-color: transparent;
 }
 
+.floatingBox {
+  border: none;
+  border-radius : 3px;
+  box-shadow: 0 3px 3px #000;
+  background-color: rgb(184, 190, 204);
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( rgb(190, 200, 211) ),
+    color-stop( 15%, rgb(184, 190, 204) ),
+    to( rgb(164, 170, 184) )
+  );
+}
+
+.floatingBox-inner {
+  border: 1px solid rgb(184, 190, 204);
+}
+
 Button.helpButton {
   font: 14px 'Open Sans', sans-serif;
   border: none;
@@ -197,8 +214,12 @@ Label.infobox-heading {
 }
 
 CTabFolder {
-  border-color: #bdbdbd;
+  border-color: rgb(184, 190, 204);
   border-radius: 3px;
+}
+
+CTabFolder.selected { /* the border color is used for CTabItem also */
+  border-color: white;
 }
 
 CTabItem {

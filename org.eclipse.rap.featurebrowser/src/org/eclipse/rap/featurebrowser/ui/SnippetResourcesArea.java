@@ -10,17 +10,25 @@
  ******************************************************************************/
 package org.eclipse.rap.featurebrowser.ui;
 
+import static org.eclipse.rap.featurebrowser.util.GridDataUtil.*;
+import static org.eclipse.rap.featurebrowser.util.GridLayoutUtil.*;
+import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
 import static org.eclipse.rap.featurebrowser.util.WidgetFactory.*;
 
 import org.eclipse.rap.featurebrowser.Feature;
 import org.eclipse.rap.featurebrowser.util.ResourceUtil;
 import org.eclipse.rap.featurebrowser.util.WidgetFactory;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
 public class SnippetResourcesArea {
 
   public SnippetResourcesArea( Composite parent, Feature feature ) {
-    EnhancedTabFolder folder = WidgetFactory.createEnhancedTabFolder( parent );
+    Composite box = new Composite( parent, SWT.NONE );
+    style( box ).as( "floatingBox" );
+    applyGridLayout( box );
+    EnhancedTabFolder folder = WidgetFactory.createEnhancedTabFolder( box );
+    applyGridData( folder.getControl() ).fill();
     folder.addTab(
       feature.getSnippet().getSimpleName() + ".java",
       ResourceUtil.getImage( "icons/jcu_obj.gif" ),

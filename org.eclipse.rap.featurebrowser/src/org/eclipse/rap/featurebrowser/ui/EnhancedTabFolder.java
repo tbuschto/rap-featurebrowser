@@ -10,11 +10,12 @@
  ******************************************************************************/
 package org.eclipse.rap.featurebrowser.ui;
 
+import org.eclipse.rap.featurebrowser.util.StyleUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.custom.CTabFolder2Adapter;
-import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -27,6 +28,7 @@ public interface EnhancedTabFolder {
 
   public void addTab( String name, Image image, Control control );
   public Composite getFolder();
+  public Control getControl();
 
   public class CTabFolderWrapper implements EnhancedTabFolder {
 
@@ -34,16 +36,23 @@ public interface EnhancedTabFolder {
 
     public CTabFolderWrapper( Composite parent ) {
       folder = new CTabFolder( parent, SWT.TOP );
-      folder.addCTabFolder2Listener( new CTabFolder2Adapter() {
+      folder.addSelectionListener( new SelectionAdapter() {
         @Override
-        public void close( CTabFolderEvent event ) {
-          event.doit = false; // the X is just for show to make it look more like Eclipse
+        public void widgetSelected( SelectionEvent event ) {
+          CTabItem[] items = folder.getItems();
+          int selected = folder.getSelectionIndex();
+          for( int i = 0; i < items.length; i++ ) {
+            StyleUtil.style( items[ i ] ).as( i == selected ? "selected" : null );
+          }
         }
       } );
     }
 
     public void addTab( String text, Image image, Control control ) {
-      final CTabItem item = new CTabItem( folder, SWT.CLOSE );
+      final CTabItem item = new CTabItem( folder, SWT.NONE );
+      if( folder.getItemCount() == 1 ) {
+        StyleUtil.style( item ).as( "selected" );
+      }
       item.setControl( control );
       item.setImage( image );
       item.setText( text );
@@ -53,6 +62,10 @@ public interface EnhancedTabFolder {
     }
 
     public Composite getFolder() {
+      return folder;
+    }
+
+    public Control getControl() {
       return folder;
     }
 
@@ -77,7 +90,12 @@ public interface EnhancedTabFolder {
       return folder;
     }
 
+    public Control getControl() {
+      return folder;
+    }
+
   }
+
 
 
 

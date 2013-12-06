@@ -20,28 +20,32 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Widget;
 
 
 public class StyleUtil {
 
 
   private interface Styler {
-    public void style( Control control, StyleUtil style );
+    public void style( Widget widget, StyleUtil style );
   }
 
-  private Control control;
+  private Widget widget;
   private static Map<String,Styler> styleMap;
 
-  public static StyleUtil style( Control control ) {
-    return new StyleUtil( control );
+  public static StyleUtil style( Widget widget ) {
+    return new StyleUtil( widget );
   }
 
-  public StyleUtil( Control control ) {
-    this.control = control;
+  public StyleUtil( Widget widget ) {
+    this.widget = widget;
   }
 
   public StyleUtil font( String name, int size, int style ) {
-    control.setFont( new Font( control.getDisplay(), name, size, style ) );
+    if( widget instanceof Control ) {
+      Control control = ( Control )widget;
+      control.setFont( new Font( widget.getDisplay(), name, size, style ) );
+    }
     return this;
   }
 
@@ -49,25 +53,34 @@ public class StyleUtil {
     if( "transparent".equals( string ) ) {
       as( "transparent" );
     } else {
-      control.setBackground( new Color( control.getDisplay(), stringToRGB( string ) ) );
+      if( widget instanceof Control ) {
+        Control control = ( Control )widget;
+        control.setBackground( new Color( widget.getDisplay(), stringToRGB( string ) ) );
+      }
     }
   }
 
   public void background( int red, int green, int blue ) {
-    control.setBackground( new Color( control.getDisplay(), red, green, blue ) );
+    if( widget instanceof Control ) {
+      Control control = ( Control )widget;
+      control.setBackground( new Color( widget.getDisplay(), red, green, blue ) );
+    }
   }
 
   public void color( String string ) {
-    control.setForeground( new Color( control.getDisplay(), stringToRGB( string ) ) );
+    if( widget instanceof Control ) {
+      Control control = ( Control )widget;
+      control.setForeground( new Color( widget.getDisplay(), stringToRGB( string ) ) );
+    }
   }
 
   public void as( String string ) {
     if( RWT.getClient() instanceof WebClient ) {
-      control.setData( RWT.CUSTOM_VARIANT, string );
+      widget.setData( RWT.CUSTOM_VARIANT, string );
     } else {
       Styler styler = getStyleMap().get( string );
       if( styler != null ) {
-        styler.style( control, new StyleUtil( control ) );
+        styler.style( widget, new StyleUtil( widget ) );
       }
     }
   }
@@ -93,18 +106,18 @@ public class StyleUtil {
   private static void initStyleMap() {
     styleMap = new HashMap<String,Styler>();
     styleMap.put( "header", new Styler() {
-      public void style( Control control, StyleUtil style ) {
+      public void style( Widget control, StyleUtil style ) {
         style.background( "#31619c" );
       }
     } );
     styleMap.put( "headerLabel", new Styler() {
-      public void style( Control control, StyleUtil style ) {
+      public void style( Widget control, StyleUtil style ) {
         style.color( "#eeeeee" );
         style.font( "Open Sans, sans-serif", 10, SWT.ITALIC );
       }
     } );
     styleMap.put( "subheader", new Styler() {
-      public void style( Control control, StyleUtil style ) {
+      public void style( Widget control, StyleUtil style ) {
         style.background( 52, 51, 47 );
       }
     } );
