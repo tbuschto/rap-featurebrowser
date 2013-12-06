@@ -11,10 +11,8 @@ import java.io.InputStreamReader;
 import org.eclipse.rap.featurebrowser.ui.FeatureTree;
 import org.eclipse.rap.featurebrowser.ui.HelpOverlay;
 import org.eclipse.rap.json.JsonArray;
-import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
@@ -26,7 +24,6 @@ public class FeatureBrowser extends AbstractEntryPoint {
 
     private FeatureTree featureTree;
     private Feature features;
-    private Button vbar;
     private Sash sash;
 
     @Override
@@ -34,43 +31,25 @@ public class FeatureBrowser extends AbstractEntryPoint {
       applyGridLayout( parent );
       createHeader( parent );
       Composite main = new Composite( parent, SWT.NONE );
-      main.setData( RWT.CUSTOM_VARIANT, "featuretree" );
       applyGridData( main ).fill();
-      applyGridLayout( main ).cols( 4 ).margin( 5 );
+      applyGridLayout( main ).margin( 5 ).cols( 3 );
+      style( main ).as( "main" );
       loadFeatures();
       createFeatureTree( main );
-      createVBar( main );
       createSash( main );
     }
 
     private void createSash( Composite main ) {
+      // do not use a SashForm since the tree width should be independent from the parent width
       sash = new Sash( main, SWT.VERTICAL );
-      applyGridData( sash ).verticalFill().width( 1 );
+      applyGridData( sash ).verticalFill().width( 8 );
       sash.addListener( SWT.Selection, new Listener() {
         public void handleEvent( Event event ) {
           if( event.detail != SWT.DRAG ) {
-            int treeWidth = event.x - vbar.getSize().x;
+            int treeWidth = event.x;
             applyGridData( featureTree.getControl() ).verticalFill().width( treeWidth );
             sash.getParent().layout();
           }
-        }
-      } );
-    }
-
-    private void createVBar( Composite main ) {
-      vbar = new Button( main, SWT.PUSH | SWT.CENTER );
-      vbar.setText( "<" );
-      applyGridData( vbar ).verticalFill().width( 20 );
-      vbar.setData( RWT.CUSTOM_VARIANT, "vbar" );
-      vbar.addListener( SWT.Selection, new Listener() {
-        public void handleEvent( Event event ) {
-          boolean visible = !featureTree.getControl().getVisible();
-          vbar.setText( visible ? "<" : ">" );
-          GridData data = ( GridData )featureTree.getControl().getLayoutData();
-          data.exclude = !visible;
-          sash.setEnabled( visible );
-          featureTree.getControl().setVisible( visible );
-          featureTree.getControl().getParent().layout();
         }
       } );
     }
@@ -82,6 +61,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
     }
 
     private void loadFeatures() {
+      // TODO : when deployed it should suffice to read these once on application start
       InputStream resource = getClass().getClassLoader().getResourceAsStream( "features.json" );
       InputStreamReader reader = new InputStreamReader( resource );
       try {

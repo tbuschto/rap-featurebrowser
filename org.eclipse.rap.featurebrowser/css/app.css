@@ -13,6 +13,16 @@
   color: #eee;
 }
 
+.main {
+  background-color: rgb(62, 61, 57);
+  background-image: gradient(
+    linear, left top, left bottom,
+    from( rgb( 92, 91, 87 ) ),
+    color-stop( 85%, rgb( 112, 111, 107 ) ),
+    to( rgb( 102, 101, 97 ) )
+  );
+}
+
 .helpHeading {
   text-shadow: 0 1px 3px #aaa;
 }
@@ -100,16 +110,6 @@ Button-FocusIndicator[PUSH].helpButton,
 Button-FocusIndicator[PUSH].helpClose {
   background-color: transparent;
   border: none;
-}
-
-Composite.featuretree {
-  background-color: rgb(62, 61, 57);
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( rgb( 92, 91, 87 ) ),
-    color-stop( 85%, rgb( 112, 111, 107 ) ),
-    to( rgb( 102, 101, 97 ) )
-  );
 }
 
 ScrollBar {
