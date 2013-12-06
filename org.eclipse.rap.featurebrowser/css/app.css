@@ -3,13 +3,12 @@
   background-image: gradient(
     linear, left top, left bottom,
     from( #3969a3 ),
-    to( #21518c )
+    to( #4171ac )
   );
 }
 
 .headerLabel {
-  font: italic 15px 'Open Sans', sans-serif;
-  text-shadow: 0 1px 5px #000;
+  font: 24px 'Open Sans', sans-serif;
   color: #eee;
 }
 
@@ -51,13 +50,13 @@
 Button.helpButton {
   font: 14px 'Open Sans', sans-serif;
   border: none;
-  text-shadow: 0 1px 5px #00f;
+  text-shadow: none;
   text-decoration: underline;
   color: #eee;
 }
 
 Button.helpButton:hover {
-  text-shadow: 0 1px 5px #fff;
+  /*text-shadow: 0 1px 5px #fff;*/
 }
 
 .subheader {

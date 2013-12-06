@@ -32,7 +32,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
       createHeader( parent );
       Composite main = new Composite( parent, SWT.NONE );
       applyGridData( main ).fill();
-      applyGridLayout( main ).margin( 5 ).cols( 3 );
+      applyGridLayout( main ).margin( 8 ).cols( 3 );
       style( main ).as( "main" );
       loadFeatures();
       createFeatureTree( main );
@@ -76,11 +76,11 @@ public class FeatureBrowser extends AbstractEntryPoint {
     public void createHeader( Composite parent ) {
       Composite header = new Composite( parent, SWT.NONE );
       style( header ).as( "header" );
-      applyGridData( header ).fill().vGrab( false ).height( 45 );
-      applyGridLayout( header ).cols( 2 ).marginLeft( 10 );
+      applyGridData( header ).fill().vGrab( false ).height( 50 );
+      applyGridLayout( header ).cols( 2 ).marginLeft( 15 ).marginTop( 4 );
       header.setBackgroundMode( SWT.INHERIT_FORCE );
       Label headerLabel = new Label( header, SWT.NONE );
-      headerLabel.setText( ">>  REMOTE APPLICATION PLATFORM FEATURE BROWSER" );
+      headerLabel.setText( "RAP Feature Browser " );
       style( headerLabel ).as( "headerLabel" );
       applyGridData( headerLabel ).fill().hAlign( SWT.LEFT ).vAlign( SWT.CENTER );
       Button help = new Button( header, SWT.PUSH );
@@ -89,12 +89,9 @@ public class FeatureBrowser extends AbstractEntryPoint {
           new HelpOverlay( getShell() );
         }
       } );
-      help.setText( "Getting started..." );
+      help.setText( "Getting started" );
       applyGridData( help ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
       style( help ).as( "helpButton" );
-      Composite subheader = new Composite( parent, SWT.NONE );
-      style( subheader ).as( "subheader" );
-      applyGridData( subheader ).horizontalFill().height( 20 );
     }
 
 }
