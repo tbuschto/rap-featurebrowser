@@ -29,6 +29,8 @@ public interface EnhancedTabFolder {
   public void addTab( String name, Image image, Control control );
   public Composite getFolder();
   public Control getControl();
+  public void clearContents();
+
 
   public class CTabFolderWrapper implements EnhancedTabFolder {
 
@@ -69,6 +71,14 @@ public interface EnhancedTabFolder {
       return folder;
     }
 
+    public void clearContents() {
+      CTabItem[] items = folder.getItems();
+      for( int i = 0; i < items.length; i++ ) {
+        items[ i ].getControl().dispose();
+        items[ i ].dispose();
+      }
+    }
+
   }
 
   public static class TabFolderWrapper implements EnhancedTabFolder {
@@ -94,9 +104,14 @@ public interface EnhancedTabFolder {
       return folder;
     }
 
+    public void clearContents() {
+      TabItem[] items = folder.getItems();
+      for( int i = 0; i < items.length; i++ ) {
+        items[ i ].getControl().dispose();
+        items[ i ].dispose();
+      }
+    }
+
   }
-
-
-
 
 }

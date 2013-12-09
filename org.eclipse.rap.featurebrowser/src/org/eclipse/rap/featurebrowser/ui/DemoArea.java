@@ -12,6 +12,7 @@ package org.eclipse.rap.featurebrowser.ui;
 
 import static org.eclipse.rap.featurebrowser.util.GridDataUtil.*;
 import static org.eclipse.rap.featurebrowser.util.GridLayoutUtil.*;
+import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -20,35 +21,61 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.eclipse.rap.featurebrowser.Feature;
+import org.eclipse.rap.featurebrowser.FeatureBrowser;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
-public class SnippetInstanceArea {
+public class DemoArea {
 
-  public SnippetInstanceArea( Composite parent, Feature feature ) {
-    Composite main = new Composite( parent, SWT.NONE );
-    Composite snippetParent = new Composite( main, SWT.NONE );
+  private Composite main;
+
+  public DemoArea( FeatureBrowser browser ) {
+    Composite parent = browser.getMainComposite();
+    main = new Composite( parent, SWT.NONE );
+    style( main ).as( "floatingBox" );
     applyGridLayout( main );
-    applyGridLayout( snippetParent ).margin( 10 ).verticalSpacing( 5 );
-    applyGridData( snippetParent ).verticalFill();
+  }
+
+  public Control getControl() {
+    return main;
+  }
+
+  public void setFeature( Feature feature ) {
+    clearContents();
+    Composite snippetParent = createSnippetParent();
     try {
       createContents( feature.getSnippet(), snippetParent );
     } catch( InstantiationException e ) {
-      showError( parent, e );
+      showError( snippetParent, e );
     } catch( IllegalAccessException e ) {
-      showError( parent, e );
+      showError( snippetParent, e );
     } catch( InvocationTargetException e ) {
-      showError( parent, e.getCause() != null ? e.getCause() : e );
+      showError( snippetParent, e.getCause() != null ? e.getCause() : e );
     } catch( NoSuchMethodException e ) {
-      showError( parent, e );
+      showError( snippetParent, e );
     } catch( ClassCastException e ) {
-      showError( parent, e );
+      showError( snippetParent, e );
     }
     if( feature.getDescription() != null ) {
       InfoBox desc = new InfoBox( main );
       desc.addText( feature.getDescription() );
       applyGridData( desc.getControl() ).horizontalFill();
+    }
+  }
+
+  private Composite createSnippetParent() {
+    Composite snippetParent = new Composite( main, SWT.NONE );
+    applyGridLayout( snippetParent ).margin( 10 ).verticalSpacing( 5 );
+    applyGridData( snippetParent ).fill().vIndent( 29 );
+    return snippetParent;
+  }
+
+  void clearContents() {
+    Control[] children = main.getChildren();
+    for( int i = 0; i < children.length; i++ ) {
+      children[ i ].dispose();
     }
   }
 

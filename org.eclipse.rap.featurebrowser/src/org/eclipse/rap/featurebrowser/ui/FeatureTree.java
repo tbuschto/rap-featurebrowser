@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.rap.featurebrowser.Feature;
+import org.eclipse.rap.featurebrowser.FeatureBrowser;
 import org.eclipse.rap.featurebrowser.Navigation;
 import org.eclipse.rap.featurebrowser.util.ResourceUtil;
 import org.eclipse.rap.rwt.RWT;
@@ -45,7 +46,9 @@ public class FeatureTree {
 
 
   // TODO : padding, up/down, expand/collapse buttons, heading?
-  public FeatureTree( final Composite parent, Feature category  ) {
+  public FeatureTree( final FeatureBrowser browser ) {
+    final Composite parent = browser.getMainComposite();
+    Feature category = browser.getFeatures();
     Composite treeArea = new Composite( parent, SWT.NONE );
     applyGridLayout( treeArea ).cols( 1 );
     style( treeArea ).as( "floatingBox" );
@@ -90,11 +93,11 @@ public class FeatureTree {
           treeViewer.update( oldFeature, null );
         }
         if( feature != null ) {
-          featurePage = new FeaturePage( parent, feature, FeatureTree.this );
+          featurePage = new FeaturePage( browser, feature, FeatureTree.this );
           Navigation.getInstance().push( feature );
           treeViewer.update( feature, null );
         }
-        parent.layout();
+        parent.layout( true, true );
       }
     } );
     treeViewer.setInput( category );

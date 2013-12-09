@@ -8,13 +8,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.eclipse.rap.featurebrowser.ui.DemoArea;
 import org.eclipse.rap.featurebrowser.ui.FeatureTree;
 import org.eclipse.rap.featurebrowser.ui.HelpOverlay;
+import org.eclipse.rap.featurebrowser.ui.ResourcesArea;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
@@ -24,39 +27,71 @@ public class FeatureBrowser extends AbstractEntryPoint {
 
     private FeatureTree featureTree;
     private Feature features;
-    private Sash sash;
+    private Composite main;
+    private DemoArea demoArea;
+    private ResourcesArea resourcesArea;
 
     @Override
     protected void createContents( Composite parent ) {
       applyGridLayout( parent );
       createHeader( parent );
-      Composite main = new Composite( parent, SWT.NONE );
+      main = new Composite( parent, SWT.NONE );
       applyGridData( main ).fill();
-      // TODO : apply margin within the main widgets, otherwise shadows get cut off
-      applyGridLayout( main ).margin( 8 ).cols( 3 );
+      applyGridLayout( main ).margin( 8 ).cols( 5 );
       style( main ).as( "main" );
       loadFeatures();
-      createFeatureTree( main );
+      createFeatureTree();
       createSash( main );
+      createDemoArea();
+      createSash( main );
+      createResourcesArea();
+    }
+
+    public Composite getMainComposite() {
+      return main;
+    }
+
+    public DemoArea getDemoArea() {
+      return demoArea;
+    }
+
+    public ResourcesArea getResourcesArea() {
+      return resourcesArea;
+    }
+
+    public Feature getFeatures() {
+      return features;
+    }
+
+    private void createDemoArea() {
+      demoArea = new DemoArea( this );
+      applyGridData( demoArea.getControl() ).verticalFill().width( 500 );
+    }
+
+    private void createResourcesArea() {
+      resourcesArea = new ResourcesArea( this );
+      applyGridData( resourcesArea.getControl() ).fill();
     }
 
     private void createSash( Composite main ) {
       // do not use a SashForm since the tree width should be independent from the parent width
-      sash = new Sash( main, SWT.VERTICAL );
+      final Control resizable = main.getChildren()[ main.getChildren().length - 1 ];
+      final Sash sash = new Sash( main, SWT.VERTICAL );
       applyGridData( sash ).verticalFill().width( 8 );
       sash.addListener( SWT.Selection, new Listener() {
         public void handleEvent( Event event ) {
           if( event.detail != SWT.DRAG ) {
-            int treeWidth = event.x;
-            applyGridData( featureTree.getControl() ).verticalFill().width( treeWidth );
+            int left = resizable.getBounds().x;
+            int newWidth = event.x - left;
+            applyGridData( resizable ).verticalFill().width( newWidth );
             sash.getParent().layout();
           }
         }
       } );
     }
 
-    private void createFeatureTree( Composite main ) {
-      featureTree = new FeatureTree( main, features );
+    private void createFeatureTree() {
+      featureTree = new FeatureTree( this );
       Navigation.getInstance().init( featureTree );
       applyGridData( featureTree.getControl() ).verticalFill().width( 200 );
     }

@@ -16,19 +16,36 @@ import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
 import static org.eclipse.rap.featurebrowser.util.WidgetFactory.*;
 
 import org.eclipse.rap.featurebrowser.Feature;
+import org.eclipse.rap.featurebrowser.FeatureBrowser;
 import org.eclipse.rap.featurebrowser.util.ResourceUtil;
 import org.eclipse.rap.featurebrowser.util.WidgetFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
-public class SnippetResourcesArea {
+public class ResourcesArea {
 
-  public SnippetResourcesArea( Composite parent, Feature feature ) {
-    Composite box = new Composite( parent, SWT.NONE );
-    style( box ).as( "floatingBox" );
-    applyGridLayout( box );
-    EnhancedTabFolder folder = WidgetFactory.createEnhancedTabFolder( box );
+  private Composite main;
+  private EnhancedTabFolder folder;
+
+  public ResourcesArea( FeatureBrowser browser ) {
+    main = new Composite( browser.getMainComposite(), SWT.NONE );
+    style( main ).as( "floatingBox" );
+    applyGridLayout( main );
+    folder = WidgetFactory.createEnhancedTabFolder( main );
     applyGridData( folder.getControl() ).fill();
+  }
+
+  public Control getControl() {
+    return main;
+  }
+
+  public void clearContents() {
+    folder.clearContents();
+  }
+
+  public void setFeature( Feature feature ) {
+    clearContents();
     folder.addTab(
       feature.getSnippet().getSimpleName() + ".java",
       ResourceUtil.getImage( "icons/jcu_obj.gif" ),
