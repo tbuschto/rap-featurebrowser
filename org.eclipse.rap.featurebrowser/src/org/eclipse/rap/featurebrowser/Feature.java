@@ -50,15 +50,21 @@ public class Feature {
   private String name;
   private Class<? extends AbstractEntryPoint> snippet;
   private Feature parent;
+  private Feature previous;
+  private Feature next;
   private String preview;
   private View view = View.NONE;
   private String url;
   private String description;
   private String target;
 
-  public Feature( JsonObject obj, Feature parent ) {
-    this( obj.get( "children" ) != null ? obj.get( "children" ).asArray() : null );
+  public Feature( JsonObject obj, Feature parent, Feature previous ) {
+    this( obj.get( "children" ) != null ? obj.get( "children" ).asArray() : null, false );
     this.parent = parent;
+    this.previous = previous;
+    if( previous != null ) {
+      previous.setNext( this );
+    }
     url = obj.get( "url" ) != null ? obj.get( "url" ).asString() : null;
     name = obj.get( "name" ).asString();
     target = obj.get( "target" ) != null ? obj.get( "target" ).asString() : null;
@@ -75,18 +81,31 @@ public class Feature {
     Navigation.getInstance().register( this );
   }
 
-  public Feature( JsonArray json ) {
+  private void setNext( Feature next ) {
+    this.next = next;
+  }
+
+  public Feature( JsonArray json, boolean root ) {
     if( json != null ) {
       List<Feature> childrenList = new ArrayList<Feature>( json.size() );
+      Feature prev = root ? null : this;
       for( int i = 0; i < json.size(); i++ ) {
         JsonObject obj = json.get( i ).asObject();
-        Feature child = new Feature( obj, this );
+        Feature child = new Feature( obj, this, prev );
         if( child.getTarget() == null || child.getTarget().equals( getClientName() ) ) {
           childrenList.add( child );
+          prev = child.getLastChild();
         }
       }
       children = childrenList.toArray( new Feature[ childrenList.size() ] );
     }
+  }
+
+  private Feature getLastChild() {
+    if( children == null || children.length == 0 ) {
+      return this;
+    }
+    return children[ children.length - 1 ].getLastChild();
   }
 
   private static String getClientName() {
@@ -111,6 +130,14 @@ public class Feature {
 
   public Object getParent() {
     return parent;
+  }
+
+  public Feature getPrevious() {
+    return previous;
+  }
+
+  public Feature getNext() {
+    return next;
   }
 
   public String getTarget() {

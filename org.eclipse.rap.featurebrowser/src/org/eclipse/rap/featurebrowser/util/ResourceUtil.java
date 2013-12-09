@@ -41,7 +41,7 @@ public class ResourceUtil {
     Map<String,Image> images = ( Map<String, Image> )RWT.getUISession().getAttribute( "Images" );
     if( images == null ) {
       images = new HashMap<String,Image>();
-      RWT.getUISession().setAttribute( "Imags", images );
+      RWT.getUISession().setAttribute( "Images", images );
     }
     Image result = images.get( path );
     if( result == null ) {

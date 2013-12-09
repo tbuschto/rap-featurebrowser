@@ -16,8 +16,10 @@ import org.eclipse.swt.widgets.Composite;
 public class FeaturePage {
 
   private SashForm page;
+  private Feature feature;
 
   FeaturePage( Composite parent, Feature feature, FeatureTree featureTree ) {
+    this.feature = feature;
     page = new SashForm( parent, SWT.HORIZONTAL );
     style( page ).background( "transparent" );
     applyGridData( page ).fill();
@@ -59,6 +61,10 @@ public class FeaturePage {
 
   public void dispose() {
     page.dispose();
+  }
+
+  public Feature getFeature() {
+    return feature;
   }
 
 }

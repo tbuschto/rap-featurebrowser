@@ -32,6 +32,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
       createHeader( parent );
       Composite main = new Composite( parent, SWT.NONE );
       applyGridData( main ).fill();
+      // TODO : apply margin within the main widgets, otherwise shadows get cut off
       applyGridLayout( main ).margin( 8 ).cols( 3 );
       style( main ).as( "main" );
       loadFeatures();
@@ -57,7 +58,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
     private void createFeatureTree( Composite main ) {
       featureTree = new FeatureTree( main, features );
       Navigation.getInstance().init( featureTree );
-      applyGridData( featureTree.getControl() ).verticalFill().width( 160 );
+      applyGridData( featureTree.getControl() ).verticalFill().width( 200 );
     }
 
     private void loadFeatures() {
@@ -67,7 +68,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
       try {
         JsonArray jsonObject = JsonArray.readFrom( reader );
         reader.close();
-        features = new Feature( jsonObject );
+        features = new Feature( jsonObject, true );
       } catch( IOException e ) {
         throw new RuntimeException( e );
       }

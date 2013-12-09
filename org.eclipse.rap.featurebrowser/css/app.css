@@ -105,6 +105,7 @@ Button[PUSH]:hover.vbar {
 }
 
 Button-FocusIndicator[PUSH].vbar,
+Button-FocusIndicator[PUSH].mini,
 Button-FocusIndicator[PUSH].helpButton,
 Button-FocusIndicator[PUSH].helpClose {
   background-color: transparent;
@@ -140,50 +141,6 @@ ScrollBar-DownButton[HORIZONTAL],
 ScrollBar-UpButton[VERTICAL],
 ScrollBar-DownButton[VERTICAL] {
   background-image: none;
-}
-
-Tree-Cell {
-  spacing: 2px;
-  padding: 3px 2px 3px 2px;
-}
-
-Tree.featuretree {
-  font: 12px Verdana, "Lucida Sans", Arial, Helvetica, sans-serif;
-  color: #eee;
-  background-color: transparent;
-  padding: 3px;
-}
-
-TreeItem.featuretree,
-TreeItem.featuretree:hover:selected,
-TreeItem.featuretree:hover:selected:unfocused {
-  background-color: transparent;
-  text-decoration: none;
-  text-shadow: none;
-}
-
-
-TreeItem.featuretree:hover,
-TreeItem.featuretree:hover:unfocused {
-  background-color: transparent;
-  text-decoration: none;
-  text-shadow: 0 1px 5px #fff;
-}
-
-Tree-RowOverlay.featuretree:hover,
-Tree-RowOverlay.featuretree:hover:unfocused {
-  background-color: transparent;
-  color: inherit;
-  background-image: none;
-}
-
-Tree-RowOverlay.featuretree:selected,
-Tree-RowOverlay.featuretree:selected:hover,
-Tree-RowOverlay.featuretree:selected:unfocused,
-Tree-RowOverlay.featuretree:selected:hover:unfocused {
-  color: inherit;
-  background-image: none;
-  background-color: #31619c;
 }
 
 Shell.helpShell {
@@ -235,3 +192,25 @@ CTabItem:selected {
   background-color: #ffffff;
 }
 
+Button[PUSH].mini,
+Button[PUSH].mini:hover,
+Button[PUSH].mini:hover:pressed,
+Button[PUSH].mini:focused:hover,
+Button[PUSH].mini:focused:hover:pressed,
+Button[PUSH].mini:focused {
+  border: 1px solid transparent;
+  padding: 3px 2px 2px 2px;
+}
+
+Button[PUSH].mini:hover,
+Button[PUSH].mini:hover:default,
+Button[PUSH].mini:focused:hover:default,
+Button[PUSH].mini:focused:hover {
+  border: 1px solid #4171ac;
+}
+
+Button[PUSH].mini:pressed,
+Button[PUSH].mini:hover:pressed,
+Button[PUSH].mini:focused:hover:pressed {
+  padding: 4px 2px 1px 2px;
+}
