@@ -27,8 +27,10 @@ public class ResourcesArea {
 
   private Composite main;
   private EnhancedTabFolder folder;
+  private FeatureBrowser browser;
 
   public ResourcesArea( FeatureBrowser browser ) {
+    this.browser = browser;
     main = new Composite( browser.getMainComposite(), SWT.NONE );
     style( main ).as( "floatingBox" );
     applyGridLayout( main );
@@ -57,6 +59,7 @@ public class ResourcesArea {
                      ResourceUtil.getImage( "icons/internal_browser.gif" ),
                      createBrowser( folder.getFolder(), url ) );
     }
+    browser.setResoucesVisible( folder.getItemCount() > 0 );
   }
 
 }

@@ -30,6 +30,7 @@ public interface EnhancedTabFolder {
   public Composite getFolder();
   public Control getControl();
   public void clearContents();
+  public int getItemCount();
 
 
   public class CTabFolderWrapper implements EnhancedTabFolder {
@@ -79,6 +80,10 @@ public interface EnhancedTabFolder {
       }
     }
 
+    public int getItemCount() {
+      return folder.getItemCount();
+    }
+
   }
 
   public static class TabFolderWrapper implements EnhancedTabFolder {
@@ -112,6 +117,11 @@ public interface EnhancedTabFolder {
       }
     }
 
+    public int getItemCount() {
+      return folder.getItemCount();
+    }
+
   }
+
 
 }

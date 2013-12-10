@@ -15,6 +15,7 @@ import org.eclipse.rap.featurebrowser.ui.ResourcesArea;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -30,6 +31,8 @@ public class FeatureBrowser extends AbstractEntryPoint {
     private Composite main;
     private DemoArea demoArea;
     private ResourcesArea resourcesArea;
+    private Sash mainSash;
+    private int demoWidth;
 
     @Override
     protected void createContents( Composite parent ) {
@@ -43,7 +46,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
       createFeatureTree();
       createSash( main );
       createDemoArea();
-      createSash( main );
+      mainSash = createSash( main );
       createResourcesArea();
     }
 
@@ -73,7 +76,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
       applyGridData( resourcesArea.getControl() ).fill();
     }
 
-    private void createSash( Composite main ) {
+    private Sash createSash( Composite main ) {
       // do not use a SashForm since the tree width should be independent from the parent width
       final Control resizable = main.getChildren()[ main.getChildren().length - 1 ];
       final Sash sash = new Sash( main, SWT.VERTICAL );
@@ -88,6 +91,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
           }
         }
       } );
+      return sash;
     }
 
     private void createFeatureTree() {
@@ -128,6 +132,24 @@ public class FeatureBrowser extends AbstractEntryPoint {
       help.setText( "Getting started" );
       applyGridData( help ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
       style( help ).as( "helpButton" );
+    }
+
+    public void setResoucesVisible( boolean visible ) {
+      if( resourcesArea.getControl().getVisible() != visible ) {
+        resourcesArea.getControl().setVisible( visible );
+        GridData gridData = ( GridData )resourcesArea.getControl().getLayoutData();
+        gridData.exclude = !visible;
+        mainSash.setVisible( visible );
+        GridData sashGridData = ( GridData )mainSash.getLayoutData();
+        sashGridData.exclude = !visible;
+        if( visible ) {
+          applyGridData( demoArea.getControl() ).verticalFill().width( demoWidth );
+        } else {
+          demoWidth = demoArea.getControl().getSize().x;
+          applyGridData( demoArea.getControl() ).fill();
+        }
+        main.layout( true, true );
+      }
     }
 
 }
