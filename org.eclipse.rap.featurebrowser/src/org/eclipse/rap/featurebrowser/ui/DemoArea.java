@@ -50,6 +50,8 @@ public class DemoArea {
       createSnippetArea( feature );
     } else if( feature.getPreview() != null ) {
       createPreview( feature );
+    } else {
+      createGallery( feature );
     }
     if( feature.getDescription() != null ) {
       createDescription( feature );
@@ -86,6 +88,12 @@ public class DemoArea {
 //        featureTree.select( ( Feature )event.item.getData() );
 //      }
 //    } );
+  }
+
+  private void createGallery( Feature feature ) {
+    createHeader( "Overview: " + feature.getName() );
+    FeatureGallery gallery = new FeatureGallery( main, feature );
+    applyGridData( gallery.getControl() ).fill();
   }
 
   private void createHeader( String text ) {

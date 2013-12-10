@@ -27,7 +27,7 @@ public class FeatureGallery {
 
   private Browser browser;
 
-  public FeatureGallery( Composite parent, Feature root, FeatureTree tree ) {
+  public FeatureGallery( Composite parent, Feature root ) {
     browser = new Browser( parent, SWT.NONE );
     browser.setText( generateHTML( root ) ); // TODO store in ResourceManager, use createBrowser
   }
