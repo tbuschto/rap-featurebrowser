@@ -93,7 +93,7 @@ public class FeatureTree {
           treeViewer.update( oldFeature, null );
         }
         if( feature != null ) {
-          featurePage = new FeaturePage( browser, feature, FeatureTree.this );
+          featurePage = new FeaturePage( browser, feature );
           Navigation.getInstance().push( feature );
           treeViewer.update( feature, null );
         }

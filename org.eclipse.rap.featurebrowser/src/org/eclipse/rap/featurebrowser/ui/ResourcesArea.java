@@ -46,11 +46,17 @@ public class ResourcesArea {
 
   public void setFeature( Feature feature ) {
     clearContents();
-    folder.addTab(
-      feature.getSnippet().getSimpleName() + ".java",
-      ResourceUtil.getImage( "icons/jcu_obj.gif" ),
-      createBrowser( folder.getFolder(), feature.getSnippetHtmlUrl() )
-    );
+    if( feature.getSnippetHtmlUrl() != null ) {
+      folder.addTab( feature.getSnippet().getSimpleName() + ".java",
+                     ResourceUtil.getImage( "icons/jcu_obj.gif" ),
+                     createBrowser( folder.getFolder(), feature.getSnippetHtmlUrl() ) );
+    }
+    if( feature.getUrl() != null ) {
+      String url = feature.getUrl();
+      folder.addTab( url.substring( url.lastIndexOf( '/' ) + 1 ),
+                     ResourceUtil.getImage( "icons/internal_browser.gif" ),
+                     createBrowser( folder.getFolder(), url ) );
+    }
   }
 
 }

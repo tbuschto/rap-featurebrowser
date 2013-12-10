@@ -38,7 +38,7 @@ public class InfoBox {
     applyGridLayout( contentComp ).margin( 35 ).spacing( 20 ).cols( 2 );
     applyGridData( contentComp ).fill();
     Control icon = createImage( contentComp,
-                                "icons/1375930009_information-balloon_basic_blue_edit1.png",
+                                "icons/balloon.png",
                                 getClass() );
     applyGridData( icon ).vAlign( SWT.TOP ).hAlign( SWT.LEFT );
     return contentComp;

@@ -149,10 +149,16 @@ public class Feature {
   }
 
   public String getSnippetJavaUrl() {
+    if( snippet == null ) {
+      return null;
+    }
     return RWT.getResourceManager().getLocation( getFileName() );
   }
 
   public String getSnippetHtmlUrl() {
+    if( snippet == null ) {
+      return null;
+    }
     return RWT.getResourceManager().getLocation( getHtmlName() );
   }
 

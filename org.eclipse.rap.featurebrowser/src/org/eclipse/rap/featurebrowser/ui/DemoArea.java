@@ -44,9 +44,20 @@ public class DemoArea {
 
   public void setFeature( Feature feature ) {
     clearContents();
+    if( feature.getSnippet() != null ) {
+      createSnippetArea( feature );
+    }
+    if( feature.getDescription() != null ) {
+      InfoBox desc = new InfoBox( main );
+      desc.addText( feature.getDescription() );
+      applyGridData( desc.getControl() ).horizontalFill();
+    }
+  }
+
+  private void createSnippetArea( Feature feature ) {
     Composite snippetParent = createSnippetParent();
     try {
-      createContents( feature.getSnippet(), snippetParent );
+      runSnippet( feature.getSnippet(), snippetParent );
     } catch( InstantiationException e ) {
       showError( snippetParent, e );
     } catch( IllegalAccessException e ) {
@@ -57,11 +68,6 @@ public class DemoArea {
       showError( snippetParent, e );
     } catch( ClassCastException e ) {
       showError( snippetParent, e );
-    }
-    if( feature.getDescription() != null ) {
-      InfoBox desc = new InfoBox( main );
-      desc.addText( feature.getDescription() );
-      applyGridData( desc.getControl() ).horizontalFill();
     }
   }
 
@@ -95,7 +101,7 @@ public class DemoArea {
     applyGridData( msg ).fill();
   }
 
-  static void createContents( Class<?> clazz, Composite parent )
+  static void runSnippet( Class<?> clazz, Composite parent )
     throws InstantiationException, IllegalAccessException, InvocationTargetException,
     NoSuchMethodException
   {
