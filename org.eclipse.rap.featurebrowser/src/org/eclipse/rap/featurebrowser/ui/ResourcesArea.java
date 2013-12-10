@@ -46,6 +46,10 @@ public class ResourcesArea {
     folder.clearContents();
   }
 
+  public boolean hasContent() {
+    return folder.getItemCount() > 0;
+  }
+
   public void setFeature( Feature feature ) {
     clearContents();
     if( feature.getSnippetHtmlUrl() != null ) {
@@ -59,7 +63,7 @@ public class ResourcesArea {
                      ResourceUtil.getImage( "icons/internal_browser.gif" ),
                      createBrowser( folder.getFolder(), url ) );
     }
-    browser.setResoucesVisible( folder.getItemCount() > 0 );
+    browser.setResoucesVisible( hasContent() );
   }
 
 }

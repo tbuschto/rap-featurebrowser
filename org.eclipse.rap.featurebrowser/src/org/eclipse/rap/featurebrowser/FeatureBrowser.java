@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
 
 import org.eclipse.rap.featurebrowser.ui.DemoArea;
 import org.eclipse.rap.featurebrowser.ui.FeatureTree;
-import org.eclipse.rap.featurebrowser.ui.HelpOverlay;
 import org.eclipse.rap.featurebrowser.ui.ResourcesArea;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
@@ -26,18 +25,21 @@ import org.eclipse.swt.widgets.Sash;
 
 public class FeatureBrowser extends AbstractEntryPoint {
 
+    private static final String STR_SHOW_SOURCE = "Show Source";
+    private static final String STR_HIDE_SOURCE = "Hide Source";
     private FeatureTree featureTree;
     private Feature features;
     private Composite main;
     private DemoArea demoArea;
     private ResourcesArea resourcesArea;
     private Sash mainSash;
-    private int demoWidth;
+    private int demoWidth = 0;
+    private boolean showSource = false;
 
     @Override
     protected void createContents( Composite parent ) {
-      applyGridLayout( parent );
       createHeader( parent );
+      applyGridLayout( parent );
       main = new Composite( parent, SWT.NONE );
       applyGridData( main ).fill();
       applyGridLayout( main ).margin( 8 ).cols( 5 );
@@ -48,6 +50,8 @@ public class FeatureBrowser extends AbstractEntryPoint {
       createDemoArea();
       mainSash = createSash( main );
       createResourcesArea();
+      setResoucesVisible( false );
+      demoWidth = 500;
     }
 
     public Composite getMainComposite() {
@@ -123,26 +127,38 @@ public class FeatureBrowser extends AbstractEntryPoint {
       headerLabel.setText( "RAP Feature Browser " );
       style( headerLabel ).as( "headerLabel" );
       applyGridData( headerLabel ).fill().hAlign( SWT.LEFT ).vAlign( SWT.CENTER );
-      Button help = new Button( header, SWT.PUSH );
-      help.addListener( SWT.Selection, new Listener() {
+//      Button help = new Button( header, SWT.PUSH );
+//      help.addListener( SWT.Selection, new Listener() {
+//        public void handleEvent( Event event ) {
+//          new HelpOverlay( getShell() );
+//        }
+//      } );
+//      help.setText( "Getting started" );
+//      applyGridData( help ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
+//      style( help ).as( "helpButton" );
+      final Button sourceButton = new Button( header, SWT.PUSH );
+      sourceButton.addListener( SWT.Selection, new Listener() {
         public void handleEvent( Event event ) {
-          new HelpOverlay( getShell() );
+          showSource = !showSource;
+          setResoucesVisible( showSource && resourcesArea.hasContent() );
+          sourceButton.setText( showSource ? STR_HIDE_SOURCE : STR_SHOW_SOURCE );
         }
       } );
-      help.setText( "Getting started" );
-      applyGridData( help ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
-      style( help ).as( "helpButton" );
+      sourceButton.setText( STR_SHOW_SOURCE );
+      applyGridData( sourceButton ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
+      style( sourceButton ).as( "helpButton" );
     }
 
     public void setResoucesVisible( boolean visible ) {
-      if( resourcesArea.getControl().getVisible() != visible ) {
-        resourcesArea.getControl().setVisible( visible );
+      boolean computedVisible = showSource && visible;
+      if( resourcesArea.getControl().getVisible() != computedVisible ) {
+        resourcesArea.getControl().setVisible( computedVisible );
         GridData gridData = ( GridData )resourcesArea.getControl().getLayoutData();
-        gridData.exclude = !visible;
-        mainSash.setVisible( visible );
+        gridData.exclude = !computedVisible;
+        mainSash.setVisible( computedVisible );
         GridData sashGridData = ( GridData )mainSash.getLayoutData();
-        sashGridData.exclude = !visible;
-        if( visible ) {
+        sashGridData.exclude = !computedVisible;
+        if( computedVisible ) {
           applyGridData( demoArea.getControl() ).verticalFill().width( demoWidth );
         } else {
           demoWidth = demoArea.getControl().getSize().x;
