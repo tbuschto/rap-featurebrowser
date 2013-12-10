@@ -57,6 +57,8 @@ public class Feature {
   private String url;
   private String description;
   private String target;
+  private int width = -1;
+  private int height = -1;
 
   public Feature( JsonObject obj, Feature parent, Feature previous ) {
     this( obj.get( "children" ) != null ? obj.get( "children" ).asArray() : null, false );
@@ -68,6 +70,12 @@ public class Feature {
     url = obj.get( "url" ) != null ? obj.get( "url" ).asString() : null;
     name = obj.get( "name" ).asString();
     target = obj.get( "target" ) != null ? obj.get( "target" ).asString() : null;
+    if( obj.get( "width" ) != null ) {
+      width = obj.get( "width" ).asInt();
+    }
+    if( obj.get( "height" ) != null ) {
+      height = obj.get( "height" ).asInt();
+    }
     if( obj.get( "snippet" ) != null ) {
       registerSnippet( obj.get( "snippet" ).asString() );
     }
@@ -112,12 +120,21 @@ public class Feature {
     return RWT.getClient() != null ? RWT.getClient().getClass().getSimpleName() : "SWT";
   }
 
+
   public String getName() {
     return name;
   }
 
   public String getDescription() {
     return description;
+  }
+
+  public int getWidth() {
+    return width;
+  }
+
+  public int getHeight() {
+    return height;
   }
 
   public String getPreview() {

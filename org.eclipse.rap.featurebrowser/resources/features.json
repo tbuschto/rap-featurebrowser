@@ -13,11 +13,15 @@
           {
             "name" : "with Text",
             "snippet" : "snippets.LabelWithText",
-            "description" : "desc/label-vs-clabel.txt"
+            "description" : "desc/label-vs-clabel.txt",
+            "width" : 200,
+            "height": 200
           },
           {
             "name" : "with Image",
-            "snippet" : "snippets.LabelWithImage"
+            "snippet" : "snippets.LabelWithImage",
+            "width" : 200,
+            "height" : 200
           },
           {
             "name" : "with Mnemonic",

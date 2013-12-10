@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 
 import org.eclipse.rap.featurebrowser.Feature;
 import org.eclipse.rap.featurebrowser.FeatureBrowser;
+import org.eclipse.rap.featurebrowser.util.GridDataUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.widgets.Composite;
@@ -37,6 +38,7 @@ public class DemoArea {
     Composite parent = browser.getMainComposite();
     main = new Composite( parent, SWT.NONE );
     style( main ).as( "floatingBox" );
+    style( main ).background( "#ffffff" );
     applyGridLayout( main );
   }
 
@@ -107,16 +109,15 @@ public class DemoArea {
   private void createDescription( Feature feature ) {
     InfoBox desc = new InfoBox( main );
     desc.addText( feature.getDescription() );
-    applyGridData( desc.getControl() ).horizontalFill();
+    applyGridData( desc.getControl() ).horizontalFill().vAlign( SWT.BOTTOM ).vGrab();
   }
-
 
   private void createSnippetArea( Feature feature ) {
     String text =   feature.getParent().getName()
                   + " "
                   + feature.getName();
     createHeader( text );
-    Composite snippetParent = createSnippetParent();
+    Composite snippetParent = createSnippetParent( feature );
     try {
       runSnippet( feature.getSnippet(), snippetParent );
     } catch( InstantiationException e ) {
@@ -132,11 +133,23 @@ public class DemoArea {
     }
   }
 
-  private Composite createSnippetParent() {
-    Composite snippetParent = new Composite( main, SWT.NONE );
-    applyGridLayout( snippetParent ).margin( 10 ).verticalSpacing( 5 );
-    applyGridData( snippetParent ).fill();
-    return snippetParent;
+  private Composite createSnippetParent( Feature feature ) {
+    boolean boxed = feature.getWidth() > 0 && feature.getHeight() > 0;
+    Composite result = new Composite( main, SWT.NONE );
+    style( result ).as( boxed ? "snippetBox" : "snippet" );
+    applyGridLayout( result ).margin( 10 ).verticalSpacing( 5 );
+    GridDataUtil gridData = applyGridData( result ).center();
+    if( feature.getWidth() > 0 ) {
+      gridData.width( feature.getWidth() ).hGrab();
+    } else {
+      gridData.horizontalFill();
+    }
+    if( feature.getHeight() > 0 ) {
+      gridData.height( feature.getHeight() ).vIndent( 40 );
+    } else {
+      gridData.verticalFill();
+    }
+    return result;
   }
 
   void clearContents() {
