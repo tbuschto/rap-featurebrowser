@@ -29,6 +29,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
     private static final String STR_HIDE_SOURCE = "Hide Source";
     private FeatureTree featureTree;
     private Feature features;
+    private Feature currentFeature;
     private Composite main;
     private DemoArea demoArea;
     private ResourcesArea resourcesArea;
@@ -68,6 +69,30 @@ public class FeatureBrowser extends AbstractEntryPoint {
 
     public Feature getFeatures() {
       return features;
+    }
+
+    public Feature getCurrentFeature() {
+      return currentFeature;
+    }
+
+    public void previousFeature() {
+      featureTree.select( currentFeature.getPrevious() );
+    }
+
+    public void nextFeature() {
+      featureTree.select( currentFeature.getNext() );
+    }
+
+    public void setCurrentFeature( Feature feature ) {
+      if( feature == null ) {
+        throw new IllegalArgumentException();
+      }
+      if( currentFeature != feature ) {
+        demoArea.setFeature( feature );
+        resourcesArea.setFeature( feature );
+        currentFeature = feature;
+        main.layout( true, true );
+      }
     }
 
     private void createDemoArea() {

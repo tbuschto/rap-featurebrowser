@@ -24,17 +24,23 @@ import java.lang.reflect.Method;
 import org.eclipse.rap.featurebrowser.Feature;
 import org.eclipse.rap.featurebrowser.FeatureBrowser;
 import org.eclipse.rap.featurebrowser.util.GridDataUtil;
+import org.eclipse.rap.featurebrowser.util.ResourceUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 public class DemoArea {
 
   private Composite main;
+  private FeatureBrowser browser;
 
   public DemoArea( FeatureBrowser browser ) {
+    this.browser = browser;
     Composite parent = browser.getMainComposite();
     main = new Composite( parent, SWT.NONE );
     style( main ).as( "floatingBox" );
@@ -99,11 +105,33 @@ public class DemoArea {
   }
 
   private void createHeader( String text ) {
-    CLabel header = new CLabel( main, SWT.CENTER );
+    Composite header = new Composite( main, SWT.NONE );
+    header.setBackgroundMode( SWT.INHERIT_FORCE );
     style( header ).as( "miniHeader" );
-    header.setTopMargin( 7 );
     applyGridData( header ).height( 29 ).horizontalFill();
-    header.setText( text.replaceAll( "&", "&&" ) );
+    applyGridLayout( header ).cols( 3 );
+    createMiniButton( header, "icons/shift_l_edit.gif", new Listener() {
+      public void handleEvent( Event event ) {
+        browser.previousFeature();
+      }
+    } );
+    CLabel headerLabel = new CLabel( header, SWT.CENTER );
+    applyGridData( headerLabel ).horizontalFill();
+    headerLabel.setText( text.replaceAll( "&", "&&" ) );
+    createMiniButton( header, "icons/shift_r_edit.gif", new Listener() {
+      public void handleEvent( Event event ) {
+        browser.nextFeature();
+      }
+    } );
+  }
+
+  private static Button createMiniButton( Composite toolBar, String imagePath, Listener listener ) {
+    Button item = new Button( toolBar, SWT.PUSH );
+    item.setImage( ResourceUtil.getImage( imagePath ) );
+    style( item ).as( "mini" );
+    item.addListener( SWT.Selection, listener );
+    applyGridData( item );
+    return item;
   }
 
   private void createDescription( Feature feature ) {

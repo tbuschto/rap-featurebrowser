@@ -41,12 +41,12 @@ public class FeatureTree {
   // NOTE: Firefox doesn't seem to understand single quotes (') in font family names
   private static final String TREE_FONT = "Verdana,\"Lucida Sans\",Arial,Helvetica,sans-serif";
   private Tree tree;
-  private FeaturePage featurePage;
   private TreeViewer treeViewer;
+  private FeatureBrowser browser;
 
 
-  // TODO : padding, up/down, expand/collapse buttons, heading?
   public FeatureTree( final FeatureBrowser browser ) {
+    this.browser = browser;
     final Composite parent = browser.getMainComposite();
     Feature category = browser.getFeatures();
     Composite treeArea = new Composite( parent, SWT.NONE );
@@ -83,21 +83,16 @@ public class FeatureTree {
       public void selectionChanged( SelectionChangedEvent event ) {
         IStructuredSelection sel = ( IStructuredSelection )event.getSelection();
         Feature feature = ( Feature )sel.getFirstElement();
-        if( featurePage != null && featurePage.getFeature() == feature ) {
+        if( browser.getCurrentFeature() == feature ) {
           return;
         }
-        if( featurePage != null ) {
-          featurePage.dispose();
-          Feature oldFeature = featurePage.getFeature();
-          featurePage = null;
+        Feature oldFeature = browser.getCurrentFeature();
+        Navigation.getInstance().push( feature );
+        browser.setCurrentFeature( feature );
+        if( oldFeature != null ) {
           treeViewer.update( oldFeature, null );
         }
-        if( feature != null ) {
-          featurePage = new FeaturePage( browser, feature );
-          Navigation.getInstance().push( feature );
-          treeViewer.update( feature, null );
-        }
-        parent.layout( true, true );
+        treeViewer.update( feature, null );
       }
     } );
     treeViewer.setInput( category );
@@ -110,16 +105,6 @@ public class FeatureTree {
     createToolItem( toolBar, "icons/expandall.gif", new Listener() {
       public void handleEvent( Event event ) {
         treeViewer.expandAll();
-      }
-    } );
-    createToolItem( toolBar, "icons/select_prev.gif", new Listener() {
-      public void handleEvent( Event event ) {
-        select( featurePage.getFeature().getPrevious() );
-      }
-    } );
-    createToolItem( toolBar, "icons/select_next.gif", new Listener() {
-      public void handleEvent( Event event ) {
-        select( featurePage.getFeature().getNext() );
       }
     } );
   }
@@ -195,7 +180,7 @@ public class FeatureTree {
     }
 
     public Font getFont( Object element ) {
-      if( featurePage != null && featurePage.getFeature() == element ) {
+      if( browser.getCurrentFeature() == element ) {
         return new Font( Display.getCurrent(), TREE_FONT, 14, SWT.BOLD );
       }
       return null;
