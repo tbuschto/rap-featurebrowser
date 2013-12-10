@@ -13,6 +13,7 @@ package org.eclipse.rap.featurebrowser.ui;
 import static org.eclipse.rap.featurebrowser.util.GridDataUtil.*;
 import static org.eclipse.rap.featurebrowser.util.GridLayoutUtil.*;
 import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
+import static org.eclipse.rap.featurebrowser.util.WidgetFactory.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -46,13 +47,54 @@ public class DemoArea {
     clearContents();
     if( feature.getSnippet() != null ) {
       createSnippetArea( feature );
+    } else if( feature.getPreview() != null ) {
+      createPreview( feature );
     }
     if( feature.getDescription() != null ) {
-      InfoBox desc = new InfoBox( main );
-      desc.addText( feature.getDescription() );
-      applyGridData( desc.getControl() ).horizontalFill();
+      createDescription( feature );
     }
   }
+
+  private void createPreview( Feature feature ) {
+    Composite previewArea = new Composite( main, SWT.NONE );
+    applyGridData( previewArea ).fill().vIndent( 29 );
+    applyGridLayout( previewArea ).marginTop( 20 );
+    Control label = createLabel( previewArea, feature.getName() );
+    style( label ).font( "Arial", 30, SWT.NONE );
+    applyGridData( label ).horizontalFill();
+    String path = feature.getPreview();
+    if( path != null ) {
+      Control preview = createImage( previewArea, path, getClass() );
+      applyGridData( preview ).fill().center();
+    }
+//    Label separator = new Label( area, SWT.SEPARATOR | SWT.HORIZONTAL );
+//    applyGridData( separator ).horizontalFill();
+//    final Table table = new Table( area, SWT.NONE );
+//    table.setFont( new Font( table.getDisplay(), "Courier New", 12, SWT.NORMAL ) );
+//    table.setLinesVisible( true );
+//    applyGridData( table ).horizontalFill().vAlign( SWT.FILL );
+//    feature.forEach( new FeatureVisitor() {
+//      public void visit( Feature feature ) {
+//        if( feature.getSnippet() != null ) {
+//          TableItem item = new TableItem( table, SWT.NONE );
+//          item.setText( feature.getSnippet().getSimpleName() + ".java" );
+//          item.setData( feature );
+//        }
+//      }
+//    } );
+//    table.addListener( SWT.Selection, new Listener() {
+//      public void handleEvent( Event event ) {
+//        featureTree.select( ( Feature )event.item.getData() );
+//      }
+//    } );
+  }
+
+  private void createDescription( Feature feature ) {
+    InfoBox desc = new InfoBox( main );
+    desc.addText( feature.getDescription() );
+    applyGridData( desc.getControl() ).horizontalFill();
+  }
+
 
   private void createSnippetArea( Feature feature ) {
     Composite snippetParent = createSnippetParent();
