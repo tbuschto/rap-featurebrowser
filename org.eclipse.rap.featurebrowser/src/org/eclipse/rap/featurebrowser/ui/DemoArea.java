@@ -59,7 +59,7 @@ public class DemoArea {
   }
 
   private void createPreview( Feature feature ) {
-    createHeader( "Preview: " + feature.getName() );
+    createHeader( feature.getName() );
     Composite previewArea = new Composite( main, SWT.NONE );
     applyGridData( previewArea ).fill();
     applyGridLayout( previewArea ).marginTop( 20 );
@@ -91,16 +91,15 @@ public class DemoArea {
   }
 
   private void createGallery( Feature feature ) {
-    createHeader( "Overview: " + feature.getName() );
+    createHeader( feature.getName() );
     FeatureGallery gallery = new FeatureGallery( main, feature );
     applyGridData( gallery.getControl() ).fill();
   }
 
   private void createHeader( String text ) {
-    CLabel header = new CLabel( main, SWT.NONE );
+    CLabel header = new CLabel( main, SWT.CENTER );
     style( header ).as( "miniHeader" );
     header.setTopMargin( 7 );
-    header.setLeftMargin( 10 );
     applyGridData( header ).height( 29 ).horizontalFill();
     header.setText( text.replaceAll( "&", "&&" ) );
   }
@@ -113,8 +112,7 @@ public class DemoArea {
 
 
   private void createSnippetArea( Feature feature ) {
-    String text =   "Demo: "
-                  + feature.getParent().getName()
+    String text =   feature.getParent().getName()
                   + " "
                   + feature.getName();
     createHeader( text );
