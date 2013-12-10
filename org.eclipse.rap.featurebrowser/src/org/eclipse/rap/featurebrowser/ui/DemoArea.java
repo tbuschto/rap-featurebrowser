@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
 import org.eclipse.rap.featurebrowser.Feature;
 import org.eclipse.rap.featurebrowser.FeatureBrowser;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
@@ -56,12 +57,10 @@ public class DemoArea {
   }
 
   private void createPreview( Feature feature ) {
+    createHeader( "Preview: " + feature.getName() );
     Composite previewArea = new Composite( main, SWT.NONE );
-    applyGridData( previewArea ).fill().vIndent( 29 );
+    applyGridData( previewArea ).fill();
     applyGridLayout( previewArea ).marginTop( 20 );
-    Control label = createLabel( previewArea, feature.getName() );
-    style( label ).font( "Arial", 30, SWT.NONE );
-    applyGridData( label ).horizontalFill();
     String path = feature.getPreview();
     if( path != null ) {
       Control preview = createImage( previewArea, path, getClass() );
@@ -89,6 +88,15 @@ public class DemoArea {
 //    } );
   }
 
+  private void createHeader( String text ) {
+    CLabel header = new CLabel( main, SWT.NONE );
+    style( header ).as( "miniHeader" );
+    header.setTopMargin( 7 );
+    header.setLeftMargin( 10 );
+    applyGridData( header ).height( 29 ).horizontalFill();
+    header.setText( text.replaceAll( "&", "&&" ) );
+  }
+
   private void createDescription( Feature feature ) {
     InfoBox desc = new InfoBox( main );
     desc.addText( feature.getDescription() );
@@ -97,6 +105,11 @@ public class DemoArea {
 
 
   private void createSnippetArea( Feature feature ) {
+    String text =   "Demo: "
+                  + feature.getParent().getName()
+                  + " "
+                  + feature.getName();
+    createHeader( text );
     Composite snippetParent = createSnippetParent();
     try {
       runSnippet( feature.getSnippet(), snippetParent );
@@ -116,7 +129,7 @@ public class DemoArea {
   private Composite createSnippetParent() {
     Composite snippetParent = new Composite( main, SWT.NONE );
     applyGridLayout( snippetParent ).margin( 10 ).verticalSpacing( 5 );
-    applyGridData( snippetParent ).fill().vIndent( 29 );
+    applyGridData( snippetParent ).fill();
     return snippetParent;
   }
 

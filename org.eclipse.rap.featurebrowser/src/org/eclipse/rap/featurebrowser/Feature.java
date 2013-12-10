@@ -128,7 +128,7 @@ public class Feature {
     return children;
   }
 
-  public Object getParent() {
+  public Feature getParent() {
     return parent;
   }
 
