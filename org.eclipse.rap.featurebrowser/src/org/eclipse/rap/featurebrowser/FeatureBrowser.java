@@ -90,14 +90,18 @@ public class FeatureBrowser extends AbstractEntryPoint {
       featureTree.select( currentFeature.getNext() );
     }
 
+    public boolean getUserShowSource() {
+      return userShowSource;
+    }
+
     public void setCurrentFeature( Feature feature ) {
       if( feature == null ) {
         throw new IllegalArgumentException();
       }
       if( currentFeature != feature ) {
+        currentFeature = feature;
         demoArea.setFeature( feature );
         resourcesArea.setFeature( feature );
-        currentFeature = feature;
         main.layout( true, true );
       }
     }
@@ -113,6 +117,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
         sashGridData.exclude = !computedVisible;
         if( computedVisible ) {
           applyGridData( demoArea.getControl() ).verticalFill().width( demoWidth );
+          resourcesArea.setFeature( currentFeature );
         } else {
           demoWidth = ( ( GridData )demoArea.getControl().getLayoutData() ).widthHint;
           applyGridData( demoArea.getControl() ).fill();
@@ -192,7 +197,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
       sourceButton.addListener( SWT.Selection, new Listener() {
         public void handleEvent( Event event ) {
           userShowSource = !userShowSource;
-          setResoucesVisible( userShowSource && resourcesArea.hasContent() );
+          setResoucesVisible( userShowSource );
           sourceButton.setText( userShowSource ? TEXT_HIDE_SOURCE : TEXT_SHOW_SOURCE );
         }
       } );

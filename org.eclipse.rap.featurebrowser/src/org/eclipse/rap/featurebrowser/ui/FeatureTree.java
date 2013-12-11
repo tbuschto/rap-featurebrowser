@@ -126,7 +126,6 @@ public class FeatureTree {
     cell.setSelectable( true );
     cell.setLeft( 0 ).setTop( 2 ).setRight( 0 ).setBottom( 3 );
     tree.setData( RWT.ROW_TEMPLATE, template );
-    tree.setData( RWT.CANCEL_KEYS, new String[]{ "ARROW_UP", "ARROW_DOWN" } );
     tree.setData(  RWT.CUSTOM_ITEM_HEIGHT, new Integer( 24 ) );
     tree.addListener( SWT.Selection, new Listener() {
       public void handleEvent( Event event ) {

@@ -52,18 +52,23 @@ public class ResourcesArea {
 
   public void setFeature( Feature feature ) {
     clearContents();
-    if( feature.getSnippetHtmlUrl() != null ) {
-      folder.addTab( feature.getSnippet().getSimpleName() + ".java",
-                     ResourceUtil.getImage( "icons/jcu_obj.gif" ),
-                     createBrowser( folder.getFolder(), feature.getSnippetHtmlUrl() ) );
+    if( feature == null ) {
+      return;
     }
-    if( feature.getUrl() != null ) {
-      String url = feature.getUrl();
-      folder.addTab( url.substring( url.lastIndexOf( '/' ) + 1 ),
-                     ResourceUtil.getImage( "icons/internal_browser.gif" ),
-                     createBrowser( folder.getFolder(), url ) );
+    if( browser.getUserShowSource() ) {
+      if( feature.getSnippetHtmlUrl() != null ) {
+        folder.addTab( feature.getSnippet().getSimpleName() + ".java",
+                       ResourceUtil.getImage( "icons/jcu_obj.gif" ),
+                       createBrowser( folder.getFolder(), feature.getSnippetHtmlUrl() ) );
+      }
+      if( feature.getUrl() != null ) {
+        String url = feature.getUrl();
+        folder.addTab( url.substring( url.lastIndexOf( '/' ) + 1 ),
+                       ResourceUtil.getImage( "icons/internal_browser.gif" ),
+                       createBrowser( folder.getFolder(), url ) );
+      }
+      browser.setResoucesVisible( hasContent() );
     }
-    browser.setResoucesVisible( hasContent() );
   }
 
 }
