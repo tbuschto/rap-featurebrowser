@@ -141,10 +141,7 @@ public class DemoArea {
   }
 
   private void createSnippetArea( Feature feature ) {
-    String text =   feature.getParent().getName()
-                  + " "
-                  + feature.getName();
-    createHeader( text );
+    createHeader( feature.getParent().getName() + " " + feature.getName() );
     Composite snippetParent = createSnippetParent( feature );
     try {
       runSnippet( feature.getSnippet(), snippetParent );
@@ -166,14 +163,14 @@ public class DemoArea {
     Composite result = new Composite( main, SWT.NONE );
     style( result ).as( boxed ? "snippetBox" : "snippet" );
     applyGridLayout( result ).margin( 10 ).verticalSpacing( 5 );
-    GridDataUtil gridData = applyGridData( result ).center();
+    GridDataUtil gridData = applyGridData( result );
     if( feature.getWidth() > 0 ) {
-      gridData.width( feature.getWidth() ).hGrab();
+      gridData.width( feature.getWidth() ).hGrab().hIndent( 10 );
     } else {
       gridData.horizontalFill();
     }
     if( feature.getHeight() > 0 ) {
-      gridData.height( feature.getHeight() ).vIndent( 40 );
+      gridData.height( feature.getHeight() ).vIndent( 10 );
     } else {
       gridData.verticalFill();
     }
