@@ -107,6 +107,16 @@ public class FeatureTree {
         treeViewer.expandAll();
       }
     } );
+    createToolItem( toolBar, "icons/select_prev.gif", new Listener() {
+      public void handleEvent( Event event ) {
+        select( browser.getCurrentFeature().getPrevious() );
+      }
+    } );
+    createToolItem( toolBar, "icons/select_next.gif", new Listener() {
+      public void handleEvent( Event event ) {
+        select( browser.getCurrentFeature().getNext() );
+      }
+    } );
   }
 
   private static Button createToolItem( Composite toolBar, String imagePath, Listener listener ) {

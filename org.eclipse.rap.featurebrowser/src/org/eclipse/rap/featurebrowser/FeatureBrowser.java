@@ -82,14 +82,6 @@ public class FeatureBrowser extends AbstractEntryPoint {
       return currentFeature;
     }
 
-    public void previousFeature() {
-      featureTree.select( currentFeature.getPrevious() );
-    }
-
-    public void nextFeature() {
-      featureTree.select( currentFeature.getNext() );
-    }
-
     public boolean getUserShowSource() {
       return userShowSource;
     }
