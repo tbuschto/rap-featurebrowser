@@ -40,10 +40,11 @@ public class FeatureBrowser extends AbstractEntryPoint {
     @Override
     protected void createContents( Composite parent ) {
       createHeader( parent );
-      applyGridLayout( parent );
+      style( parent ).as( "app" );
+      applyGridLayout( parent ).margin( 8 ).verticalSpacing( 8 );
       main = new Composite( parent, SWT.NONE );
       applyGridData( main ).fill();
-      applyGridLayout( main ).margin( 8 ).cols( 5 );
+      applyGridLayout( main ).cols( 5 );
       style( main ).as( "main" );
       loadFeatures();
       createFeatureTree();

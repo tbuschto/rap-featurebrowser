@@ -1,12 +1,16 @@
+.app {
+  background-color: rgb( 92, 91, 87 );
+}
 
 .header {
-  /*box-shadow: 0 2px 2px #444;*/
+  box-shadow: 0 2px 2px #444;
   background-color: #31619c;
   background-image: gradient(
     linear, left top, left bottom,
     from( #3969a3 ),
     to( #4171ac )
   );
+  border-radius: 3px;
 }
 
 .headerLabel {
