@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Sash;
 
 public class FeatureBrowser extends AbstractEntryPoint {
 
+    private static final String TITLE = "RAP Feature Browser";
     private static final String STR_SHOW_SOURCE = "Show Source...";
     private static final String STR_HIDE_SOURCE = "Hide Source...";
     private FeatureTree featureTree;
@@ -34,11 +35,14 @@ public class FeatureBrowser extends AbstractEntryPoint {
     private DemoArea demoArea;
     private ResourcesArea resourcesArea;
     private Sash mainSash;
-    private int demoWidth = 0;
-    private boolean showSource = false;
+    private int demoWidth = 600;
+    private boolean showSource = false;  // the user setting, may still be hidden if empty
 
     @Override
     protected void createContents( Composite parent ) {
+      int displayWidth = parent.getDisplay().getBounds().width;
+      showSource = displayWidth > 1500;
+      demoWidth = displayWidth / 3;
       createHeader( parent );
       style( parent ).as( "app" );
       applyGridLayout( parent ).margin( 8 ).verticalSpacing( 8 );
@@ -52,8 +56,6 @@ public class FeatureBrowser extends AbstractEntryPoint {
       createDemoArea();
       mainSash = createSash( main );
       createResourcesArea();
-      setResoucesVisible( false );
-      demoWidth = 500;
     }
 
     public Composite getMainComposite() {
@@ -108,7 +110,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
         if( computedVisible ) {
           applyGridData( demoArea.getControl() ).verticalFill().width( demoWidth );
         } else {
-          demoWidth = demoArea.getControl().getSize().x;
+          demoWidth = ( ( GridData )demoArea.getControl().getLayoutData() ).widthHint;
           applyGridData( demoArea.getControl() ).fill();
         }
         main.layout( true, true );
@@ -120,12 +122,13 @@ public class FeatureBrowser extends AbstractEntryPoint {
 
     private void createDemoArea() {
       demoArea = new DemoArea( this );
-      applyGridData( demoArea.getControl() ).verticalFill().width( 500 );
+      applyGridData( demoArea.getControl() ).verticalFill().width( demoWidth );
     }
 
     private void createResourcesArea() {
       resourcesArea = new ResourcesArea( this );
       applyGridData( resourcesArea.getControl() ).fill();
+      setResoucesVisible( false );
     }
 
     private Sash createSash( Composite main ) {
@@ -172,7 +175,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
       applyGridLayout( header ).cols( 2 ).marginLeft( 15 ).marginTop( 4 );
       header.setBackgroundMode( SWT.INHERIT_FORCE );
       Label headerLabel = new Label( header, SWT.NONE );
-      headerLabel.setText( "RAP Feature Browser " );
+      headerLabel.setText( TITLE );
       style( headerLabel ).as( "headerLabel" );
       applyGridData( headerLabel ).fill().hAlign( SWT.LEFT ).vAlign( SWT.CENTER );
       final Button sourceButton = new Button( header, SWT.PUSH );
@@ -183,7 +186,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
           sourceButton.setText( showSource ? STR_HIDE_SOURCE : STR_SHOW_SOURCE );
         }
       } );
-      sourceButton.setText( STR_SHOW_SOURCE );
+      sourceButton.setText( showSource ? STR_HIDE_SOURCE : STR_SHOW_SOURCE );
       applyGridData( sourceButton ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
       style( sourceButton ).as( "headerButton" );
     }
