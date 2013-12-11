@@ -31,20 +31,6 @@ import org.eclipse.rap.rwt.service.ResourceManager;
 
 public class Feature {
 
-  public enum View {
-    NONE( "none" ),
-    SNIPPET( "snippet" ),
-    GALLERY( "gallery" ),
-    PREVIEW( "preview" );
-
-    public final String value;
-
-    private View( String value ) {
-      this.value = value;
-    }
-
-  }
-
   private Feature[] children;
   private static final String UTF_8 = "UTF-8";
   private String name;
@@ -53,7 +39,6 @@ public class Feature {
   private Feature previous;
   private Feature next;
   private String preview;
-  private View view = View.NONE;
   private String url;
   private String description;
   private String target;
@@ -85,7 +70,6 @@ public class Feature {
     if( obj.get( "preview" ) != null ) {
       registerPreview( obj.get( "preview" ).asString() );
     }
-    readView( obj );
     Navigation.getInstance().register( this );
   }
 
@@ -208,25 +192,6 @@ public class Feature {
       result[ list.size() - 1 - i ] = list.get( i );
     }
     return result;
-  }
-
-  public View getView() {
-    return view;
-  }
-
-  private void readView( JsonObject obj ) {
-    if( obj.get( "view" ) != null ) {
-      String viewStr = obj.get( "view" ).asString();
-      if( View.SNIPPET.value.equals( viewStr ) ) {
-        view = View.SNIPPET;
-      } else if( View.GALLERY.value.equals( viewStr ) ) {
-        view = View.GALLERY;
-      } else if( View.PREVIEW.value.equals( viewStr ) ) {
-        view = View.PREVIEW;
-      }
-    } else if( snippet != null ) {
-      view = View.SNIPPET;
-    }
   }
 
   private void registerPreview( String path ) {
