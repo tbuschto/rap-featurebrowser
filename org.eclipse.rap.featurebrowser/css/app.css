@@ -1,7 +1,6 @@
 .app {
   background-color: rgb( 92, 91, 87 );
 }
-
 .header {
   box-shadow: 0 2px 2px #444;
   background-color: #31619c;
@@ -34,10 +33,6 @@
   text-shadow: 0px 1px 3px #ddd;
 }
 
-.helpHeading {
-  text-shadow: 0 1px 3px #aaa;
-}
-
 .transparent {
   background-color: transparent;
 }
@@ -55,29 +50,16 @@
   );
 }
 
-.floatingBox-inner {
-  border: 1px solid rgb(184, 190, 204);
-}
-
-Button.helpButton {
+Button.headerButton,
+Button.headerButton:focused {
   font: 14px 'Open Sans', sans-serif;
   border: none;
   text-shadow: none;
-  text-decoration: underline;
   color: #eee;
 }
 
-Button.helpButton:hover {
-  /*text-shadow: 0 1px 5px #fff;*/
-}
-
-.subheader {
-  background-color: rgb(52, 51, 47);
-  background-image: gradient(
-    linear, left top, left bottom,
-    from( rgb(62 , 61, 57) ),
-    to( rgb(52, 51, 47) )
-  );
+Button.headerButton:hover {
+  text-decoration: underline;
 }
 
 Sash, Sash:hover {
@@ -88,38 +70,8 @@ Sash-Handle:horizontal, Sash-Handle:vertical {
   background-image: none;
 }
 
-Button[PUSH].vbar {
-  background-image: gradient(
-    linear, left top, right top,
-    from( rgb(62 , 61, 57) ),
-    to( rgb(52, 51, 47) )
-  );
-  border: none;
-  border-radius: 0px;
-  padding: 3px;
-  animation: none;
-  text-shadow: none;
-  color: #eee;
-}
-
-Button[PUSH].helpClose {
-  background-image: none;
-  border: none;
-  border-radius: 0px;
-  padding: 0px;
-  animation: none;
-  text-shadow: none;
-  background-color: transparent;
-}
-
-Button[PUSH]:hover.vbar {
-  text-shadow: 0 1px 3px #fff;
-}
-
-Button-FocusIndicator[PUSH].vbar,
 Button-FocusIndicator[PUSH].mini,
-Button-FocusIndicator[PUSH].helpButton,
-Button-FocusIndicator[PUSH].helpClose {
+Button-FocusIndicator[PUSH].headerButton {
   background-color: transparent;
   border: none;
 }
@@ -129,13 +81,14 @@ ScrollBar {
   background-image: none;
   border: none;
   border-radius: 0;
-  width: 5px;
+  width: 7px;
 }
 
 ScrollBar-Thumb {
-  background-color: #f0f0f0;
-  border: 1px solid #bdbdbd;
-  border-radius: 2px;
+  background-color: rgb(184, 182, 183);
+  background-image: none;
+  border: none;
+  border-radius: 4px;
   min-height: 20px;
 }
 
@@ -145,7 +98,6 @@ ScrollBar-DownButton {
   border: none;
   border-radius: 0;
   cursor: default;
-  background-image: none;
 }
 
 ScrollBar-UpButton[HORIZONTAL],
@@ -153,18 +105,6 @@ ScrollBar-DownButton[HORIZONTAL],
 ScrollBar-UpButton[VERTICAL],
 ScrollBar-DownButton[VERTICAL] {
   background-image: none;
-}
-
-Shell.helpShell {
-  background-color : transparent;
-}
-
-Composite.helpBox {
-  background-color : white;
-  border: 4px solid black;
-  border-radius: 18px;
-  box-shadow: 0 0 5px #000;
-  padding: 0px;
 }
 
 Composite.infobox {
@@ -206,19 +146,10 @@ CTabItem:selected {
 
 Button[PUSH].mini,
 Button[PUSH].mini:hover,
-Button[PUSH].mini:hover:pressed,
 Button[PUSH].mini:focused:hover,
-Button[PUSH].mini:focused:hover:pressed,
 Button[PUSH].mini:focused {
-  border: 1px solid transparent;
+  border: none;
   padding: 3px 2px 2px 2px;
-}
-
-Button[PUSH].mini:hover,
-Button[PUSH].mini:hover:default,
-Button[PUSH].mini:focused:hover:default,
-Button[PUSH].mini:focused:hover {
-  border: 1px solid #4171ac;
 }
 
 Button[PUSH].mini:pressed,

@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Sash;
 
 public class FeatureBrowser extends AbstractEntryPoint {
 
-    private static final String STR_SHOW_SOURCE = "Show Source";
-    private static final String STR_HIDE_SOURCE = "Hide Source";
+    private static final String STR_SHOW_SOURCE = "Show Source...";
+    private static final String STR_HIDE_SOURCE = "Hide Source...";
     private FeatureTree featureTree;
     private Feature features;
     private Feature currentFeature;
@@ -96,6 +96,28 @@ public class FeatureBrowser extends AbstractEntryPoint {
       }
     }
 
+    public void setResoucesVisible( boolean visible ) {
+      boolean computedVisible = showSource && visible;
+      if( resourcesArea.getControl().getVisible() != computedVisible ) {
+        resourcesArea.getControl().setVisible( computedVisible );
+        GridData gridData = ( GridData )resourcesArea.getControl().getLayoutData();
+        gridData.exclude = !computedVisible;
+        mainSash.setVisible( computedVisible );
+        GridData sashGridData = ( GridData )mainSash.getLayoutData();
+        sashGridData.exclude = !computedVisible;
+        if( computedVisible ) {
+          applyGridData( demoArea.getControl() ).verticalFill().width( demoWidth );
+        } else {
+          demoWidth = demoArea.getControl().getSize().x;
+          applyGridData( demoArea.getControl() ).fill();
+        }
+        main.layout( true, true );
+      }
+    }
+
+    ////////////
+    // internals
+
     private void createDemoArea() {
       demoArea = new DemoArea( this );
       applyGridData( demoArea.getControl() ).verticalFill().width( 500 );
@@ -143,7 +165,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
       }
     }
 
-    public void createHeader( Composite parent ) {
+    private void createHeader( Composite parent ) {
       Composite header = new Composite( parent, SWT.NONE );
       style( header ).as( "header" );
       applyGridData( header ).fill().vGrab( false ).height( 50 );
@@ -153,15 +175,6 @@ public class FeatureBrowser extends AbstractEntryPoint {
       headerLabel.setText( "RAP Feature Browser " );
       style( headerLabel ).as( "headerLabel" );
       applyGridData( headerLabel ).fill().hAlign( SWT.LEFT ).vAlign( SWT.CENTER );
-//      Button help = new Button( header, SWT.PUSH );
-//      help.addListener( SWT.Selection, new Listener() {
-//        public void handleEvent( Event event ) {
-//          new HelpOverlay( getShell() );
-//        }
-//      } );
-//      help.setText( "Getting started" );
-//      applyGridData( help ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
-//      style( help ).as( "helpButton" );
       final Button sourceButton = new Button( header, SWT.PUSH );
       sourceButton.addListener( SWT.Selection, new Listener() {
         public void handleEvent( Event event ) {
@@ -172,26 +185,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
       } );
       sourceButton.setText( STR_SHOW_SOURCE );
       applyGridData( sourceButton ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
-      style( sourceButton ).as( "helpButton" );
-    }
-
-    public void setResoucesVisible( boolean visible ) {
-      boolean computedVisible = showSource && visible;
-      if( resourcesArea.getControl().getVisible() != computedVisible ) {
-        resourcesArea.getControl().setVisible( computedVisible );
-        GridData gridData = ( GridData )resourcesArea.getControl().getLayoutData();
-        gridData.exclude = !computedVisible;
-        mainSash.setVisible( computedVisible );
-        GridData sashGridData = ( GridData )mainSash.getLayoutData();
-        sashGridData.exclude = !computedVisible;
-        if( computedVisible ) {
-          applyGridData( demoArea.getControl() ).verticalFill().width( demoWidth );
-        } else {
-          demoWidth = demoArea.getControl().getSize().x;
-          applyGridData( demoArea.getControl() ).fill();
-        }
-        main.layout( true, true );
-      }
+      style( sourceButton ).as( "headerButton" );
     }
 
 }
