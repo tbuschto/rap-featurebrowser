@@ -12,7 +12,9 @@ import org.eclipse.rap.featurebrowser.ui.DemoArea;
 import org.eclipse.rap.featurebrowser.ui.FeatureTree;
 import org.eclipse.rap.featurebrowser.ui.ResourcesArea;
 import org.eclipse.rap.json.JsonArray;
+import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
+import org.eclipse.rap.rwt.internal.RWTProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -23,11 +25,12 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 
+@SuppressWarnings( "restriction" )
 public class FeatureBrowser extends AbstractEntryPoint {
 
-    private static final String TITLE = "RAP Feature Browser";
-    private static final String STR_SHOW_SOURCE = "Show Source...";
-    private static final String STR_HIDE_SOURCE = "Hide Source...";
+    private static final String TEXT_TITLE = "RAP Feature Browser";
+    private static final String TEXT_SHOW_SOURCE = "Show Source...";
+    private static final String TEXT_HIDE_SOURCE = "Hide Source...";
     private FeatureTree featureTree;
     private Feature features;
     private Feature currentFeature;
@@ -35,13 +38,14 @@ public class FeatureBrowser extends AbstractEntryPoint {
     private DemoArea demoArea;
     private ResourcesArea resourcesArea;
     private Sash mainSash;
-    private int demoWidth = 600;
-    private boolean showSource = false;  // the user setting, may still be hidden if empty
+    private int demoWidth;
+    private boolean userShowSource;
+    private String APPSTORE_FEATURES = "org.eclipse.rap.samples.Features";
 
     @Override
     protected void createContents( Composite parent ) {
       int displayWidth = parent.getDisplay().getBounds().width;
-      showSource = displayWidth > 1500;
+      userShowSource = displayWidth > 1500;
       demoWidth = displayWidth / 3;
       createHeader( parent );
       style( parent ).as( "app" );
@@ -99,7 +103,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
     }
 
     public void setResoucesVisible( boolean visible ) {
-      boolean computedVisible = showSource && visible;
+      boolean computedVisible = userShowSource && visible;
       if( resourcesArea.getControl().getVisible() != computedVisible ) {
         resourcesArea.getControl().setVisible( computedVisible );
         GridData gridData = ( GridData )resourcesArea.getControl().getLayoutData();
@@ -156,7 +160,10 @@ public class FeatureBrowser extends AbstractEntryPoint {
     }
 
     private void loadFeatures() {
-      // TODO : when deployed it should suffice to read these once on application start
+      features = ( Feature )RWT.getApplicationContext().getAttribute( APPSTORE_FEATURES );
+      if( features != null ) {
+        return;
+      }
       InputStream resource = getClass().getClassLoader().getResourceAsStream( "features.json" );
       InputStreamReader reader = new InputStreamReader( resource );
       try {
@@ -165,6 +172,9 @@ public class FeatureBrowser extends AbstractEntryPoint {
         features = new Feature( jsonObject, true );
       } catch( IOException e ) {
         throw new RuntimeException( e );
+      }
+      if( !RWTProperties.isDevelopmentMode() ) {
+        RWT.getApplicationContext().setAttribute( APPSTORE_FEATURES, features );
       }
     }
 
@@ -175,18 +185,18 @@ public class FeatureBrowser extends AbstractEntryPoint {
       applyGridLayout( header ).cols( 2 ).marginLeft( 15 ).marginTop( 4 );
       header.setBackgroundMode( SWT.INHERIT_FORCE );
       Label headerLabel = new Label( header, SWT.NONE );
-      headerLabel.setText( TITLE );
+      headerLabel.setText( TEXT_TITLE );
       style( headerLabel ).as( "headerLabel" );
       applyGridData( headerLabel ).fill().hAlign( SWT.LEFT ).vAlign( SWT.CENTER );
       final Button sourceButton = new Button( header, SWT.PUSH );
       sourceButton.addListener( SWT.Selection, new Listener() {
         public void handleEvent( Event event ) {
-          showSource = !showSource;
-          setResoucesVisible( showSource && resourcesArea.hasContent() );
-          sourceButton.setText( showSource ? STR_HIDE_SOURCE : STR_SHOW_SOURCE );
+          userShowSource = !userShowSource;
+          setResoucesVisible( userShowSource && resourcesArea.hasContent() );
+          sourceButton.setText( userShowSource ? TEXT_HIDE_SOURCE : TEXT_SHOW_SOURCE );
         }
       } );
-      sourceButton.setText( showSource ? STR_HIDE_SOURCE : STR_SHOW_SOURCE );
+      sourceButton.setText( userShowSource ? TEXT_HIDE_SOURCE : TEXT_SHOW_SOURCE );
       applyGridData( sourceButton ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
       style( sourceButton ).as( "headerButton" );
     }
