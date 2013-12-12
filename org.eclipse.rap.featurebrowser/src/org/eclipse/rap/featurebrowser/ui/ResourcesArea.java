@@ -28,6 +28,7 @@ public class ResourcesArea {
   private Composite main;
   private EnhancedTabFolder folder;
   private FeatureBrowser browser;
+  private boolean hasContent = false;
 
   public ResourcesArea( FeatureBrowser browser ) {
     this.browser = browser;
@@ -44,10 +45,11 @@ public class ResourcesArea {
 
   public void clearContents() {
     folder.clearContents();
+    hasContent = false;
   }
 
   public boolean hasContent() {
-    return folder.getItemCount() > 0;
+    return hasContent;
   }
 
   public void setFeature( Feature feature ) {
@@ -55,19 +57,22 @@ public class ResourcesArea {
     if( feature == null ) {
       return;
     }
-    if( browser.getUserShowSource() ) {
-      if( feature.getSnippetHtmlUrl() != null ) {
+    if( feature.getSnippetHtmlUrl() != null ) {
+      hasContent = true;
+      if( browser.getUserShowSource() ) {
         folder.addTab( feature.getSnippet().getSimpleName() + ".java",
                        ResourceUtil.getImage( "icons/jcu_obj.gif" ),
                        createBrowser( folder.getFolder(), feature.getSnippetHtmlUrl() ) );
       }
-      if( feature.getUrl() != null ) {
+    }
+    if( feature.getUrl() != null ) {
+      hasContent = true;
+      if( browser.getUserShowSource() ) {
         String url = feature.getUrl();
         folder.addTab( url.substring( url.lastIndexOf( '/' ) + 1 ),
                        ResourceUtil.getImage( "icons/internal_browser.gif" ),
                        createBrowser( folder.getFolder(), url ) );
       }
-      browser.setResoucesVisible( hasContent() );
     }
   }
 

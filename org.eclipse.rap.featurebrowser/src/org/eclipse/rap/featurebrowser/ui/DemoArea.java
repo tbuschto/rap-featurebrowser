@@ -55,9 +55,6 @@ public class DemoArea {
     } else {
       createGallery( feature );
     }
-    if( feature.getDescription() != null ) {
-      createDescription( feature );
-    }
   }
 
   private void createPreview( Feature feature ) {
@@ -107,12 +104,6 @@ public class DemoArea {
     CLabel headerLabel = new CLabel( header, SWT.CENTER );
     applyGridData( headerLabel ).horizontalFill();
     headerLabel.setText( text.replaceAll( "&", "&&" ) );
-  }
-
-  private void createDescription( Feature feature ) {
-    InfoBox desc = new InfoBox( main );
-    desc.addText( feature.getDescription() );
-    applyGridData( desc.getControl() ).horizontalFill().vAlign( SWT.BOTTOM ).vGrab();
   }
 
   private void createSnippetArea( Feature feature ) {

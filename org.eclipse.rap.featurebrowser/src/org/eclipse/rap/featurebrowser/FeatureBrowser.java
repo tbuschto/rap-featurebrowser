@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.eclipse.rap.featurebrowser.ui.DemoArea;
+import org.eclipse.rap.featurebrowser.ui.DescriptionArea;
 import org.eclipse.rap.featurebrowser.ui.FeatureTree;
 import org.eclipse.rap.featurebrowser.ui.ResourcesArea;
 import org.eclipse.rap.json.JsonArray;
@@ -17,6 +18,7 @@ import org.eclipse.rap.rwt.application.AbstractEntryPoint;
 import org.eclipse.rap.rwt.internal.RWTProperties;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -31,6 +33,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
     private static final String TEXT_TITLE = "RAP Feature Browser";
     private static final String TEXT_SHOW_SOURCE = "Show Source...";
     private static final String TEXT_HIDE_SOURCE = "Hide Source...";
+    private static String APPSTORE_FEATURES = "org.eclipse.rap.samples.Features";
     private FeatureTree featureTree;
     private Feature features;
     private Feature currentFeature;
@@ -40,7 +43,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
     private Sash mainSash;
     private int demoWidth;
     private boolean userShowSource;
-    private String APPSTORE_FEATURES = "org.eclipse.rap.samples.Features";
+    private DescriptionArea descriptionArea;
 
     @Override
     protected void createContents( Composite parent ) {
@@ -52,14 +55,17 @@ public class FeatureBrowser extends AbstractEntryPoint {
       applyGridLayout( parent ).margin( 8 ).verticalSpacing( 8 );
       main = new Composite( parent, SWT.NONE );
       applyGridData( main ).fill();
-      applyGridLayout( main ).cols( 5 );
+      applyGridLayout( main );
       style( main ).as( "main" );
       loadFeatures();
       createFeatureTree();
-      createSash( main );
+      createSash( new Control[]{ featureTree.getControl() } );
       createDemoArea();
-      mainSash = createSash( main );
+      Control[] middleControls = new Control[]{ demoArea.getControl(), null };
+      mainSash = createSash( middleControls );
       createResourcesArea();
+      createDescriptionArea();
+      middleControls[ 1 ] = descriptionArea.getControl();
     }
 
     public Composite getMainComposite() {
@@ -94,66 +100,123 @@ public class FeatureBrowser extends AbstractEntryPoint {
         currentFeature = feature;
         demoArea.setFeature( feature );
         resourcesArea.setFeature( feature );
-        main.layout( true, true );
+        descriptionArea.setFeature( feature );
+        configureLayout();
       }
     }
 
-    public void setResoucesVisible( boolean visible ) {
-      boolean computedVisible = userShowSource && visible;
-      if( resourcesArea.getControl().getVisible() != computedVisible ) {
-        resourcesArea.getControl().setVisible( computedVisible );
-        GridData gridData = ( GridData )resourcesArea.getControl().getLayoutData();
-        gridData.exclude = !computedVisible;
-        mainSash.setVisible( computedVisible );
-        GridData sashGridData = ( GridData )mainSash.getLayoutData();
-        sashGridData.exclude = !computedVisible;
-        if( computedVisible ) {
-          applyGridData( demoArea.getControl() ).verticalFill().width( demoWidth );
-          resourcesArea.setFeature( currentFeature );
-        } else {
-          demoWidth = ( ( GridData )demoArea.getControl().getLayoutData() ).widthHint;
-          applyGridData( demoArea.getControl() ).fill();
-        }
-        main.layout( true, true );
+    private void configureLayout() {
+      boolean descriptionVisible = currentFeature.getDescription() != null;
+      boolean resourcesVisible = userShowSource && resourcesArea.hasContent();
+      GridLayout mainLayout = ( GridLayout )main.getLayout();
+      mainLayout.numColumns = resourcesVisible ? 5 : 3;
+      configureDemoLayoutData( resourcesVisible, descriptionVisible );
+      configureDescLayoutData( resourcesVisible, descriptionVisible );
+      configureMainSashLayoutData( resourcesVisible );
+      configureResourcesLayoutData( resourcesVisible );
+      main.layout( true, true );
+    }
+
+    private void configureResourcesLayoutData( boolean resourcesVisible ) {
+      resourcesArea.getControl().setVisible( resourcesVisible );
+      GridData resoucesData = ( GridData )resourcesArea.getControl().getLayoutData();
+      resoucesData.exclude = !resourcesVisible;
+    }
+
+    private void configureMainSashLayoutData( boolean resourcesVisible ) {
+      GridData sashData = ( GridData )mainSash.getLayoutData();
+      mainSash.setVisible( resourcesVisible );
+      sashData.exclude = !resourcesVisible;
+    }
+
+    private void configureDescLayoutData( boolean resourcesVisible, boolean descriptionVisible ) {
+      Control control = descriptionArea.getControl();
+      control.setVisible( descriptionVisible );
+      if( !descriptionVisible ) {
+        applyGridData( control ).exclude( true );
+      } else if( resourcesVisible ) {
+        applyGridData( control ).verticalFill().vGrab( false ).width( demoWidth ).vIndent( 8 );
+      } else {
+        applyGridData( control ).fill().vGrab( false ).vIndent( 8 );
       }
     }
+
+    private void configureDemoLayoutData( boolean resourcesVisible, boolean descriptionVisible ) {
+      int vSpan = descriptionVisible ? 1 : 2;
+      if( resourcesVisible ) {
+        applyGridData( demoArea.getControl() ).verticalFill().width( demoWidth ).vSpan( vSpan );
+      } else {
+        demoWidth = ( ( GridData )demoArea.getControl().getLayoutData() ).widthHint;
+        applyGridData( demoArea.getControl() ).fill().vSpan( vSpan );
+      }
+    }
+
 
     ////////////
     // internals
+
+    private void createHeader( Composite parent ) {
+      Composite header = new Composite( parent, SWT.NONE );
+      style( header ).as( "header" );
+      applyGridData( header ).fill().vGrab( false ).height( 50 );
+      applyGridLayout( header ).cols( 2 ).marginLeft( 15 ).marginTop( 4 );
+      header.setBackgroundMode( SWT.INHERIT_FORCE );
+      Label headerLabel = new Label( header, SWT.NONE );
+      headerLabel.setText( TEXT_TITLE );
+      style( headerLabel ).as( "headerLabel" );
+      applyGridData( headerLabel ).fill().hAlign( SWT.LEFT ).vAlign( SWT.CENTER );
+      final Button sourceButton = new Button( header, SWT.PUSH );
+      sourceButton.addListener( SWT.Selection, new Listener() {
+        public void handleEvent( Event event ) {
+          userShowSource = !userShowSource;
+          sourceButton.setText( userShowSource ? TEXT_HIDE_SOURCE : TEXT_SHOW_SOURCE );
+          configureLayout();
+        }
+      } );
+      sourceButton.setText( userShowSource ? TEXT_HIDE_SOURCE : TEXT_SHOW_SOURCE );
+      applyGridData( sourceButton ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
+      style( sourceButton ).as( "headerButton" );
+    }
+
+    private void createFeatureTree() {
+      featureTree = new FeatureTree( this );
+      Navigation.getInstance().init( featureTree );
+      applyGridData( featureTree.getControl() ).verticalFill().width( 200 ).vSpan( 2 );
+    }
 
     private void createDemoArea() {
       demoArea = new DemoArea( this );
       applyGridData( demoArea.getControl() ).verticalFill().width( demoWidth );
     }
 
-    private void createResourcesArea() {
-      resourcesArea = new ResourcesArea( this );
-      applyGridData( resourcesArea.getControl() ).fill();
-      setResoucesVisible( false );
+    private void createDescriptionArea() {
+      descriptionArea = new DescriptionArea( this );
+      applyGridData( descriptionArea.getControl() ).verticalFill().vGrab( false ).width( demoWidth );
     }
 
-    private Sash createSash( Composite main ) {
+    private void createResourcesArea() {
+      resourcesArea = new ResourcesArea( this );
+      applyGridData( resourcesArea.getControl() ).fill().vSpan( 2 );
+    }
+
+    private Sash createSash( final Control[] resizeable ) {
       // do not use a SashForm since the tree width should be independent from the parent width
-      final Control resizable = main.getChildren()[ main.getChildren().length - 1 ];
+      // and the hierarchy should be as flat as possible
       final Sash sash = new Sash( main, SWT.VERTICAL );
-      applyGridData( sash ).verticalFill().width( 8 );
+      applyGridData( sash ).verticalFill().width( 8 ).vSpan( 2 );
       sash.addListener( SWT.Selection, new Listener() {
         public void handleEvent( Event event ) {
           if( event.detail != SWT.DRAG ) {
-            int left = resizable.getBounds().x;
-            int newWidth = event.x - left;
-            applyGridData( resizable ).verticalFill().width( newWidth );
+            for( int i = 0; i < resizeable.length; i++ ) {
+              int left = resizeable[ i ].getBounds().x;
+              int newWidth = event.x - left;
+              ( ( GridData )resizeable[ i ].getLayoutData() ).widthHint = newWidth;
+            }
             sash.getParent().layout();
           }
         }
       } );
       return sash;
-    }
-
-    private void createFeatureTree() {
-      featureTree = new FeatureTree( this );
-      Navigation.getInstance().init( featureTree );
-      applyGridData( featureTree.getControl() ).verticalFill().width( 200 );
     }
 
     private void loadFeatures() {
@@ -173,29 +236,6 @@ public class FeatureBrowser extends AbstractEntryPoint {
       if( !RWTProperties.isDevelopmentMode() ) {
         RWT.getApplicationContext().setAttribute( APPSTORE_FEATURES, features );
       }
-    }
-
-    private void createHeader( Composite parent ) {
-      Composite header = new Composite( parent, SWT.NONE );
-      style( header ).as( "header" );
-      applyGridData( header ).fill().vGrab( false ).height( 50 );
-      applyGridLayout( header ).cols( 2 ).marginLeft( 15 ).marginTop( 4 );
-      header.setBackgroundMode( SWT.INHERIT_FORCE );
-      Label headerLabel = new Label( header, SWT.NONE );
-      headerLabel.setText( TEXT_TITLE );
-      style( headerLabel ).as( "headerLabel" );
-      applyGridData( headerLabel ).fill().hAlign( SWT.LEFT ).vAlign( SWT.CENTER );
-      final Button sourceButton = new Button( header, SWT.PUSH );
-      sourceButton.addListener( SWT.Selection, new Listener() {
-        public void handleEvent( Event event ) {
-          userShowSource = !userShowSource;
-          setResoucesVisible( userShowSource );
-          sourceButton.setText( userShowSource ? TEXT_HIDE_SOURCE : TEXT_SHOW_SOURCE );
-        }
-      } );
-      sourceButton.setText( userShowSource ? TEXT_HIDE_SOURCE : TEXT_SHOW_SOURCE );
-      applyGridData( sourceButton ).hAlign( SWT.RIGHT ).vAlign( SWT.CENTER ).vGrab();
-      style( sourceButton ).as( "headerButton" );
     }
 
 }

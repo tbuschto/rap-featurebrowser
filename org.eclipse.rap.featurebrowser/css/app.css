@@ -50,6 +50,17 @@
   );
 }
 
+.descBox {
+  background-color: #34332F;
+  border-radius : 3px;
+  box-shadow: 0 3px 3px #000;
+}
+
+.descLabel {
+  font: 16px Helvetica, Verdana, sans-serif;
+  color: #ddd;
+}
+
 Button.headerButton,
 Button.headerButton:focused {
   font: 14px 'Open Sans', sans-serif;
