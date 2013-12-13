@@ -8,6 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
+
 package org.eclipse.rap.demo.samples.ui;
 
 import static org.eclipse.rap.demo.samples.util.GridDataUtil.*;
