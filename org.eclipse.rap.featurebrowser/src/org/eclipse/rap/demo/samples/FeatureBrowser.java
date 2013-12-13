@@ -147,7 +147,10 @@ public class FeatureBrowser extends AbstractEntryPoint {
       if( resourcesVisible ) {
         applyGridData( demoArea.getControl() ).verticalFill().width( demoWidth ).vSpan( vSpan );
       } else {
-        demoWidth = ( ( GridData )demoArea.getControl().getLayoutData() ).widthHint;
+        int widthHint = ( ( GridData )demoArea.getControl().getLayoutData() ).widthHint;
+        if( widthHint > 0 ) {
+          demoWidth = widthHint;
+        }
         applyGridData( demoArea.getControl() ).fill().vSpan( vSpan );
       }
     }

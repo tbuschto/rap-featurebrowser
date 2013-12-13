@@ -27,6 +27,10 @@ public class HtmlDocument {
     return new Element( "p" );
   }
 
+  public static Element a() {
+    return new Element( "a" );
+  }
+
   public static Element img() {
     return new Element( "img" );
   }

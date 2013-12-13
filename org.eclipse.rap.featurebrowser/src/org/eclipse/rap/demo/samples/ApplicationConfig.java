@@ -17,6 +17,7 @@ public class ApplicationConfig implements ApplicationConfiguration {
     application.addStyleSheet( RWT.DEFAULT_THEME_ID, "/css/app.css" );
     application.addEntryPoint( "/featurebrowser", FeatureBrowser.class, properties );
     application.addResource( "prettify.css", FeaturesResourceLoader.getInstance() );
+    application.addResource( "gallery.css", FeaturesResourceLoader.getInstance() );
     application.addResource( "prettify.js", FeaturesResourceLoader.getInstance() );
   }
 

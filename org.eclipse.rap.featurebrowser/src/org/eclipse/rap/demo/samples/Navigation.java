@@ -29,18 +29,19 @@ public class Navigation {
   }
 
   private Map<String, Feature> map = new HashMap<String, Feature>();
+  private FeatureTree featureTree;
 
   public void register( Feature feature ) {
     map.put( feature.toString(), feature );
   }
 
   public void init( final FeatureTree featureTree ) {
+    this.featureTree = featureTree;
     if( RWT.getClient() instanceof WebClient ) {
       BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
       navigation.addBrowserNavigationListener( new BrowserNavigationListener() {
         public void navigated( BrowserNavigationEvent event ) {
-          Feature feature = map.get( event.getState() );
-          featureTree.select( feature );
+          navigateTo( event.getState() );
         }
       } );
     }
@@ -51,6 +52,11 @@ public class Navigation {
       BrowserNavigation navigation = RWT.getClient().getService( BrowserNavigation.class );
       navigation.pushState( feature.toString(), null );
     }
+  }
+
+  public void navigateTo( String target ) {
+    Feature feature = map.get( target );
+    featureTree.select( feature );
   }
 
 }

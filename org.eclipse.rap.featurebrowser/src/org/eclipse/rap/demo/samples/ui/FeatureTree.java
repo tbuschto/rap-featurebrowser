@@ -15,9 +15,9 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.rap.demo.samples.Navigation;
 import org.eclipse.rap.demo.samples.Feature;
 import org.eclipse.rap.demo.samples.FeatureBrowser;
+import org.eclipse.rap.demo.samples.Navigation;
 import org.eclipse.rap.demo.samples.util.ResourceUtil;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.template.Template;
@@ -96,7 +96,6 @@ public class FeatureTree {
       }
     } );
     treeViewer.setInput( category );
-    treeViewer.expandToLevel( 2 );
     createToolItem( toolBar, "icons/collapseall.gif", new Listener() {
       public void handleEvent( Event event ) {
         treeViewer.collapseAll();
@@ -157,6 +156,9 @@ public class FeatureTree {
   public void select( Feature feature ) {
     if( feature != null ) {
       TreePath path = new TreePath( feature.getPath() );
+      if( path.getSegmentCount() > 2 ) {
+        treeViewer.expandToLevel( feature, 2 );
+      }
       treeViewer.setSelection( new TreeSelection( path ), true );
     }
   }

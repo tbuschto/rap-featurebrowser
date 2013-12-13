@@ -1,0 +1,26 @@
+body {
+  padding: 10px;
+}
+
+.item {
+  display: inline-block;
+  border: 1px solid #ddd;
+  margin: 5px;
+  padding: 5px;
+  overflow: hidden;
+  font-family: 'open sans', sans-serif;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  box-shadow: 2px 2px 2px #ccc;
+}
+
+.item:hover {
+  border: 1px solid #3969a3;
+  box-shadow: 2px 2px 2px #ccc;
+}
+
+.item * {
+  display: block;
+}
