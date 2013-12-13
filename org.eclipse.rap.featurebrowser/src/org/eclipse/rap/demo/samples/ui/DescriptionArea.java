@@ -8,15 +8,15 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.featurebrowser.ui;
+package org.eclipse.rap.demo.samples.ui;
 
-import static org.eclipse.rap.featurebrowser.util.GridDataUtil.*;
-import static org.eclipse.rap.featurebrowser.util.GridLayoutUtil.*;
-import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
-import static org.eclipse.rap.featurebrowser.util.WidgetFactory.*;
+import static org.eclipse.rap.demo.samples.util.GridDataUtil.*;
+import static org.eclipse.rap.demo.samples.util.GridLayoutUtil.*;
+import static org.eclipse.rap.demo.samples.util.StyleUtil.*;
+import static org.eclipse.rap.demo.samples.util.WidgetFactory.*;
 
-import org.eclipse.rap.featurebrowser.Feature;
-import org.eclipse.rap.featurebrowser.FeatureBrowser;
+import org.eclipse.rap.demo.samples.Feature;
+import org.eclipse.rap.demo.samples.FeatureBrowser;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;

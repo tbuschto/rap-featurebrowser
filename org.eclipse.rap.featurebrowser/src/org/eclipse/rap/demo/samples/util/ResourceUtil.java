@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.featurebrowser.util;
+package org.eclipse.rap.demo.samples.util;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package org.eclipse.rap.featurebrowser;
+package org.eclipse.rap.demo.samples;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +16,8 @@ public class ApplicationConfig implements ApplicationConfiguration {
     properties.put( WebClient.PAGE_TITLE, "RAP Feature Browser" );
     application.addStyleSheet( RWT.DEFAULT_THEME_ID, "/css/app.css" );
     application.addEntryPoint( "/featurebrowser", FeatureBrowser.class, properties );
-    application.addResource( "prettify.css", FeatureResourceLoader.getInstance() );
-    application.addResource( "prettify.js", FeatureResourceLoader.getInstance() );
+    application.addResource( "prettify.css", FeaturesResourceLoader.getInstance() );
+    application.addResource( "prettify.js", FeaturesResourceLoader.getInstance() );
   }
 
 }

@@ -8,9 +8,9 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.featurebrowser.ui;
+package org.eclipse.rap.demo.samples.ui;
 
-import org.eclipse.rap.featurebrowser.util.StyleUtil;
+import org.eclipse.rap.demo.samples.util.StyleUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;

@@ -1,4 +1,4 @@
-package org.eclipse.rap.featurebrowser;
+package org.eclipse.rap.demo.samples;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,13 +6,13 @@ import java.io.InputStream;
 import org.eclipse.rap.rwt.service.ResourceLoader;
 
 
-public class FeatureResourceLoader implements ResourceLoader {
+public class FeaturesResourceLoader implements ResourceLoader {
 
   private static ResourceLoader instance = null;
 
   public static ResourceLoader getInstance() {
     if( instance == null ) {
-      instance = new FeatureResourceLoader();
+      instance = new FeaturesResourceLoader();
     }
     return instance;
   }

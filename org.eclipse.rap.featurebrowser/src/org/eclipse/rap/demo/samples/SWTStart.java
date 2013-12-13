@@ -8,7 +8,7 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.featurebrowser;
+package org.eclipse.rap.demo.samples;
 
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.service.ResourceManager;

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: RAP Featurebrowser
-Bundle-SymbolicName: org.eclipse.rap.featurebrowser
+Bundle-Name: RAP Samples
+Bundle-SymbolicName: org.eclipse.rap.demo.samples
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.osgi

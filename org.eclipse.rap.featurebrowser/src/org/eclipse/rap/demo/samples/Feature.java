@@ -8,9 +8,9 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.featurebrowser;
+package org.eclipse.rap.demo.samples;
 
-import static org.eclipse.rap.featurebrowser.util.HtmlDocument.*;
+import static org.eclipse.rap.demo.samples.util.HtmlDocument.*;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -20,8 +20,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.rap.featurebrowser.util.FeatureVisitor;
-import org.eclipse.rap.featurebrowser.util.HtmlDocument;
+import org.eclipse.rap.demo.samples.util.FeatureVisitor;
+import org.eclipse.rap.demo.samples.util.HtmlDocument;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.json.JsonObject;
 import org.eclipse.rap.rwt.RWT;
@@ -125,7 +125,7 @@ public class Feature {
     return preview;
   }
 
-  public Object[] getChildren() {
+  public Feature[] getChildren() {
     return children;
   }
 
@@ -197,7 +197,7 @@ public class Feature {
   private void registerPreview( String path ) {
     ResourceManager manager = RWT.getResourceManager();
     try {
-      manager.register( path, FeatureResourceLoader.getInstance().getResourceAsStream( path ) );
+      manager.register( path, FeaturesResourceLoader.getInstance().getResourceAsStream( path ) );
     } catch( IOException e ) {
       throw new RuntimeException( e );
     }

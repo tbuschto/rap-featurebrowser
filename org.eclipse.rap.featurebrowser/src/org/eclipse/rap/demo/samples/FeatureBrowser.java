@@ -1,17 +1,17 @@
-package org.eclipse.rap.featurebrowser;
+package org.eclipse.rap.demo.samples;
 
-import static org.eclipse.rap.featurebrowser.util.GridDataUtil.*;
-import static org.eclipse.rap.featurebrowser.util.GridLayoutUtil.*;
-import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
+import static org.eclipse.rap.demo.samples.util.GridDataUtil.*;
+import static org.eclipse.rap.demo.samples.util.GridLayoutUtil.*;
+import static org.eclipse.rap.demo.samples.util.StyleUtil.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import org.eclipse.rap.featurebrowser.ui.DemoArea;
-import org.eclipse.rap.featurebrowser.ui.DescriptionArea;
-import org.eclipse.rap.featurebrowser.ui.FeatureTree;
-import org.eclipse.rap.featurebrowser.ui.ResourcesArea;
+import org.eclipse.rap.demo.samples.ui.DemoArea;
+import org.eclipse.rap.demo.samples.ui.DescriptionArea;
+import org.eclipse.rap.demo.samples.ui.FeatureTree;
+import org.eclipse.rap.demo.samples.ui.ResourcesArea;
 import org.eclipse.rap.json.JsonArray;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.application.AbstractEntryPoint;
@@ -66,6 +66,7 @@ public class FeatureBrowser extends AbstractEntryPoint {
       createResourcesArea();
       createDescriptionArea();
       middleControls[ 1 ] = descriptionArea.getControl();
+      featureTree.select( features.getChildren()[ 0 ] );
     }
 
     public Composite getMainComposite() {

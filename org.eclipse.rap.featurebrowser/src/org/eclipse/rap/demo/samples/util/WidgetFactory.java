@@ -8,12 +8,12 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-package org.eclipse.rap.featurebrowser.util;
+package org.eclipse.rap.demo.samples.util;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.eclipse.rap.featurebrowser.ui.EnhancedTabFolder;
+import org.eclipse.rap.demo.samples.ui.EnhancedTabFolder;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.client.Client;
 import org.eclipse.rap.rwt.client.WebClient;

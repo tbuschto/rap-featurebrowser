@@ -1,8 +1,8 @@
-package org.eclipse.rap.featurebrowser.ui;
+package org.eclipse.rap.demo.samples.ui;
 
-import static org.eclipse.rap.featurebrowser.util.GridDataUtil.*;
-import static org.eclipse.rap.featurebrowser.util.GridLayoutUtil.*;
-import static org.eclipse.rap.featurebrowser.util.StyleUtil.*;
+import static org.eclipse.rap.demo.samples.util.GridDataUtil.*;
+import static org.eclipse.rap.demo.samples.util.GridLayoutUtil.*;
+import static org.eclipse.rap.demo.samples.util.StyleUtil.*;
 
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -15,10 +15,10 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.rap.featurebrowser.Feature;
-import org.eclipse.rap.featurebrowser.FeatureBrowser;
-import org.eclipse.rap.featurebrowser.Navigation;
-import org.eclipse.rap.featurebrowser.util.ResourceUtil;
+import org.eclipse.rap.demo.samples.Navigation;
+import org.eclipse.rap.demo.samples.Feature;
+import org.eclipse.rap.demo.samples.FeatureBrowser;
+import org.eclipse.rap.demo.samples.util.ResourceUtil;
 import org.eclipse.rap.rwt.RWT;
 import org.eclipse.rap.rwt.template.Template;
 import org.eclipse.rap.rwt.template.TextCell;
