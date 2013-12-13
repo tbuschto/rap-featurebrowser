@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: RAP Samples
+Bundle-Name: RAP Samples Demo
 Bundle-SymbolicName: org.eclipse.rap.demo.samples
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
@@ -25,4 +25,3 @@ Import-Package: org.eclipse.jface.viewers,
  org.eclipse.swt.widgets
 Bundle-ClassPath: .,
  resources/
-Bundle-Vendor: Tim Buschtoens
