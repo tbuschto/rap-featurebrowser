@@ -25,6 +25,7 @@ import org.eclipse.rap.demo.samples.Feature;
 import org.eclipse.rap.demo.samples.FeatureBrowser;
 import org.eclipse.rap.demo.samples.util.GridDataUtil;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -50,43 +51,20 @@ public class DemoArea {
     clearContents();
     if( feature.getSnippet() != null ) {
       createSnippetArea( feature );
-    } else if( feature.getPreview() != null ) {
-      createPreview( feature );
+    } else if( feature.getUrl() != null ) {
+      createMainBrowser( feature );
     } else {
       createGallery( feature );
     }
   }
 
-  private void createPreview( Feature feature ) {
+  private void createMainBrowser( Feature feature ) {
     createHeader( feature.getName() );
-    Composite previewArea = new Composite( main, SWT.NONE );
-    applyGridData( previewArea ).fill();
-    applyGridLayout( previewArea ).marginTop( 20 );
-    String path = feature.getPreview();
-    if( path != null ) {
-      Control preview = createImage( previewArea, path, getClass() );
-      applyGridData( preview ).fill().center();
-    }
-//    Label separator = new Label( area, SWT.SEPARATOR | SWT.HORIZONTAL );
-//    applyGridData( separator ).horizontalFill();
-//    final Table table = new Table( area, SWT.NONE );
-//    table.setFont( new Font( table.getDisplay(), "Courier New", 12, SWT.NORMAL ) );
-//    table.setLinesVisible( true );
-//    applyGridData( table ).horizontalFill().vAlign( SWT.FILL );
-//    feature.forEach( new FeatureVisitor() {
-//      public void visit( Feature feature ) {
-//        if( feature.getSnippet() != null ) {
-//          TableItem item = new TableItem( table, SWT.NONE );
-//          item.setText( feature.getSnippet().getSimpleName() + ".java" );
-//          item.setData( feature );
-//        }
-//      }
-//    } );
-//    table.addListener( SWT.Selection, new Listener() {
-//      public void handleEvent( Event event ) {
-//        featureTree.select( ( Feature )event.item.getData() );
-//      }
-//    } );
+    Composite padder = new Composite( main, SWT.NONE );
+    applyGridData( padder ).fill();
+    applyGridLayout( padder ).margins( 0, 5, 0, 5 );
+    Browser browser = createBrowser( padder, feature.getUrl() );
+    applyGridData( browser ).fill();
   }
 
   private void createGallery( Feature feature ) {

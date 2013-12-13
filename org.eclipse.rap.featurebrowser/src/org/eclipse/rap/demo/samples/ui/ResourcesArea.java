@@ -65,7 +65,7 @@ public class ResourcesArea {
                        createBrowser( folder.getFolder(), feature.getSnippetHtmlUrl() ) );
       }
     }
-    if( feature.getUrl() != null ) {
+    if( feature.getUrl() != null && feature.getSnippet() != null ) {
       hasContent = true;
       if( browser.getUserShowSource() ) {
         String url = feature.getUrl();
