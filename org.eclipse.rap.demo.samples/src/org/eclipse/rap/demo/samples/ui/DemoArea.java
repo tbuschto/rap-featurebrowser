@@ -86,7 +86,7 @@ public class DemoArea {
   }
 
   private void createSnippetArea( Feature feature ) {
-    createHeader( feature.getParent().getName() + " " + feature.getName() );
+    createHeader( feature.getParent().getName() + " - " + feature.getName() );
     Composite snippetParent = createSnippetParent( feature );
     try {
       runSnippet( feature.getSnippet(), snippetParent );

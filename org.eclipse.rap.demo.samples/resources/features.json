@@ -3,6 +3,41 @@
     "name" : "Widgets",
     "children" : [
       {
+        "name" : "Browser",
+        "children" : [
+          {
+            "name" : "rendering HTML",
+            "snippet" : "snippets.BrowserRenderingHtml",
+            "width" : 300,
+            "height" : 300
+          },
+          {
+            "name" : "embedding a Website",
+            "snippet" : "snippets.BrowserEmbeddingWebsite"
+          }
+        ]
+      },
+      {
+        "name" : "Button",
+        "preview" : "preview/Button.png",
+        "children" : [
+          {
+            "name" : "PUSH style",
+            "snippet" : "snippets.ButtonPush"
+          }
+        ]
+      },
+      {
+        "name" : "CLabel",
+        "preview" : "preview/CLabel.png",
+        "children" : [
+          {
+            "name" : "text & image",
+            "snippet" : "snippets.CLabelWithTextAndImage"
+          }
+        ]
+      },
+      {
         "name" : "Label",
         "url" : "http://download.eclipse.org/rt/rap/doc/2.1/guide/reference/api/org/eclipse/swt/widgets/Label.html",
         "preview" : "preview/Label.png",
@@ -41,26 +76,6 @@
           {
             "name" : "as separator",
             "snippet" : "snippets.LabelAsSeparator"
-          }
-        ]
-      },
-      {
-        "name" : "CLabel",
-        "preview" : "preview/CLabel.png",
-        "children" : [
-          {
-            "name" : "text & image",
-            "snippet" : "snippets.CLabelWithTextAndImage"
-          }
-        ]
-      },
-      {
-        "name" : "Button",
-        "preview" : "preview/Button.png",
-        "children" : [
-          {
-            "name" : "push button",
-            "snippet" : "snippets.ButtonPush"
           }
         ]
       }
