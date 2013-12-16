@@ -78,6 +78,32 @@
             "snippet" : "snippets.LabelAsSeparator"
           }
         ]
+      },
+      {
+        "name" : "Table",
+        "preview" : "preview/Table.png",
+        "children" : [
+          {
+            "name" : "without columns, headers",
+            "snippet" : "snippets.TableWithoutColumns"
+          },
+          {
+            "name" : "with columns, headers",
+            "snippet" : "snippets.TableWithColumns"
+          },
+          {
+            "name" : "virtual",
+            "snippet" : "snippets.TableWithVirtual"
+          },
+          {
+            "name" : "with Markup",
+            "snippet" : "snippets.TableWithMarkup"
+          },
+          {
+            "name" : "with RowTemplate",
+            "snippet" : "snippets.TableWithRowTemplate"
+          }
+        ]
       }
     ]
   },
