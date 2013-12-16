@@ -16,21 +16,22 @@ import static org.eclipse.rap.demo.samples.util.StyleUtil.*;
 import static org.eclipse.rap.demo.samples.util.WidgetFactory.*;
 
 import org.eclipse.rap.demo.samples.Feature;
-import org.eclipse.rap.demo.samples.FeatureBrowser;
+import org.eclipse.rap.demo.samples.SamplesBrowser;
 import org.eclipse.rap.demo.samples.util.ResourceUtil;
 import org.eclipse.rap.demo.samples.util.WidgetFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+
 public class ResourcesArea {
 
   private Composite main;
   private EnhancedTabFolder folder;
-  private FeatureBrowser browser;
+  private SamplesBrowser browser;
   private boolean hasContent = false;
 
-  public ResourcesArea( FeatureBrowser browser ) {
+  public ResourcesArea( SamplesBrowser browser ) {
     this.browser = browser;
     main = new Composite( browser.getMainComposite(), SWT.NONE );
     style( main ).as( "floatingBox" );

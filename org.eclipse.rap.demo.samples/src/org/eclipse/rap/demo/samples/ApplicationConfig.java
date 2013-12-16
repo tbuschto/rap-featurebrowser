@@ -8,7 +8,6 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.rap.demo.samples;
 
 import java.util.HashMap;
@@ -24,12 +23,12 @@ public class ApplicationConfig implements ApplicationConfiguration {
 
   public void configure( Application application ) {
     Map<String, String> properties = new HashMap<String, String>();
-    properties.put( WebClient.PAGE_TITLE, "RAP Feature Browser" );
+    properties.put( WebClient.PAGE_TITLE, "RAP Samples" );
     application.addStyleSheet( RWT.DEFAULT_THEME_ID, "/css/app.css" );
-    application.addEntryPoint( "/featurebrowser", FeatureBrowser.class, properties );
+    application.addEntryPoint( "/samples", SamplesBrowser.class, properties );
+    application.addResource( "prettify.js", FeaturesResourceLoader.getInstance() );
     application.addResource( "prettify.css", FeaturesResourceLoader.getInstance() );
     application.addResource( "gallery.css", FeaturesResourceLoader.getInstance() );
-    application.addResource( "prettify.js", FeaturesResourceLoader.getInstance() );
   }
 
 }

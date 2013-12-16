@@ -8,7 +8,6 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.rap.demo.samples.ui;
 
 import static org.eclipse.rap.demo.samples.util.GridDataUtil.*;
@@ -23,7 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.eclipse.rap.demo.samples.Feature;
-import org.eclipse.rap.demo.samples.FeatureBrowser;
+import org.eclipse.rap.demo.samples.SamplesBrowser;
 import org.eclipse.rap.demo.samples.util.GridDataUtil;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -32,11 +31,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 
+
 public class DemoArea {
 
   private Composite main;
 
-  public DemoArea( FeatureBrowser browser ) {
+  public DemoArea( SamplesBrowser browser ) {
     Composite parent = browser.getMainComposite();
     main = new Composite( parent, SWT.NONE );
     style( main ).as( "floatingBox" );

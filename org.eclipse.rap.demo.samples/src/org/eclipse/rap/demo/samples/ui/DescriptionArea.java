@@ -16,7 +16,7 @@ import static org.eclipse.rap.demo.samples.util.StyleUtil.*;
 import static org.eclipse.rap.demo.samples.util.WidgetFactory.*;
 
 import org.eclipse.rap.demo.samples.Feature;
-import org.eclipse.rap.demo.samples.FeatureBrowser;
+import org.eclipse.rap.demo.samples.SamplesBrowser;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -27,7 +27,7 @@ public class DescriptionArea {
   private Composite main;
   private Control label;
 
-  public DescriptionArea( FeatureBrowser browser ) {
+  public DescriptionArea( SamplesBrowser browser ) {
     main = new Composite( browser.getMainComposite(), SWT.NONE );
     main.setBackgroundMode( SWT.INHERIT_FORCE );
     style( main ).as( "descBox" );
@@ -55,6 +55,5 @@ public class DescriptionArea {
       label = null;
     }
   }
-
 
 }

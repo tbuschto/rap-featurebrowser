@@ -10,7 +10,10 @@
  ******************************************************************************/
 package org.eclipse.rap.demo.samples;
 
-import static org.eclipse.rap.demo.samples.util.HtmlDocument.*;
+import static org.eclipse.rap.demo.samples.util.HtmlDocument.link;
+import static org.eclipse.rap.demo.samples.util.HtmlDocument.locationOf;
+import static org.eclipse.rap.demo.samples.util.HtmlDocument.pre;
+import static org.eclipse.rap.demo.samples.util.HtmlDocument.script;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -31,8 +34,9 @@ import org.eclipse.rap.rwt.service.ResourceManager;
 
 public class Feature {
 
-  private Feature[] children;
   private static final String UTF_8 = "UTF-8";
+
+  private Feature[] children;
   private String name;
   private Class<? extends AbstractEntryPoint> snippet;
   private Feature parent;
@@ -296,6 +300,5 @@ public class Feature {
     }
     return getName();
   }
-
 
 }

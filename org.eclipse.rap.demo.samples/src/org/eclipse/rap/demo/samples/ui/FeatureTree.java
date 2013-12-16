@@ -8,7 +8,6 @@
  * Contributors:
  *    EclipseSource - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.rap.demo.samples.ui;
 
 import static org.eclipse.rap.demo.samples.util.GridDataUtil.*;
@@ -27,7 +26,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.rap.demo.samples.Feature;
-import org.eclipse.rap.demo.samples.FeatureBrowser;
+import org.eclipse.rap.demo.samples.SamplesBrowser;
 import org.eclipse.rap.demo.samples.Navigation;
 import org.eclipse.rap.demo.samples.util.ResourceUtil;
 import org.eclipse.rap.rwt.RWT;
@@ -53,10 +52,10 @@ public class FeatureTree {
   private static final String TREE_FONT = "Verdana,\"Lucida Sans\",Arial,Helvetica,sans-serif";
   private Tree tree;
   private TreeViewer treeViewer;
-  private FeatureBrowser browser;
+  private SamplesBrowser browser;
 
 
-  public FeatureTree( final FeatureBrowser browser ) {
+  public FeatureTree( final SamplesBrowser browser ) {
     this.browser = browser;
     final Composite parent = browser.getMainComposite();
     Feature category = browser.getFeatures();
