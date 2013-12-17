@@ -84,12 +84,24 @@
         "preview" : "preview/Table.png",
         "children" : [
           {
-            "name" : "without columns, headers",
-            "snippet" : "snippets.TableWithoutColumns"
+            "name" : "with images and checkboxes",
+            "snippet" : "snippets.TableWithCheckboxes"
           },
           {
             "name" : "with columns, headers",
             "snippet" : "snippets.TableWithColumns"
+          },
+          {
+            "name" : "with column sorting",
+            "snippet" : "snippets.TableWithSortColumn"
+          },
+          {
+            "name" : "with cell backgrounds",
+            "snippet" : "snippets.TableWithCellColors"
+          },
+          {
+            "name" : "with fixed columns",
+            "snippet" : "snippets.TableWithFixedColumns"
           },
           {
             "name" : "virtual",
